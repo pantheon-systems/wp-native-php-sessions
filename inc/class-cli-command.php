@@ -59,6 +59,9 @@ class CLI_Command extends \WP_CLI_Command {
 
 		if ( isset( $assoc_args['all'] ) ) {
 			$args = $wpdb->get_col( "SELECT session_id FROM {$wpdb->pantheon_sessions}" );
+			if ( empty( $args ) ) {
+				WP_CLI::warning( "No sessions to delete." );
+			}
 		}
 
 		foreach( $args as $session_id ) {
