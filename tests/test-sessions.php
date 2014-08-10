@@ -7,7 +7,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		/*
 		 * Create
 		 */
-		@session_start();
+		@session_start(); // session_start(): Cannot send session cookie - headers already sent by (output started at /tmp/wordpress-tests-lib/includes/bootstrap.php:53)
 		$session_id = session_id();
 		$this->assertNotEmpty( $session_id );
 
@@ -23,7 +23,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		/*
 		 * Destroy
 		 */
-		@session_destroy();
+		@session_destroy(); // session_destroy(): Trying to destroy uninitialized session
 		$session->destroy();
 		$session = \Pantheon_Sessions\Session::get_by_sid( $session_id );
 		$this->assertFalse( $session );
