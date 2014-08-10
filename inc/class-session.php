@@ -13,9 +13,10 @@ class Session {
 	/**
 	 * Get a session based on its ID.
 	 *
+	 * @param string $sid
 	 * @return Session|false
 	 */
-	public static function get_by_id( $sid ) {
+	public static function get_by_sid( $sid ) {
 		global $wpdb;
 
 		$column_name = self::get_session_id_column();
@@ -43,7 +44,7 @@ class Session {
 			$insert_data['secure_session_id'] = $sid;
 		}
 		$wpdb->insert( $wpdb->pantheon_sessions, $insert_data );
-		return self::get_by_id( $sid );
+		return self::get_by_sid( $sid );
 	}
 
 	/**

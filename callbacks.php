@@ -49,7 +49,7 @@ function _pantheon_session_read( $sid ) {
 		return '';
 	}
 
-	$session = \Pantheon_Sessions\Session::get_by_id( $sid );
+	$session = \Pantheon_Sessions\Session::get_by_sid( $sid );
 	if ( $session ) {
 		return $session->get_data();
 	} else {
@@ -74,7 +74,7 @@ function _pantheon_session_read( $sid ) {
  */
 function _pantheon_session_write( $sid, $value ) {
 
-	$session = \Pantheon_Sessions\Session::get_by_id( $sid );
+	$session = \Pantheon_Sessions\Session::get_by_sid( $sid );
 
 	if ( ! $session ) {
 		$session = \Pantheon_Sessions\Session::create_for_sid( $sid );
@@ -93,7 +93,7 @@ function _pantheon_session_write( $sid, $value ) {
  */
 function _pantheon_session_destroy( $sid ) {
 
-	$session = \Pantheon_Sessions\Session::get_by_id( $sid );
+	$session = \Pantheon_Sessions\Session::get_by_sid( $sid );
 	if ( ! $session ) {
 		return;
 	}
