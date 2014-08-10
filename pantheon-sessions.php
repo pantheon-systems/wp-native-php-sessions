@@ -90,7 +90,6 @@ class Pantheon_Sessions {
 		} else {
 			// Set a session identifier for this request. This is necessary because
 			// we lazily start sessions at the end of this request
-			$GLOBALS['lazy_session'] = TRUE;
 			session_id( $this->get_random_key() );
 			if ( is_ssl() ) {
 				$insecure_session_name = substr( session_name(), 1 );
