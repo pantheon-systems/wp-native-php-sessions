@@ -34,7 +34,7 @@ class Session {
 	 * @param string $sid
 	 * @return Session
 	 */
-	public function create_for_sid( $sid ) {
+	public static function create_for_sid( $sid ) {
 		global $wpdb;
 
 		$insert_data = array(
