@@ -33,6 +33,7 @@ class Pantheon_Sessions {
 
 		if ( PANTHEON_SESSIONS_ENABLED ) {
 			$this->setup_database();
+			$this->initialize_session_override();
 		}
 
 	}
@@ -48,6 +49,8 @@ class Pantheon_Sessions {
 			define( 'PANTHEON_SESSIONS_ENABLED', 1 );
 		}
 
+		define( 'PANTHEON_SESSIONS_REQUEST_TIME', time() );
+
 	}
 
 	/**
@@ -57,6 +60,43 @@ class Pantheon_Sessions {
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			require_once dirname( __FILE__ ) . '/inc/class-cli-command.php';
+		}
+
+		require_once dirname( __FILE__ ) . '/callbacks.php';
+
+	}
+
+	/**
+	 * Override the default sessions implementation with our own
+	 *
+	 * Largely adopted from Drupal 7's implementation
+	 */
+	private function initialize_session_override() {
+
+		session_set_save_handler( '_pantheon_session_open', '_pantheon_session_close', '_pantheon_session_read', '_pantheon_session_write', '_pantheon_session_destroy', '_pantheon_session_garbage_collection' );
+
+		require_once dirname( __FILE__ ) . '/inc/class-session.php';
+
+		// We use !empty() in the following check to ensure that blank session IDs are not valid.
+		if ( ! empty( $_COOKIE[ session_name() ] ) || ( is_ssl() && ! empty( $_COOKIE[ substr(session_name(), 1) ] ) ) ) {
+			// If a session cookie exists, initialize the session. Otherwise the
+			// session is only started on demand in _pantheon_session_write(), making
+			// anonymous users not use a session cookie unless something is stored in
+			// $_SESSION. This allows HTTP proxies to cache anonymous pageviews.
+			\Pantheon_Sessions\Session::start();
+			if ( get_current_user_id() || ! empty( $_SESSION ) ) {
+				nocache_headers();
+			}
+		} else {
+			// Set a session identifier for this request. This is necessary because
+			// we lazily start sessions at the end of this request
+			$GLOBALS['lazy_session'] = TRUE;
+			session_id( $this->get_random_key() );
+			if ( is_ssl() ) {
+				$insecure_session_name = substr( session_name(), 1 );
+				$session_id = $this->get_random_key();
+				$_COOKIE[ $insecure_session_name ] = $session_id;
+			}
 		}
 
 	}
@@ -90,6 +130,17 @@ class Pantheon_Sessions {
 
 	}
 
+	/**
+	 * Get a randomized key
+	 *
+	 * @return string
+	 */
+	public function get_random_key() {
+		require_once( ABSPATH . 'wp-includes/class-phpass.php');
+		$hasher = new PasswordHash( 8, false );
+		return md5( $hasher->get_random_bytes( 32 ) );
+	}
+
 }
 
 /**
@@ -98,4 +149,4 @@ class Pantheon_Sessions {
 function Pantheon_Sessions() {
 	return Pantheon_Sessions::get_instance();
 }
-add_action( 'muplugins_loaded', 'Pantheon_Sessions' );
+Pantheon_Sessions();
