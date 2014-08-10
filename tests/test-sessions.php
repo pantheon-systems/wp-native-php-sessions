@@ -2,8 +2,6 @@
 
 class Test_Sessions extends WP_UnitTestCase {
 
-	private $session_id;
-
 	public function test_session_crud() {
 
 		/*
