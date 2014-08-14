@@ -78,4 +78,4 @@ class CLI_Command extends \WP_CLI_Command {
 
 }
 
-\WP_CLI::add_command( 'pantheon sessions', '\Pantheon_Sessions\CLI_Command' );
+\WP_CLI::add_command( 'pantheon session', '\Pantheon_Sessions\CLI_Command' );
