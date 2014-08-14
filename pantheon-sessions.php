@@ -74,6 +74,38 @@ class Pantheon_Sessions {
 	 */
 	private function set_ini_values() {
 
+		// If the user specifies the cookie domain, also use it for session name.
+		if ( defined( 'COOKIE_DOMAIN' ) && constant( 'COOKIE_DOMAIN' ) ) {
+			$session_name = $cookie_domain = constant( 'COOKIE_DOMAIN' );
+		} else {
+			$session_name = parse_url( home_url(), PHP_URL_HOST );
+			$cookie_domain = ltrim( $session_name, '.' );
+			// Strip leading periods, www., and port numbers from cookie domain.
+			if ( strpos( $cookie_domain, 'www.' ) === 0 ) {
+				$cookie_domain = substr( $cookie_domain, 4 );
+			}
+			$cookie_domain = explode( ':', $cookie_domain );
+			$cookie_domain = '.' . $cookie_domain[0];
+		}
+
+		// Per RFC 2109, cookie domains must contain at least one dot other than the
+		// first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+		if ( count( explode( '.', $cookie_domain ) ) > 2 && ! is_numeric( str_replace( '.', '', $cookie_domain ) ) ) {
+			ini_set( 'session.cookie_domain', $cookie_domain );
+		}
+		// To prevent session cookies from being hijacked, a user can configure the
+		// SSL version of their website to only transfer session cookies via SSL by
+		// using PHP's session.cookie_secure setting. The browser will then use two
+		// separate session cookies for the HTTPS and HTTP versions of the site. So we
+		// must use different session identifiers for HTTPS and HTTP to prevent a
+		// cookie collision.
+		if ( is_ssl() ) {
+			ini_set( 'session.cookie_secure', TRUE );
+		}
+		$prefix = ini_get( 'session.cookie_secure' ) ? 'SSESS' : 'SESS';
+
+		session_name( $prefix . substr( hash( 'sha256', $session_name ), 0, 32 ) );
+
 		// Use session cookies, not transparent sessions that puts the session id in
 		// the query string.
 		ini_set( 'session.use_cookies', '1' );
