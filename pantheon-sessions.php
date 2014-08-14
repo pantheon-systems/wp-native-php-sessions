@@ -82,7 +82,7 @@ class Pantheon_Sessions {
 		// Don't send HTTP headers using PHP's session handler.
 		// An empty string is used here to disable the cache limiter.
 		ini_set( 'session.cache_limiter', '' );
-		// Use httponly session cookies.
+		// Use httponly session cookies. Limits use by JavaScripts
 		ini_set( 'session.cookie_httponly', '1' );
 
 	}
