@@ -31,4 +31,9 @@ class Test_Sessions extends WP_UnitTestCase {
 
 	}
 
+	public function test_session_name() {
+		$session_name = session_name();
+		$this->assertStringStartsWith( "SESS", $session_name );
+	}
+
 }
