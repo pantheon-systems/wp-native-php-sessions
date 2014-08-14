@@ -104,7 +104,6 @@ class Pantheon_Sessions {
 			// session is only started on demand in _pantheon_session_write(), making
 			// anonymous users not use a session cookie unless something is stored in
 			// $_SESSION. This allows HTTP proxies to cache anonymous pageviews.
-			\Pantheon_Sessions\Session::start();
 			if ( get_current_user_id() || ! empty( $_SESSION ) ) {
 				nocache_headers();
 			}

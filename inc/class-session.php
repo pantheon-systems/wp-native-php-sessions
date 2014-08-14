@@ -47,28 +47,6 @@ class Session {
 		return self::get_by_sid( $sid );
 	}
 
-	/**
-	 * Start a new session.
-	 *
-	 * @return Session|false
-	 */
-	public static function start() {
-
-		if ( self::is_cli() ) {
-			return false;
-		}
-
-		// Save current session data before starting it, as PHP will destroy it.
-		$session_data = isset( $_SESSION ) ? $_SESSION : null;
-
-		session_start();
-
-		// Restore session data.
-		if ( ! empty( $session_data ) ) {
-			$_SESSION += $session_data;
-		}
-	}
-
 	private function __construct( $sid, $data ) {
 		$this->sid = $sid;
 		$this->data = $data;
