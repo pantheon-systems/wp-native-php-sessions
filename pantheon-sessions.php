@@ -33,6 +33,7 @@ class Pantheon_Sessions {
 
 		if ( PANTHEON_SESSIONS_ENABLED ) {
 			$this->setup_database();
+			$this->set_ini_values();
 			$this->initialize_session_override();
 		}
 
@@ -63,6 +64,26 @@ class Pantheon_Sessions {
 		}
 
 		require_once dirname( __FILE__ ) . '/callbacks.php';
+
+	}
+
+	/**
+	 * Set the PHP ini settings for the session implementation to work properly
+	 *
+	 * Largely adopted from Drupal 7's implementation
+	 */
+	private function set_ini_values() {
+
+		// Use session cookies, not transparent sessions that puts the session id in
+		// the query string.
+		ini_set( 'session.use_cookies', '1' );
+		ini_set( 'session.use_only_cookies', '1' );
+		ini_set( 'session.use_trans_sid', '0' );
+		// Don't send HTTP headers using PHP's session handler.
+		// An empty string is used here to disable the cache limiter.
+		ini_set( 'session.cache_limiter', '' );
+		// Use httponly session cookies.
+		ini_set( 'session.cookie_httponly', '1' );
 
 	}
 
