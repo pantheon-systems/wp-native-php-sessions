@@ -33,6 +33,7 @@ class Pantheon_Sessions {
 
 		if ( PANTHEON_SESSIONS_ENABLED ) {
 			$this->setup_database();
+			$this->set_ini_values();
 			$this->initialize_session_override();
 		}
 
@@ -67,6 +68,58 @@ class Pantheon_Sessions {
 	}
 
 	/**
+	 * Set the PHP ini settings for the session implementation to work properly
+	 *
+	 * Largely adopted from Drupal 7's implementation
+	 */
+	private function set_ini_values() {
+
+		// If the user specifies the cookie domain, also use it for session name.
+		if ( defined( 'COOKIE_DOMAIN' ) && constant( 'COOKIE_DOMAIN' ) ) {
+			$session_name = $cookie_domain = constant( 'COOKIE_DOMAIN' );
+		} else {
+			$session_name = parse_url( home_url(), PHP_URL_HOST );
+			$cookie_domain = ltrim( $session_name, '.' );
+			// Strip leading periods, www., and port numbers from cookie domain.
+			if ( strpos( $cookie_domain, 'www.' ) === 0 ) {
+				$cookie_domain = substr( $cookie_domain, 4 );
+			}
+			$cookie_domain = explode( ':', $cookie_domain );
+			$cookie_domain = '.' . $cookie_domain[0];
+		}
+
+		// Per RFC 2109, cookie domains must contain at least one dot other than the
+		// first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+		if ( count( explode( '.', $cookie_domain ) ) > 2 && ! is_numeric( str_replace( '.', '', $cookie_domain ) ) ) {
+			ini_set( 'session.cookie_domain', $cookie_domain );
+		}
+		// To prevent session cookies from being hijacked, a user can configure the
+		// SSL version of their website to only transfer session cookies via SSL by
+		// using PHP's session.cookie_secure setting. The browser will then use two
+		// separate session cookies for the HTTPS and HTTP versions of the site. So we
+		// must use different session identifiers for HTTPS and HTTP to prevent a
+		// cookie collision.
+		if ( is_ssl() ) {
+			ini_set( 'session.cookie_secure', TRUE );
+		}
+		$prefix = ini_get( 'session.cookie_secure' ) ? 'SSESS' : 'SESS';
+
+		session_name( $prefix . substr( hash( 'sha256', $session_name ), 0, 32 ) );
+
+		// Use session cookies, not transparent sessions that puts the session id in
+		// the query string.
+		ini_set( 'session.use_cookies', '1' );
+		ini_set( 'session.use_only_cookies', '1' );
+		ini_set( 'session.use_trans_sid', '0' );
+		// Don't send HTTP headers using PHP's session handler.
+		// An empty string is used here to disable the cache limiter.
+		ini_set( 'session.cache_limiter', '' );
+		// Use httponly session cookies. Limits use by JavaScripts
+		ini_set( 'session.cookie_httponly', '1' );
+
+	}
+
+	/**
 	 * Override the default sessions implementation with our own
 	 *
 	 * Largely adopted from Drupal 7's implementation
@@ -83,7 +136,6 @@ class Pantheon_Sessions {
 			// session is only started on demand in _pantheon_session_write(), making
 			// anonymous users not use a session cookie unless something is stored in
 			// $_SESSION. This allows HTTP proxies to cache anonymous pageviews.
-			\Pantheon_Sessions\Session::start();
 			if ( get_current_user_id() || ! empty( $_SESSION ) ) {
 				nocache_headers();
 			}
