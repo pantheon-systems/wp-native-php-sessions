@@ -133,6 +133,6 @@ function _pantheon_session_garbage_collection( $lifetime ) {
 	// for three weeks before deleting them, you need to set gc_maxlifetime
 	// to '1814400'. At that value, only after a user doesn't log in after
 	// three weeks (1814400 seconds) will his/her session be removed.
-	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE `timestamp` < %d ", PANTHEON_SESSIONS_REQUEST_TIME - $lifetime ) );
+	$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE `timestamp` <= %d ", time() - $lifetime ) );
 	return true;
 }

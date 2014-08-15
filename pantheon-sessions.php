@@ -50,8 +50,6 @@ class Pantheon_Sessions {
 			define( 'PANTHEON_SESSIONS_ENABLED', 1 );
 		}
 
-		define( 'PANTHEON_SESSIONS_REQUEST_TIME', time() );
-
 	}
 
 	/**
