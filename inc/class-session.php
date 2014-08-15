@@ -85,6 +85,7 @@ class Session {
 		$wpdb->update( $wpdb->pantheon_sessions, array(
 			'user_id'         => (bool)get_current_user_id(),
 			'timestamp'       => time(),
+			'hostname'        => preg_replace( '/[^0-9a-fA-F:., ]/', '',$_SERVER['REMOTE_ADDR'] ),
 			'session'         => maybe_serialize( $data ),
 			), array( self::get_session_id_column() => $this->get_id() ) );
 
