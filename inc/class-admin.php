@@ -64,6 +64,8 @@ class Admin {
 
 		echo '</div>';
 
+		add_action( 'admin_footer', array( $this, 'action_admin_footer' ) );
+
 	}
 
 	/**
@@ -82,6 +84,25 @@ class Admin {
 		wp_safe_redirect( wp_get_referer() );
 		exit;
 
+	}
+
+	/**
+	 * Stuff that needs to go in the footer
+	 */
+	public function action_admin_footer() {
+		?>
+	<script>
+	(function($){
+		$(document).ready(function(){
+			$('.pantheon-clear-all-sessions').on('click', function( e ){
+				if ( ! confirm( '<?php esc_html_e( "Are you sure you want to clear all active sessions?", "pantheon-sessions" ); ?>') ) {
+					e.preventDefault();
+				}
+			});
+		});
+	}(jQuery))
+	</script>
+		<?php
 	}
 
 }
