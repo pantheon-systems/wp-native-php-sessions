@@ -63,6 +63,11 @@ class Pantheon_Sessions {
 
 		require_once dirname( __FILE__ ) . '/callbacks.php';
 
+		if ( is_admin() ) {
+			require_once dirname( __FILE__ ) . '/inc/class-admin.php';
+			$this->admin = Pantheon_Sessions\Admin::get_instance();
+		}
+
 	}
 
 	/**
