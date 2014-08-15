@@ -19,7 +19,7 @@ class List_Table extends \WP_List_Table {
 		$paged = ( isset( $_GET['paged'] ) ) ? (int)$_GET['paged'] : 1;
 		$offset = $per_page * ( $paged - 1 );
 
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->pantheon_sessions LIMIT %d,%d", $offset, $per_page ) );
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->pantheon_sessions ORDER BY datetime DESC LIMIT %d,%d", $offset, $per_page ) );
 		$total_items = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" );
 
 		$this->set_pagination_args( array(
@@ -43,9 +43,9 @@ class List_Table extends \WP_List_Table {
 		return array(
 			'session_id'            => __( 'Session ID', 'pantheon-sessions' ),
 			'user_id'               => __( 'User ID', 'pantheon-sessions' ),
-			'hostname'              => __( 'Hostname', 'pantheon-sessions' ),
-			'timestamp'             => __( 'Timestamp', 'pantheon-sessions' ),
-			'session_data'          => __( 'Session Data', 'pantheon-sessions' ),
+			'ip_address'            => __( 'IP Address', 'pantheon-sessions' ),
+			'datetime'              => __( 'Last Active', 'pantheon-sessions' ),
+			'data'                  => __( 'Data', 'pantheon-sessions' ),
 			);
 	}
 
@@ -53,8 +53,8 @@ class List_Table extends \WP_List_Table {
 	 * Render a column value
 	 */
 	public function column_default( $item, $column_name ) {
-		if ( $column_name == 'session_data' ) {
-			return '<code>' . esc_html( $item->session ) . '</code>';
+		if ( $column_name == 'data' ) {
+			return '<code>' . esc_html( $item->data ) . '</code>';
 		} else if ( $column_name == 'session_id' ) {
 			$query_args = array(
 				'action'       => 'pantheon_clear_session',
@@ -65,6 +65,8 @@ class List_Table extends \WP_List_Table {
 				'clear'           => '<a href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear', 'pantheon-sessions' ) . '</a>',
 				);
 			return esc_html( $item->session_id ) . $this->row_actions( $actions );
+		} else if ( $column_name == 'datetime' ) {
+			return esc_html( sprintf( esc_html__( '%s ago', 'pantheon-sessions' ), human_time_diff( strtotime( $item->datetime ) ) ) );
 		} else {
 			return esc_html( $item->$column_name );
 		}

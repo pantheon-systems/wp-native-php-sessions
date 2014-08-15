@@ -26,12 +26,12 @@ class CLI_Command extends \WP_CLI_Command {
 
 		$defaults = array(
 			'format'      => 'table',
-			'fields'      => 'session_id,user_id,timestamp,hostname,session',
+			'fields'      => 'session_id,user_id,datetime,ip_address,data',
 			);
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
 		$sessions = array();
-		foreach( new \WP_CLI\Iterators\Query( "SELECT * FROM {$wpdb->pantheon_sessions} " ) as $row ) {
+		foreach( new \WP_CLI\Iterators\Query( "SELECT * FROM {$wpdb->pantheon_sessions} ORDER BY datetime DESC" ) as $row ) {
 			$sessions[] = $row;
 		}
 

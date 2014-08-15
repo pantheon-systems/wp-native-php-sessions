@@ -25,7 +25,7 @@ class Session {
 			return false;
 		}
 
-		return new Session( $session_row->$column_name, $session_row->session );
+		return new Session( $session_row->$column_name, $session_row->data );
 	}
 
 	/**
@@ -82,11 +82,15 @@ class Session {
 			return;
 		}
 
+		if ( ! isset( $_SERVER['REMOTE_ADDR'] ) ) {
+			$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		}
+
 		$wpdb->update( $wpdb->pantheon_sessions, array(
 			'user_id'         => (bool)get_current_user_id(),
-			'timestamp'       => time(),
-			'hostname'        => preg_replace( '/[^0-9a-fA-F:., ]/', '',$_SERVER['REMOTE_ADDR'] ),
-			'session'         => maybe_serialize( $data ),
+			'datetime'        => date( 'Y-m-d H:i:s' ),
+			'ip_address'      => preg_replace( '/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR'] ),
+			'data'            => maybe_serialize( $data ),
 			), array( self::get_session_id_column() => $this->get_id() ) );
 
 		$this->data = maybe_serialize( $data );
