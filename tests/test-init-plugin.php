@@ -18,9 +18,9 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			'user_id',
 			'session_id',
 			'secure_session_id',
-			'hostname',
-			'timestamp',
-			'session',
+			'ip_address',
+			'datetime',
+			'data',
 			), $columns );
 
 	}

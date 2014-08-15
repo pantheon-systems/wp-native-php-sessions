@@ -52,7 +52,7 @@ class Admin {
 			'nonce'        => wp_create_nonce( 'pantheon_clear_session' ),
 			'session'      => 'all',
 			);
-		if ( $wpdb->get_var( "SELECT COUNT(session) FROM $wpdb->pantheon_sessions" ) ) {
+		if ( $wpdb->get_var( "SELECT COUNT(session_id) FROM $wpdb->pantheon_sessions" ) ) {
 			echo '<a class="button pantheon-clear-all-sessions" style="float:right; margin-top: 9px;" href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear All', 'pantheon-sessions' ) . '</a>';
 		}
 		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'pantheon-sessions' ) . '</h2>';
