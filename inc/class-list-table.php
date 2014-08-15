@@ -15,12 +15,16 @@ class List_Table extends \WP_List_Table {
 		$sortable = array();
 		$this->_column_headers = array($columns, $hidden, $sortable);
 
-		$this->items = $wpdb->get_results( "SELECT * FROM $wpdb->pantheon_sessions" );
-		$total_items = count( $this->items );
+		$per_page = 20;
+		$paged = ( isset( $_GET['paged'] ) ) ? (int)$_GET['paged'] : 1;
+		$offset = $per_page * ( $paged - 1 );
+
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->pantheon_sessions LIMIT %d,%d", $offset, $per_page ) );
+		$total_items = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
-			'per_page' => $total_items,
+			'per_page' => $per_page,
 		) );
 
 	}
