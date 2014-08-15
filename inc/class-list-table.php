@@ -51,6 +51,16 @@ class List_Table extends \WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		if ( $column_name == 'session_data' ) {
 			return '<code>' . esc_html( $item->session ) . '</code>';
+		} else if ( $column_name == 'session_id' ) {
+			$query_args = array(
+				'action'       => 'pantheon_clear_session',
+				'nonce'        => wp_create_nonce( 'pantheon_clear_session' ),
+				'session'      => $item->session_id,
+			);
+			$actions = array(
+				'clear'           => '<a href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear', 'pantheon-sessions' ) . '</a>',
+				);
+			return esc_html( $item->session_id ) . $this->row_actions( $actions );
 		} else {
 			return esc_html( $item->$column_name );
 		}

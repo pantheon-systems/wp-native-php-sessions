@@ -80,6 +80,8 @@ class Admin {
 
 		if ( 'all' == $_GET['session'] ) {
 			$wpdb->query( "DELETE FROM $wpdb->pantheon_sessions" );
+		} else {
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE session_id=%s", sanitize_text_field( $_GET['session'] ) ) );
 		}
 		wp_safe_redirect( wp_get_referer() );
 		exit;
