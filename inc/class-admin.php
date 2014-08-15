@@ -47,7 +47,18 @@ class Admin {
 	 */
 	public function handle_page() {
 
+		require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+		require_once dirname( __FILE__ ) . '/class-list-table.php';
+
+		echo '<div class="wrap">';
+
 		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'pantheon-sessions' ) . '</h2>';
+
+		$wp_list_table = new List_Table;
+		$wp_list_table->prepare_items();
+		$wp_list_table->display();
+
+		echo '</div>';
 
 	}
 
