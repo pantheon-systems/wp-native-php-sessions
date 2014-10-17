@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Pantheon Sessions for WordPress
-Version: 0.2-Alpha
+Version: 0.3-Alpha
 Description: Offload PHP sessions to your database for multi-server compatibility.
 Author: Pantheon
 Author URI: https://www.getpantheon.com/
