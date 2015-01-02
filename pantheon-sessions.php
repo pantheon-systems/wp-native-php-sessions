@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Pantheon Sessions for WordPress
-Version: 0.1-alpha
+Version: 0.2-Alpha
 Description: Offload PHP sessions to your database for multi-server compatibility.
 Author: Pantheon
 Author URI: https://www.getpantheon.com/
@@ -36,7 +36,6 @@ class Pantheon_Sessions {
 			$this->set_ini_values();
 			$this->initialize_session_override();
 		}
-
 	}
 
 	/**
@@ -184,6 +183,27 @@ class Pantheon_Sessions {
 
 	}
 
+
+	/**
+	 * Force the plugin to be the first loaded
+	 *
+	 */
+	static public function force_first_load()
+	{
+
+		$path = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
+		if ( $plugins = get_option( 'active_plugins' ) ) {
+			if ( $key = array_search( $path, $plugins ) ) {
+				array_splice( $plugins, $key, 1 );
+				array_unshift( $plugins, $path );
+				update_option( 'active_plugins', $plugins );
+			}
+		}
+
+		return;
+	}
+
+
 	/**
 	 * Get a randomized key
 	 *
@@ -203,4 +223,7 @@ class Pantheon_Sessions {
 function Pantheon_Sessions() {
 	return Pantheon_Sessions::get_instance();
 }
+
+add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load');
+
 Pantheon_Sessions();
