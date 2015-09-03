@@ -162,7 +162,7 @@ class Pantheon_Sessions {
 
 		$table_name = "{$table_prefix}pantheon_sessions";
 		$wpdb->pantheon_sessions = $table_name;
-		$wpdb->tables[] = $table_name;
+		$wpdb->tables[] = 'pantheon_sessions';
 
 		if ( get_option( 'pantheon_session_version' ) ) {
 			return;
