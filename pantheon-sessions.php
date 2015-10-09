@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Pantheon Sessions for WordPress
-Version: 0.3-alpha
-Description: Offload PHP sessions to your database for multi-server compatibility.
+Plugin Name: Native PHP Sessions for WordPress
+Version: 0.4
+Description: Offload PHP's native sessions to your database for multi-server compatibility.
 Author: Pantheon
-Author URI: https://www.getpantheon.com/
-Plugin URI: https://www.getpantheon.com/
+Author URI: https://www.pantheon.io/
+Plugin URI: https://www.pantheon.io/
 Text Domain: pantheon-sessions
 Domain Path: /languages
 */

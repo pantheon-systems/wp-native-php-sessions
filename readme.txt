@@ -1,10 +1,10 @@
 === Pantheon-sessions ===
 Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://www.getpantheon.com/
-Tags: comments, spam
+Donate link: https://www.pantheon.io/
+Tags: comments, sessions
 Requires at least: 3.0.1
-Tested up to: 4.1
-Stable tag: 0.3-alpha
+Tested up to: 4.3
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,5 +49,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 = 0.1 =
 * Initial release
 
-= 0.3-alpha = 
+= 0.3 = 
 * Fixes issue related to WordPress plugin load order
+
+= 0.4 = 
+* Adjustment to `session_id()` behavior for wider compatibility
+* Using superglobal for REQUEST_TIME as opposed to `time()`
