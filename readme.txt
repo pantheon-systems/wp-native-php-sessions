@@ -45,12 +45,13 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 == Changelog ==
 
-= 0.1 =
-* Initial release
+= 0.4 = 
+* Adjustment to `session_id()` behavior for wider compatibility
+* Using superglobal for REQUEST_TIME as opposed to `time()`
 
 = 0.3 = 
 * Fixes issue related to WordPress plugin load order
 
-= 0.4 = 
-* Adjustment to `session_id()` behavior for wider compatibility
-* Using superglobal for REQUEST_TIME as opposed to `time()`
+= 0.1 =
+* Initial release
+

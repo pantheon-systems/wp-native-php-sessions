@@ -45,12 +45,13 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Changelog ##
 
-### 0.1 ###
-* Initial release
+### 0.4 ###
+* Adjustment to `session_id()` behavior for wider compatibility
+* Using superglobal for REQUEST_TIME as opposed to `time()`
 
 ### 0.3 ###
 * Fixes issue related to WordPress plugin load order
 
-### 0.4 ###
-* Adjustment to `session_id()` behavior for wider compatibility
-* Using superglobal for REQUEST_TIME as opposed to `time()`
+### 0.1 ###
+* Initial release
+
