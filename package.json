@@ -1,0 +1,14 @@
+{
+  "name": "wp-native-php-sessions",
+  "version": "0.4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pantheon-systems/wp-native-php-sessions.git"
+  },
+  "main": "Gruntfile.js",
+  "author": "Pantheon <support@getpantheon.com>",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-wp-readme-to-markdown": "~0.9.0"
+  }
+}
