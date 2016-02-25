@@ -102,7 +102,8 @@ function _pantheon_session_write( $sid, $value ) {
 	}
 
 	$session->set_data( $value );
-
+	
+	return true;
 }
 
 /**
