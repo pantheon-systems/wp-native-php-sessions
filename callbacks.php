@@ -26,15 +26,15 @@ function _pantheon_session_open() {
 		// we lazily start sessions at the end of this request
 		require_once( ABSPATH . 'wp-includes/class-phpass.php');
 		$hasher = new PasswordHash( 8, false );
-    do {
-      $sid = md5( $hasher->get_random_bytes( 32 ) );
-    } while( \Pantheon_Sessions\Session::sid_exists( $sid ) );
+		do {
+			$sid = md5( $hasher->get_random_bytes( 32 ) );
+		} while( \Pantheon_Sessions\Session::sid_exists( $sid ) );
 		session_id( $sid );
 		if ( is_ssl() ) {
 			$insecure_session_name = substr( session_name(), 1 );
-      do {
-        $insecure_session_id = md5( $hasher->get_random_bytes( 32 ) );
-      } while( \Pantheon_Sessions\Session::sid_exists( $insecure_session_id, true ) );
+			do {
+				$insecure_session_id = md5( $hasher->get_random_bytes( 32 ) );
+			} while( \Pantheon_Sessions\Session::sid_exists( $insecure_session_id, true ) );
 			$_COOKIE[ $insecure_session_name ] = $insecure_session_id;
 		}
 	}
