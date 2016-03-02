@@ -110,6 +110,26 @@ class Session {
 		$this->delete_cookies();
 
 	}
+  
+	/**
+	 * Determines if a session ID exists in the database.
+	 *
+	 * @param string $sid
+   * @param bool $secure
+	 * @return true|false
+	 */
+  public function sid_exists( $sid, $secure = false ) {
+		global $wpdb;
+    $column_name = 'session_id';
+    if($secure) {
+      $column_name = 'secure_session_id';
+    }
+		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
+		if ( ! $session_row ) {
+			return false;
+		}
+    return true;
+  }
 
 	/**
 	 * Delete session cookies
