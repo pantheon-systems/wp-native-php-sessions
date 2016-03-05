@@ -57,7 +57,7 @@ class Session {
 	public static function sid_exists( $sid, $secure = false ) {
 		global $wpdb;
 		$column_name = 'session_id';
-		if($secure) {
+		if( $secure ) {
 			$column_name = 'secure_session_id';
 		}
 		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
