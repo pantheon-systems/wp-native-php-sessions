@@ -29,6 +29,18 @@ class Test_Sessions extends WP_UnitTestCase {
 		return $session;
 	}
 
+	public function test_session_exists() {
+		$_SESSION['foo'] = 'bar';
+		session_commit();
+		$session_id = session_id();
+		$exists = \Pantheon_Sessions\Session::sid_exists( $session_id );
+		$this->assertTrue( $exists );
+		$session = \Pantheon_Sessions\Session::get_by_sid( $session_id );
+		$session->destroy();
+		$exists = \Pantheon_Sessions\Session::sid_exists( $session_id );
+		$this->assertFalse( $exists );
+	}
+
 	/**
 	 * @depends test_session_write_read
 	 */
