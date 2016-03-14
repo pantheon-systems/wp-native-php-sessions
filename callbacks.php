@@ -30,7 +30,9 @@ function _pantheon_session_open() {
 		if ( is_ssl() ) {
 			$insecure_session_name = substr( session_name(), 1 );
 			$insecure_session_id = md5( $hasher->get_random_bytes( 32 ) );
-			$_COOKIE[ $insecure_session_name ] = $insecure_session_id;
+			//set custom expire time during cookie session creation
+			$lifetime = (int) apply_filters( 'pantheon_session_expiration', 0 );
+			setcookie( $insecure_session_name, $insecure_session_id, $_SERVER['REQUEST_TIME'] + $lifetime);
 		}
 	}
 	return true;
