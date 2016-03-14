@@ -118,6 +118,8 @@ class Pantheon_Sessions {
 		ini_set( 'session.cache_limiter', '' );
 		// Use httponly session cookies. Limits use by JavaScripts
 		ini_set( 'session.cookie_httponly', '1' );
+		// Get cookie lifetime from filters so you can put your custom lifetime 
+		ini_set( 'session.cookie_lifetime', (int) apply_filters( 'pantheon_session_expiration', 0 ) );
 
 	}
 
