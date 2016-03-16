@@ -2,8 +2,8 @@
 **Contributors:** getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber  
 **Tags:** comments, sessions  
 **Requires at least:** 3.0.1  
-**Tested up to:** 4.3  
-**Stable tag:** 0.4  
+**Tested up to:** 4.5  
+**Stable tag:** 0.5  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -45,6 +45,10 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Changelog ##
 
+### 0.5 ###
+* Compatibility with PHP 7.
+* Adds `pantheon_session_expiration` filter to modify session expiration value.
+
 ### 0.4 ###
 * Adjustment to `session_id()` behavior for wider compatibility
 * Using superglobal for REQUEST_TIME as opposed to `time()`
@@ -54,4 +58,3 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ### 0.1 ###
 * Initial release
-

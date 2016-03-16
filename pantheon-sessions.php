@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Native PHP Sessions for WordPress
-Version: 0.4
+Version: 0.5
 Description: Offload PHP's native sessions to your database for multi-server compatibility.
 Author: Pantheon
 Author URI: https://www.pantheon.io/
@@ -43,7 +43,7 @@ class Pantheon_Sessions {
 	 */
 	private function define_constants() {
 
-		define( 'PANTHEON_SESSIONS_VERSION', '0.1-alpha' );
+		define( 'PANTHEON_SESSIONS_VERSION', '0.5' );
 
 		if ( ! defined( 'PANTHEON_SESSIONS_ENABLED' ) ) {
 			define( 'PANTHEON_SESSIONS_ENABLED', 1 );
