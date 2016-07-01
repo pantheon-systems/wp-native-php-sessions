@@ -1,3 +1,6 @@
 .DS_Store
-.svn
+Thumbs.db
+composer.lock
+wp-cli.local.yml
 node_modules/
+vendor/
