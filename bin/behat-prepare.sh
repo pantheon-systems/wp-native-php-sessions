@@ -42,6 +42,13 @@ cd $BASH_DIR/..
 rsync -av --exclude='vendor/' --exclude='node_modules/' --exclude='tests/' ./* $PREPARE_DIR/wp-content/plugins/wp-native-php-sessions
 rm -rf $PREPARE_DIR/wp-content/plugins/wp-native-php-sessions/.git
 
+
+###
+# Add the debugging plugin to the environment
+###
+rm -rf $PREPARE_DIR/wp-content/mu-plugins/sessions-debug.php
+cp $BASH_DIR/fixtures/sessions-debug.php $PREPARE_DIR/wp-content/mu-plugins/sessions-debug.php
+
 ###
 # Push files to the environment
 ###
