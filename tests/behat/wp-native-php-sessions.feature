@@ -4,8 +4,6 @@ Feature: WP Native PHP Sessions plugin
     When I go to "wp-admin/admin-ajax.php?action=wpnps_plugin_loaded"
     Then I should see "Plugin is loaded."
 
-  Scenario: Plugin creates necessary database table
-
   Scenario: Plugin handles session CRUD operation
     When I go to "wp-admin/admin-ajax.php?action=wpnps_get_session&key=foo"
     Then I should see "(foo:)"
