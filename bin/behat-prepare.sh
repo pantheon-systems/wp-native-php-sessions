@@ -59,6 +59,8 @@ git config user.name "Pantheon"
 git commit -m "Include WP Native PHP Sessions and its configuration files"
 git push
 
+sleep 10
+
 ###
 # Set up WordPress, theme, and plugins for the test run
 ###
