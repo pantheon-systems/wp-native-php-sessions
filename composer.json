@@ -1,0 +1,24 @@
+{
+    "name": "pantheon-systems/wp-native-php-sessions",
+    "description": "native PHP sessions stored in the database for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPLv2 or later",
+    "authors": [
+        {
+            "name": "Pantheon",
+            "email": "noreply@pantheon.io"
+        },
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@handbuilt.co"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "behat/mink-selenium2-driver": "~1.1",
+        "behat/mink-extension": "~2.0",
+        "symfony/dependency-injection": "2.7.11",
+        "behat/behat": "^3.1",
+        "behat/mink-goutte-driver": "^1.2"
+    }
+}

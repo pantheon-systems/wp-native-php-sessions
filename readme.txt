@@ -38,6 +38,25 @@ PHP's fallback default functionality is to allow sessions to be stored in a temp
 
 However, if you intend to scale your application, local tempfiles are a dangerous choice. They are not shared between different instances of the application, producing erratic behavior that can be impossible to debug. By storing them in the database the state of the sessions is shared across all application instances.
 
+= How can I contribute? =
+
+The best way to contribute to the development of this plugin is by participating on the GitHub project:
+
+https://github.com/pantheon-systems/wp-native-php-sessions
+
+Pull requests and issues are welcome!
+
+You may notice there are two sets of tests running, on two different services:
+
+* Travis CI runs the [PHPUnit](https://phpunit.de/) test suite.
+* Circle CI runs the [Behat](http://behat.org/) test suite against a Pantheon site, to ensure the plugin's compatibility with the Pantheon platform.
+
+Both of these test suites can be run locally, with a varying amount of setup.
+
+PHPUnit requires the [WordPress PHPUnit test suite](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/), and access to a database with name `wordpress_test`. If you haven't already configured the test suite locally, you can run `bash bin/install-wp-tests.sh wordpress_test root '' localhost`.
+
+Behat requires a Pantheon site. Once you've created the site, you'll need install Terminus, and set the `TERMINUS_TOKEN`, `TERMINUS_SITE`, and `TERMINUS_ENV` environment variables. Then, you can run `./bin/behat-prepare.sh` to prepare the site for the test suite.
+
 == Troubleshooting ==
 
 If you see an error like "Fatal error: session_start(): Failed to initialize storage module: user (path: ) in .../code/wp-content/plugins/plugin-that-uses-sessions/example.php on line 2" you likely have a plugin in the mu-plugins directory that is instantiating a session prior to this plugin loading. To fix, you will need to deactivate this plugin and instead load it via an mu-plugin that loads first, e.g. create an mu-plugin called 00.php and add a line in it to include the wp-native-php-sessions/pantheon-sessions.php file and the problem should disappear.
