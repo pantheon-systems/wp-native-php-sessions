@@ -26,19 +26,7 @@ https://github.com/pantheon-systems/wp-native-php-sessions
 
 That's it!
 
-== Frequently Asked Questions ==
-
-= Why not use another session plugin? =
-
-This implements the built-in PHP session handling functions, rather than introducing anything custom. That way you can use built-in language functions like the `$_SESSION` superglobal and `session_start()` in your code. Everything else will "just work".
-
-= Why store them in the database? =
-
-PHP's fallback default functionality is to allow sessions to be stored in a temporary file. This is what most code that invokes sessions uses by default, and in simple use-cases it works, which is why so many plugins do it.
-
-However, if you intend to scale your application, local tempfiles are a dangerous choice. They are not shared between different instances of the application, producing erratic behavior that can be impossible to debug. By storing them in the database the state of the sessions is shared across all application instances.
-
-= How can I contribute? =
+== Contributing ==
 
 The best way to contribute to the development of this plugin is by participating on the GitHub project:
 
@@ -56,6 +44,18 @@ Both of these test suites can be run locally, with a varying amount of setup.
 PHPUnit requires the [WordPress PHPUnit test suite](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/), and access to a database with name `wordpress_test`. If you haven't already configured the test suite locally, you can run `bash bin/install-wp-tests.sh wordpress_test root '' localhost`.
 
 Behat requires a Pantheon site. Once you've created the site, you'll need install Terminus, and set the `TERMINUS_TOKEN`, `TERMINUS_SITE`, and `TERMINUS_ENV` environment variables. Then, you can run `./bin/behat-prepare.sh` to prepare the site for the test suite.
+
+== Frequently Asked Questions ==
+
+= Why not use another session plugin? =
+
+This implements the built-in PHP session handling functions, rather than introducing anything custom. That way you can use built-in language functions like the `$_SESSION` superglobal and `session_start()` in your code. Everything else will "just work".
+
+= Why store them in the database? =
+
+PHP's fallback default functionality is to allow sessions to be stored in a temporary file. This is what most code that invokes sessions uses by default, and in simple use-cases it works, which is why so many plugins do it.
+
+However, if you intend to scale your application, local tempfiles are a dangerous choice. They are not shared between different instances of the application, producing erratic behavior that can be impossible to debug. By storing them in the database the state of the sessions is shared across all application instances.
 
 == Troubleshooting ==
 
