@@ -67,3 +67,18 @@ sleep 10
 ###
 terminus wp "core install --title=$TERMINUS_ENV-$TERMINUS_SITE --url=$PANTHEON_SITE_URL --admin_user=pantheon --admin_email=wp-redis@getpantheon.com --admin_password=pantheon"
 terminus wp "plugin activate wp-native-php-sessions"
+
+###
+# Download the Pantheon WordPress Upstream tests
+###
+cd $BASH_DIR/..
+rm -rf pantheon-wordpress-upstream-master tests/pantheon-wordpress-upstream
+wget https://github.com/pantheon-systems/pantheon-wordpress-upstream/archive/master.zip
+unzip master.zip
+mv pantheon-wordpress-upstream-master/features tests/pantheon-wordpress-upstream
+# Skip the installation scenario, because WordPress is already installed
+rm tests/pantheon-wordpress-upstream/0-install.feature
+# Skip the plugin scenario, because it doesn't expect another plugin to be installed
+rm tests/pantheon-wordpress-upstream/plugins.feature
+rm -rf pantheon-wordpress-upstream-master
+rm master.zip
