@@ -15,10 +15,17 @@
     ],
     "minimum-stability": "dev",
     "require-dev": {
+        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
         "behat/mink-selenium2-driver": "~1.1",
         "behat/mink-extension": "~2.0",
         "symfony/dependency-injection": "2.7.11",
         "behat/behat": "^3.1",
         "behat/mink-goutte-driver": "^1.2"
     }
+   "repositories": {
+    "pantheon-wordpress-upstream-tests": {
+      "type": "vcs",
+      "url": "git@github.com:pantheon-systems/pantheon-wordpress-upstream-tests.git"
+    }
+  }
 }
