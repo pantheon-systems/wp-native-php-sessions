@@ -22,10 +22,10 @@
         "behat/behat": "^3.1",
         "behat/mink-goutte-driver": "^1.2"
     },
-   "repositories": {
-    "pantheon-wordpress-upstream-tests": {
-      "type": "vcs",
-      "url": "git@github.com:pantheon-systems/pantheon-wordpress-upstream-tests.git"
+    "repositories": {
+        "pantheon-wordpress-upstream-tests": {
+            "type": "vcs",
+            "url": "git@github.com:pantheon-systems/pantheon-wordpress-upstream-tests.git"
+        }
     }
-  }
 }
