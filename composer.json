@@ -15,7 +15,7 @@
     ],
     "minimum-stability": "dev",
     "require-dev": {
-        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
+        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master#e646d0a2b324d83c8d344fa6c8800aa6b526b756",
         "behat/mink-selenium2-driver": "~1.1",
         "behat/mink-extension": "~2.0",
         "symfony/dependency-injection": "2.7.11",
