@@ -2,10 +2,14 @@
 default:
   suites:
     default:
+      paths:
+        - tests/behat
+      contexts:
+        - Behat\MinkExtension\Context\MinkContext
+    core:
       filters:
         tags: "~@upstreamonly"
       paths:
-        - tests/behat
         - vendor/pantheon-systems/pantheon-wordpress-upstream-tests/features
       contexts:
         - Behat\MinkExtension\Context\MinkContext
