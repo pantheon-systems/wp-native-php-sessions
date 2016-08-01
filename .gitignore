@@ -1,9 +1,6 @@
-*.zip
 .DS_Store
 Thumbs.db
 composer.lock
 wp-cli.local.yml
 node_modules/
 vendor/
-pantheon-wordpress-upstream-master
-tests/pantheon-wordpress-upstream
