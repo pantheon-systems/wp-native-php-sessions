@@ -15,7 +15,7 @@
     ],
     "minimum-stability": "dev",
     "require-dev": {
-        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-login-step#80ac04b936df4e43a6872142aac14ddeb81bfa3a"
+        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-login-step"
     },
     "repositories": {
         "pantheon-wordpress-upstream-tests": {
