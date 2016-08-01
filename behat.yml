@@ -2,6 +2,8 @@
 default:
   suites:
     default:
+      filters:
+        tags: "~@upstreamonly"
       paths:
         - tests/behat
         - vendor/pantheon-systems/pantheon-wordpress-upstream-tests/features
