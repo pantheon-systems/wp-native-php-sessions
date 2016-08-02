@@ -10,10 +10,9 @@ machine:
     # Somehow in the first repo to use a global variable for the admin password
     # it was possible to set a random password at this stage of CircleCI and
     # the same random password would persist for all usages.
-    #     https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests/blob/1da29d6f0ac1fa469c1567ed8a5a7e0949d359c7/circle.yml#L8
-    # However in this repo, that is not working.
-    # Either the openssl command is not executed and the value is taken as a
-    # string
+    # https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests/blob/1da29d6f0ac1fa469c1567ed8a5a7e0949d359c7/circle.yml#L8
+    # However in this repo, that is not working. Either the openssl command is
+    # not executed and the value is taken as a string
     # https://github.com/pantheon-systems/wp-native-php-sessions/commit/9911b256d634483f81dea08a3f85a8351825b3bc
     # Or the command is reexecuted on each usage.
     # https://github.com/pantheon-systems/wp-native-php-sessions/commit/2630b26aed79d98271857d4c61f62194407b6184
