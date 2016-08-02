@@ -24,11 +24,7 @@ Feature: WP Native PHP Sessions plugin
     Then I should see "(foo:)"
 
   Scenario: Plugin handles session CRUD operation (logged in)
-    Given I am on "wp-login.php"
-    Then print current URL
-    And I fill in "log" with "pantheon"
-    And I fill in "user_pass" with "pantheon"
-    And I press "wp-submit"
+    Given I log in as an admin
 
     When I go to "/?action=wpnps_get_session&key=foo"
     Then I should see "(foo:)"

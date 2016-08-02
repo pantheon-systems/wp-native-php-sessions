@@ -5,14 +5,7 @@ Feature: Load WordPress
     Then I should see "Hello World"
 
   Scenario: Verify that a user can publish a blog post
-    Given I am on "wp-login.php"
-    Then print current URL
-
-    When I fill in "log" with "pantheon"
-    And I fill in "pwd" with "pantheon"
-    And I press "wp-submit"
-    Then print current URL
-    And I should be on "/wp-admin/"
+    Given I log in as an admin
 
     When I go to "/wp-admin/post-new.php"
     And I fill in "post_title" with "Awesome Post"
@@ -27,11 +20,7 @@ Feature: Load WordPress
     When I go to "wp-login.php"
     Then print current URL
 
-    When I fill in "log" with "pantheon"
-    And I fill in "pwd" with "pantheon"
-    And I press "wp-submit"
-    Then print current URL
-    And I should be on "/wp-admin/"
+    Given I log in as an admin
 
     When I go to "/wp-admin/options-general.php"
     And I fill in "blogname" with "Pantheon WordPress Site"
