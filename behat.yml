@@ -6,6 +6,7 @@ default:
         - tests/behat
       contexts:
         - Behat\MinkExtension\Context\MinkContext
+        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\AdminLogIn
     core:
       filters:
         tags: "~@upstreamonly"
