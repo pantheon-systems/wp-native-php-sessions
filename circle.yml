@@ -6,8 +6,8 @@ machine:
     # DB config. Using default CircleCI's database.
     TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_SITE: wp-native-php-sessions
-    WORDPRESS_ADMIN_PASSWORD: pantheon
     WORDPRESS_ADMIN_USERNAME: pantheon
+    WORDPRESS_ADMIN_PASSWORD: openssl rand -hex 8
 
 dependencies:
   cache_directories:
