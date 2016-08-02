@@ -16,11 +16,5 @@
     "minimum-stability": "dev",
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master"
-    },
-    "repositories": {
-        "pantheon-wordpress-upstream-tests": {
-            "type": "vcs",
-            "url": "git@github.com:pantheon-systems/pantheon-wordpress-upstream-tests.git"
-        }
     }
 }
