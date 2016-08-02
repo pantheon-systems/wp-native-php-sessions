@@ -7,12 +7,13 @@ machine:
     TERMINUS_ENV: ci-88
     TERMINUS_SITE: wp-native-php-sessions
     WORDPRESS_ADMIN_USERNAME: pantheon
-    WORDPRESS_ADMIN_PASSWORD: $(openssl rand -hex 8)
+    WORDPRESS_ADMIN_PASSWORD: $(cat ~/WORDPRESS_ADMIN_PASSWORD)
 
 dependencies:
   cache_directories:
     - ~/.composer/cache
   pre:
+    - echo $(openssl rand -hex 8) > ~/WORDPRESS_ADMIN_PASSWORD
     # Set the PHP timezone so that Behat script does not fail.
     # Using > instead of >> will overwrite the file and disable xdebug.
     # xdebug makes composer slower.
