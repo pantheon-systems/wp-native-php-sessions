@@ -4,9 +4,21 @@ machine:
     version: 5.6.22
   environment:
     # DB config. Using default CircleCI's database.
-    TERMINUS_ENV: ci-88
+    TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_SITE: wp-native-php-sessions
     WORDPRESS_ADMIN_USERNAME: pantheon
+    # Somehow in the first repo to use a global variable for the admin password
+    # it was possible to set a random password at this stage of CircleCI and
+    # the same random password would persist for all usages.
+    #     https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests/blob/1da29d6f0ac1fa469c1567ed8a5a7e0949d359c7/circle.yml#L8
+    # However in this repo, that is not working.
+    # Either the openssl command is not executed and the value is taken as a
+    # string
+    # https://github.com/pantheon-systems/wp-native-php-sessions/commit/9911b256d634483f81dea08a3f85a8351825b3bc
+    # Or the command is reexecuted on each usage.
+    # https://github.com/pantheon-systems/wp-native-php-sessions/commit/2630b26aed79d98271857d4c61f62194407b6184
+    # So this workaround is to save the password to a file in dependencies:pre
+    # and then read that file over and over.
     WORDPRESS_ADMIN_PASSWORD: $(cat ~/WORDPRESS_ADMIN_PASSWORD)
 
 dependencies:
@@ -18,9 +30,6 @@ dependencies:
     # Using > instead of >> will overwrite the file and disable xdebug.
     # xdebug makes composer slower.
     - echo "date.timezone = 'US/Central'"  >  /opt/circleci/php/5.6.22/etc/conf.d/xdebug.ini
-    - echo $WORDPRESS_ADMIN_PASSWORD
-    - echo $WORDPRESS_ADMIN_PASSWORD
-    - echo $WORDPRESS_ADMIN_PASSWORD
   override:
     - |
       if [ -z "$TERMINUS_TOKEN" ]; then
@@ -37,4 +46,4 @@ test:
   override:
     - ./bin/behat-test.sh
   post:
-    #- ./bin/behat-cleanup.sh
+    - ./bin/behat-cleanup.sh
