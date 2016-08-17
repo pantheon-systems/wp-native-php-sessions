@@ -1,0 +1,20 @@
+{
+    "name": "pantheon-systems/wp-native-php-sessions",
+    "description": "native PHP sessions stored in the database for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPLv2 or later",
+    "authors": [
+        {
+            "name": "Pantheon",
+            "email": "noreply@pantheon.io"
+        },
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@handbuilt.co"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master"
+    }
+}
