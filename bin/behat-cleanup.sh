@@ -4,17 +4,23 @@
 # Delete the Pantheon site environment after the Behat test suite has run.
 ###
 
-if [ -z "$TERMINUS_TOKEN" ]; then
-	echo "TERMINUS_TOKEN environment variables missing; assuming unauthenticated build"
+terminus auth whoami > /dev/null
+if [ $? -ne 0 ]; then
+	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi
-
-set -ex
 
 if [ -z "$TERMINUS_SITE" ] || [ -z "$TERMINUS_ENV" ]; then
 	echo "TERMINUS_SITE and TERMINUS_ENV environment variables must be set"
 	exit 1
 fi
+
+if [ -z "$WORDPRESS_ADMIN_USERNAME" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ]; then
+	echo "WORDPRESS_ADMIN_USERNAME and WORDPRESS_ADMIN_PASSWORD environment variables must be set"
+	exit 1
+fi
+
+set -ex
 
 ###
 # Delete the environment used for this test run.
