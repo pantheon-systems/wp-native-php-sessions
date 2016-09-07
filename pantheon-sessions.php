@@ -5,7 +5,7 @@ Version: 0.5
 Description: Offload PHP's native sessions to your database for multi-server compatibility.
 Author: Pantheon
 Author URI: https://www.pantheon.io/
-Plugin URI: https://www.pantheon.io/
+Plugin URI: https://wordpress.org/plugins/wp-native-php-sessions/
 Text Domain: pantheon-sessions
 Domain Path: /languages
 */
