@@ -7,7 +7,6 @@ default:
       contexts:
         - Behat\MinkExtension\Context\MinkContext
         - PantheonSystems\PantheonWordPressUpstreamTests\Behat\AdminLogIn
-        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\ResponseHeader
     core:
       filters:
         tags: "~@upstreamonly"
