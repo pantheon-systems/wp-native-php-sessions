@@ -87,7 +87,7 @@ class Session {
 		}
 
 		$wpdb->update( $wpdb->pantheon_sessions, array(
-			'user_id'         => (bool)get_current_user_id(),
+			'user_id'         => (int) get_current_user_id(),
 			'datetime'        => date( 'Y-m-d H:i:s' ),
 			'ip_address'      => preg_replace( '/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR'] ),
 			'data'            => maybe_serialize( $data ),
