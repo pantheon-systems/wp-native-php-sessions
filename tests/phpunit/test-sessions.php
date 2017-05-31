@@ -55,6 +55,7 @@ class Test_Sessions extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
+		ob_get_clean();
 		parent::tearDown();
 	}
 
