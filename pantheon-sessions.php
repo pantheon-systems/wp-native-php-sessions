@@ -10,6 +10,8 @@ Text Domain: pantheon-sessions
 Domain Path: /languages
 */
 
+use Pantheon_Sessions\Session;
+
 class Pantheon_Sessions {
 
 	private static $instance;
@@ -35,6 +37,8 @@ class Pantheon_Sessions {
 			$this->setup_database();
 			$this->set_ini_values();
 			$this->initialize_session_override();
+			add_action( 'set_logged_in_cookie', array( __CLASS__, 'action_set_logged_in_cookie' ), 10, 4 );
+			add_action( 'clear_auth_cookie', array( __CLASS__, 'action_clear_auth_cookie' ) );
 		}
 	}
 
@@ -164,6 +168,19 @@ class Pantheon_Sessions {
 
 	}
 
+	public static function action_set_logged_in_cookie( $logged_in_cookie, $expire, $expiration, $user_id ) {
+		$session_id = session_id();
+		if ( $session_id && $session = Session::get_by_sid( $session_id ) ) {
+			$session->set_user_id( $user_id );
+		}
+	}
+
+	public static function action_clear_auth_cookie() {
+		$session_id = session_id();
+		if ( $session_id && $session = Session::get_by_sid( $session_id ) ) {
+			$session->set_user_id( 0 );
+		}
+	}
 
 	/**
 	 * Force the plugin to be the first loaded
