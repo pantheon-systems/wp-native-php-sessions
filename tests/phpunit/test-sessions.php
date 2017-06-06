@@ -1,5 +1,7 @@
 <?php
 
+use \Pantheon_Sessions\Session;
+
 class Test_Sessions extends WP_UnitTestCase {
 
 	protected $mock_session_id = 'SESSabc123';
@@ -37,6 +39,21 @@ class Test_Sessions extends WP_UnitTestCase {
 		$session = \Pantheon_Sessions\Session::get_by_sid( session_id() );
 		$this->assertFalse( $session );
 		$this->assertEmpty( $_SESSION );
+	}
+
+	public function test_session_sync_user_id_login_logout() {
+		$_SESSION['foo'] = 'bar';
+		session_commit();
+		$session = Session::get_by_sid( session_id() );
+		$this->assertEquals( 0, $session->get_user_id() );
+		// Mock the user logging in.
+		do_action( 'set_logged_in_cookie', null, null, null, 1 );
+		$session = Session::get_by_sid( session_id() );
+		$this->assertEquals( 1, $session->get_user_id() );
+		// Mock the user logging out.
+		do_action( 'clear_auth_cookie' );
+		$session = Session::get_by_sid( session_id() );
+		$this->assertEquals( 0, $session->get_user_id() );
 	}
 
 	public function test_session_garbage_collection() {

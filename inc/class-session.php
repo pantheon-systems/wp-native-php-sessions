@@ -9,6 +9,7 @@ class Session {
 
 	private $sid;
 	private $data;
+	private $user_id;
 
 	/**
 	 * Get a session based on its ID.
@@ -25,7 +26,7 @@ class Session {
 			return false;
 		}
 
-		return new Session( $session_row->$column_name, $session_row->data );
+		return new Session( $session_row->$column_name, $session_row->data, $session_row->user_id );
 	}
 
 	/**
@@ -39,6 +40,7 @@ class Session {
 
 		$insert_data = array(
 			'session_id'          => $sid,
+			'user_id'             => (int) get_current_user_id(),
 			);
 		if ( is_ssl() ) {
 			$insert_data['secure_session_id'] = $sid;
@@ -47,9 +49,10 @@ class Session {
 		return self::get_by_sid( $sid );
 	}
 
-	private function __construct( $sid, $data ) {
+	private function __construct( $sid, $data, $user_id ) {
 		$this->sid = $sid;
 		$this->data = $data;
+		$this->user_id = $user_id;
 	}
 
 	/**
@@ -68,6 +71,28 @@ class Session {
 	 */
 	public function get_data() {
 		return maybe_unserialize( $this->data );
+	}
+
+	/**
+	 * Get this session's user id.
+	 *
+	 * @return integer
+	 */
+	public function get_user_id() {
+		return (int) $this->user_id;
+	}
+
+	/**
+	 * Set the user id for this session.
+	 *
+	 * @param integer $user_id
+	 */
+	public function set_user_id( $user_id ) {
+		global $wpdb;
+		$this->user_id = (int) $user_id;
+		$wpdb->update( $wpdb->pantheon_sessions, array(
+			'user_id'         => $this->user_id,
+		), array( self::get_session_id_column() => $this->get_id() ) );
 	}
 
 	/**
