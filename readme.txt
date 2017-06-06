@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber
 Tags: comments, sessions
 Requires at least: 3.0.1
 Tested up to: 4.8
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,7 +66,10 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 == Changelog ==
 
-= 0.6.1. (May 25th, 2017) =
+= 0.6.2 (June 6th, 2017) =
+* Syncs session user id when a user logs in and logs out.
+
+= 0.6.1 (May 25th, 2017) =
 * Bug fix: Prevents warning session_write_close() expects exactly 0 parameters, 1 given.
 
 = 0.6.0 (November 23rd, 2016) =
