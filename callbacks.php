@@ -87,7 +87,7 @@ function _pantheon_session_read( $sid ) {
  *
  * @param $sid The session ID of the session to write to.
  * @param $value Session data to write as a serialized string.
- * @return true
+ * @return boolean
  */
 function _pantheon_session_write( $sid, $value ) {
 
@@ -95,6 +95,10 @@ function _pantheon_session_write( $sid, $value ) {
 
 	if ( ! $session ) {
 		$session = \Pantheon_Sessions\Session::create_for_sid( $sid );
+	}
+
+	if ( ! $session ) {
+		return false;
 	}
 
 	$session->set_data( $value );
