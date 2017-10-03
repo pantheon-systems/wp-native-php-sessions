@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 3.0.1  
 **Tested up to:** 4.8  
-**Stable tag:** 0.6.2  
+**Stable tag:** 0.6.3  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -65,6 +65,9 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 
 ## Changelog ##
+
+### 0.6.3 (September 29th, 2017) ###
+* Returns false when we entirely fail to generate a session.
 
 ### 0.6.2 (June 6th, 2017) ###
 * Syncs session user id when a user logs in and logs out.
