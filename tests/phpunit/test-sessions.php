@@ -4,9 +4,17 @@ use \Pantheon_Sessions\Session;
 
 class Test_Sessions extends WP_UnitTestCase {
 
+	protected $table_name;
+	protected $suppress_errors;
 	protected $mock_session_id = 'SESSabc123';
 
 	public function setUp() {
+		global $wpdb;
+		if ( ! isset( $this->table_name ) ) {
+			$this->table_name = $wpdb->pantheon_sessions;
+		}
+		$wpdb->pantheon_sessions = $this->table_name;
+		$this->suppress_errors = $wpdb->suppress_errors();
 		parent::setUp();
 		ob_start();
 		@session_start();
@@ -29,6 +37,20 @@ class Test_Sessions extends WP_UnitTestCase {
 		$data = $session->get_data();
 		$this->assertEquals( 'foo|s:3:"bar";', $session->get_data() );
 		return $session;
+	}
+
+	/**
+	 * @expectedException PHPUnit_Framework_Error_Warning
+	 */
+	public function test_session_write_error() {
+		global $wpdb;
+		// Set an invalid table to fail queries
+		$backup_table = $wpdb->pantheon_sessions;
+		$wpdb->pantheon_sessions = 'foobar1235';
+		$wpdb->suppress_errors( true );
+		$_SESSION['foo'] = 'bar';
+		session_commit();
+		// Error is triggered.
 	}
 
 	/**
@@ -72,7 +94,11 @@ class Test_Sessions extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
+		global $wpdb;
 		ob_get_clean();
+		$wpdb->pantheon_sessions = $this->table_name;
+		$wpdb->suppress_errors( $this->suppress_errors );
+		$results = $wpdb->query( "DELETE FROM {$wpdb->pantheon_sessions}" );
 		parent::tearDown();
 	}
 
