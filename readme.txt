@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber
 Tags: comments, sessions
 Requires at least: 3.0.1
 Tested up to: 4.8
-Stable tag: 0.6.3
+Stable tag: 0.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 
 == Changelog ==
+
+= 0.6.4 (October 10th, 2017) =
+* Triggers PHP error when plugin fails to write session to database.
 
 = 0.6.3 (September 29th, 2017) =
 * Returns false when we entirely fail to generate a session.
