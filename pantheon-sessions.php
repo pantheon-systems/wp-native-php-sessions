@@ -12,6 +12,10 @@
 
 use Pantheon_Sessions\Session;
 
+// Check for existence of main class in case it's already included in another plugin.
+
+if ( ! class_exists( 'Pantheon_Sessions' ) ) :
+
 class Pantheon_Sessions {
 
 	private static $instance;
@@ -213,3 +217,5 @@ function Pantheon_Sessions() {
 add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load');
 
 Pantheon_Sessions();
+
+endif; // End if class_exists check
