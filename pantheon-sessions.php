@@ -70,7 +70,9 @@ class Pantheon_Sessions {
 
 		require_once dirname( __FILE__ ) . '/callbacks.php';
 
-		if ( is_admin() ) {
+		// Check for existence of admin class file in case it's not included.
+
+		if ( is_admin() && file_exists( dirname( __FILE__ ) . '/inc/class-admin.php' ) ) {
 			require_once dirname( __FILE__ ) . '/inc/class-admin.php';
 			$this->admin = Pantheon_Sessions\Admin::get_instance();
 		}
