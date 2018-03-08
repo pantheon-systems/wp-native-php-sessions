@@ -66,6 +66,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 == Changelog ==
 
+= 0.6.6 (March 8th, 2018) =
+* Restores session instantiation when WP-CLI is executing, because not doing so causes other problems.
+
 = 0.6.5 (February 6th, 2018) =
 * Disables session instantiation when `defined( 'WP_CLI' ) && WP_CLI` because sessions don't work on CLI.
 

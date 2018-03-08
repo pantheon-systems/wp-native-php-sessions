@@ -66,6 +66,9 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Changelog ##
 
+### 0.6.6 (March 8th, 2018) ###
+* Restores session instantiation when WP-CLI is executing, because not doing so causes other problems.
+
 ### 0.6.5 (February 6th, 2018) ###
 * Disables session instantiation when `defined( 'WP_CLI' ) && WP_CLI` because sessions don't work on CLI.
 
