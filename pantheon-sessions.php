@@ -37,10 +37,6 @@ class Pantheon_Sessions {
 
 		if ( PANTHEON_SESSIONS_ENABLED ) {
 
-			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-				return;
-			}
-
 			$this->setup_database();
 			$this->set_ini_values();
 			$this->initialize_session_override();
