@@ -78,6 +78,22 @@ class Test_Sessions extends WP_UnitTestCase {
 		$this->assertEquals( 0, $session->get_user_id() );
 	}
 
+	public function test_session_write_serialized_data() {
+		$_SESSION['login_status'] = 'logged_out';
+		$_SESSION['login_data'] = serialize( array(
+			'count' => 1,
+			'foo'   => 'bar',
+		) );
+		session_commit();
+		$session = Session::get_by_sid( session_id() );
+		$this->assertEquals( 'login_status|s:10:"logged_out";login_data|s:42:"a:2:{s:5:"count";i:1;s:3:"foo";s:3:"bar";}";', $session->get_data() );
+		$this->assertEquals( 'logged_out', $_SESSION['login_status'] );
+		$this->assertEquals( array(
+			'count' => 1,
+			'foo'   => 'bar',
+		), $_SESSION['login_data'] ) ;
+	}
+
 	public function test_session_garbage_collection() {
 		global $wpdb;
 		$_SESSION['foo'] = 'bar';
