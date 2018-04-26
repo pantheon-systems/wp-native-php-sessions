@@ -66,6 +66,9 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Changelog ##
 
+### 0.6.7 (April 26th, 2018) ###
+* Disables plugin load when `WP_INSTALLING`, because session table creation breaks installation process.
+
 ### 0.6.6 (March 8th, 2018) ###
 * Restores session instantiation when WP-CLI is executing, because not doing so causes other problems.
 
