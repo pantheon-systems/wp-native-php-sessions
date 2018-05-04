@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 3.0.1  
 **Tested up to:** 4.9  
-**Stable tag:** 0.6.5  
+**Stable tag:** 0.6.8  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -65,6 +65,9 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 
 ## Changelog ##
+
+### 0.6.8 (May 4th, 2018) ###
+* Switches to `E_USER_WARNING` instead of `E_WARNING` when triggering errors.
 
 ### 0.6.7 (April 26th, 2018) ###
 * Disables plugin load when `WP_INSTALLING`, because session table creation breaks installation process.
