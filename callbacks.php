@@ -123,6 +123,7 @@ function _pantheon_session_destroy( $sid ) {
 
 	$session->destroy();
 
+	return true;
 }
 
 /**
