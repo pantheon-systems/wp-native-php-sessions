@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber
 Tags: comments, sessions
 Requires at least: 3.0.1
 Tested up to: 4.9
-Stable tag: 0.6.8
+Stable tag: 0.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 
 == Changelog ==
+
+= 0.6.9 (May 15th, 2018) =
+* Ensures `_pantheon_session_destroy()` uses a return value.
 
 = 0.6.8 (May 4th, 2018) =
 * Switches to `E_USER_WARNING` instead of `E_WARNING` when triggering errors.
