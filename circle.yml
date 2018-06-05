@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     parallelism: 1
     docker:
-    - image: circleci/php:7.1
+    - image: circleci/php:5.6
     steps:
     - checkout
     - run: echo $(openssl rand -hex 8) > /tmp/WORDPRESS_ADMIN_PASSWORD
