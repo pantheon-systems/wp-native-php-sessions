@@ -81,6 +81,9 @@ class Test_Sessions extends WP_UnitTestCase {
 
 	public function test_session_garbage_collection() {
 		global $wpdb;
+		if ( version_compare( PHP_VERSION, '7.2', '>=' ) ) {
+			$this->markTestSkipped( 'ini_set() fails and causes warning in PHP 7.2+' );
+		}
 		$_SESSION['foo'] = 'bar';
 		session_commit();
 		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
