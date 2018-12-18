@@ -15,6 +15,9 @@ class Test_Sessions extends WP_UnitTestCase {
 		}
 		$wpdb->pantheon_sessions = $this->table_name;
 		$this->suppress_errors = $wpdb->suppress_errors();
+		if ( ! Session::get_by_sid( session_id() ) ) {
+			Session::create_for_sid( session_id() );
+		}
 		parent::setUp();
 	}
 
