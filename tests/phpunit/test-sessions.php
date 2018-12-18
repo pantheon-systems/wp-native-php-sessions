@@ -17,7 +17,6 @@ class Test_Sessions extends WP_UnitTestCase {
 		$this->suppress_errors = $wpdb->suppress_errors();
 		parent::setUp();
 		ob_start();
-		@session_start();
 	}
 
 	public function test_session_id() {

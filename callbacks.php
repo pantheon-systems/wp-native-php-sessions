@@ -12,6 +12,11 @@
  * @return true
  */
 function _pantheon_session_open() {
+	// Session is opened before WP is loaded in unit tests.
+	if ( defined( 'WPNPS_RUNNING_TESTS' ) && WPNPS_RUNNING_TESTS ) {
+		session_id( md5( mt_rand() ) );
+		return true;
+	}
 	// We use !empty() in the following check to ensure that blank session IDs are not valid.
 	if ( ! empty( $_COOKIE[ session_name() ] ) || ( is_ssl() && ! empty( $_COOKIE[ substr(session_name(), 1) ] ) ) ) {
 		// If a session cookie exists, initialize the session. Otherwise the
