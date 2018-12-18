@@ -16,7 +16,6 @@ class Test_Sessions extends WP_UnitTestCase {
 		$wpdb->pantheon_sessions = $this->table_name;
 		$this->suppress_errors = $wpdb->suppress_errors();
 		parent::setUp();
-		ob_start();
 	}
 
 	public function test_session_id() {
@@ -94,7 +93,6 @@ class Test_Sessions extends WP_UnitTestCase {
 
 	public function tearDown() {
 		global $wpdb;
-		ob_get_clean();
 		$wpdb->pantheon_sessions = $this->table_name;
 		$wpdb->suppress_errors( $this->suppress_errors );
 		$results = $wpdb->query( "DELETE FROM {$wpdb->pantheon_sessions}" );
