@@ -42,7 +42,7 @@ class Session {
 			'session_id'          => $sid,
 			'user_id'             => (int) get_current_user_id(),
 			);
-		if ( is_ssl() ) {
+		if ( function_exists( 'is_ssl' ) && is_ssl() ) {
 			$insert_data['secure_session_id'] = $sid;
 		}
 		$wpdb->insert( $wpdb->pantheon_sessions, $insert_data );
