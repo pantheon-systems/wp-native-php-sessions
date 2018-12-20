@@ -11,6 +11,7 @@ ini_set( 'session.cache_limiter', '' );
 ini_set( 'session.cookie_httponly', '1' );
 ini_set( 'session.cookie_lifetime', 0 );
 require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/callbacks.php';
+require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/inc/class-session.php';
 session_set_save_handler( '_pantheon_session_open', '_pantheon_session_close', '_pantheon_session_read', '_pantheon_session_write', '_pantheon_session_destroy', '_pantheon_session_garbage_collection' );
 session_start();
 
