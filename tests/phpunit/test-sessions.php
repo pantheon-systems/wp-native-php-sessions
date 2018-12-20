@@ -95,6 +95,10 @@ class Test_Sessions extends WP_UnitTestCase {
 		ini_set( 'session.gc_maxlifetime', $current_val );
 	}
 
+	public function test_restore_wpdb_when_missing() {
+		$this->assertInstanceOf( 'wpdb', Session::restore_wpdb_if_null( null ) );
+	}
+
 	public function tearDown() {
 		global $wpdb;
 		$wpdb->pantheon_sessions = $this->table_name;

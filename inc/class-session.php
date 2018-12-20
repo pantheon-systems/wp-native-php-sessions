@@ -20,6 +20,8 @@ class Session {
 	public static function get_by_sid( $sid ) {
 		global $wpdb;
 
+		$wpdb = self::restore_wpdb_if_null( $wpdb );
+
 		$column_name = self::get_session_id_column();
 		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
 		if ( ! $session_row ) {
@@ -37,6 +39,8 @@ class Session {
 	 */
 	public static function create_for_sid( $sid ) {
 		global $wpdb;
+
+		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$insert_data = array(
 			'session_id'          => $sid,
@@ -89,6 +93,9 @@ class Session {
 	 */
 	public function set_user_id( $user_id ) {
 		global $wpdb;
+
+		$wpdb = self::restore_wpdb_if_null( $wpdb );
+
 		$this->user_id = (int) $user_id;
 		$wpdb->update( $wpdb->pantheon_sessions, array(
 			'user_id'         => $this->user_id,
@@ -111,6 +118,8 @@ class Session {
 			$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		}
 
+		$wpdb = self::restore_wpdb_if_null( $wpdb );
+
 		$wpdb->update( $wpdb->pantheon_sessions, array(
 			'user_id'         => (int) get_current_user_id(),
 			'datetime'        => date( 'Y-m-d H:i:s' ),
@@ -127,6 +136,8 @@ class Session {
 	public function destroy() {
 		global $wpdb;
 
+		$wpdb = self::restore_wpdb_if_null( $wpdb );
+
 		$wpdb->delete( $wpdb->pantheon_sessions, array( self::get_session_id_column() => $this->get_id() ) );
 
 		// Reset $_SESSION to prevent a new session from being started
@@ -134,6 +145,24 @@ class Session {
 
 		$this->delete_cookies();
 
+	}
+
+	/**
+	 * Restores $wpdb database connection if missing.
+	 *
+	 * @param mixed $wpdb Existing global.
+	 * @return object
+	 */
+	public static function restore_wpdb_if_null( $wpdb ) {
+		if ( $wpdb instanceof \wpdb ) {
+			return $wpdb;
+		}
+		$dbuser     = defined( 'DB_USER' ) ? DB_USER : '';
+		$dbpassword = defined( 'DB_PASSWORD' ) ? DB_PASSWORD : '';
+		$dbname     = defined( 'DB_NAME' ) ? DB_NAME : '';
+		$dbhost     = defined( 'DB_HOST' ) ? DB_HOST : '';
+
+		return new \wpdb( $dbuser, $dbpassword, $dbname, $dbhost );
 	}
 
 	/**
