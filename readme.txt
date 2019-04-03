@@ -2,8 +2,8 @@
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 5.0
-Stable tag: 0.6.9
+Tested up to: 5.2
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 
 == Changelog ==
+
+= 0.7.0 (April 3rd, 2019) =
+* Adds a safety check that restores `$wpdb` when it's missing.
 
 = 0.6.9 (May 15th, 2018) =
 * Ensures `_pantheon_session_destroy()` uses a return value.
