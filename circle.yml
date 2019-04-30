@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     parallelism: 1
     docker:
-    - image: circleci/php:5.6
+    - image: circleci/php:7.2-node-browsers
     steps:
     - checkout
     - run: echo -e "[Date]\ndate.timezone = UTC" | sudo tee /usr/local/etc/php/php.ini > /dev/null
