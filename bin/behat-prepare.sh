@@ -53,6 +53,11 @@ cd $BASH_DIR/..
 rsync -av --exclude='vendor/' --exclude='node_modules/' --exclude='tests/' ./* $PREPARE_DIR/wp-content/plugins/wp-native-php-sessions
 rm -rf $PREPARE_DIR/wp-content/plugins/wp-native-php-sessions/.git
 
+# Download the latest Classic Editor release from WordPress.org
+wget -O $PREPARE_DIR/classic-editor.zip https://downloads.wordpress.org/plugin/classic-editor.zip
+unzip $PREPARE_DIR/classic-editor.zip -d $PREPARE_DIR
+mv $PREPARE_DIR/classic-editor $PREPARE_DIR/wp-content/plugins/
+rm $PREPARE_DIR/classic-editor.zip
 
 ###
 # Add the debugging plugin to the environment
