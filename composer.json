@@ -15,6 +15,15 @@
     ],
     "minimum-stability": "dev",
     "require-dev": {
-        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master"
+        "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
+        "wp-coding-standards/wpcs": "dev-master",
+        "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
+        "phpunit/phpunit": "^7"
+    },
+    "scripts": {
+        "lint": "@phpcs",
+        "phpcs": "vendor/bin/phpcs",
+        "phpunit": "vendor/bin/phpunit",
+        "test": "@phpunit"
     }
 }
