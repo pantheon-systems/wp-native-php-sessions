@@ -87,3 +87,4 @@ sleep 10
 } &> /dev/null
 terminus wp $SITE_ENV -- plugin activate wp-native-php-sessions classic-editor
 terminus wp $SITE_ENV -- theme activate twentyseventeen
+terminus wp $SITE_ENV -- rewrite structure '/%year%/%monthnum%/%day%/%postname%/'
