@@ -1,5 +1,5 @@
 === WordPress Native PHP Sessions ===
-Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber
+Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 5.2
