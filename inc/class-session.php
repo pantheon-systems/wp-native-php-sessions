@@ -1,20 +1,56 @@
 <?php
+/**
+ * Individual session object.
+ *
+ * @package WPNPS
+ */
 
 namespace Pantheon_Sessions;
 
+/**
+ * Individual session object.
+ */
 class Session {
 
+	/**
+	 * Any sessions stored statically.
+	 *
+	 * @var array
+	 */
 	private static $sessions = array();
+
+	/**
+	 * Any secure sessions stored statically.
+	 *
+	 * @var array
+	 */
 	private static $secure_sessions = array();
 
+	/**
+	 * Session id.
+	 *
+	 * @var string
+	 */
 	private $sid;
+
+	/**
+	 * Session data.
+	 *
+	 * @var array
+	 */
 	private $data;
+
+	/**
+	 * Session user id.
+	 *
+	 * @var integer
+	 */
 	private $user_id;
 
 	/**
 	 * Get a session based on its ID.
 	 *
-	 * @param string $sid
+	 * @param string $sid Session id.
 	 * @return Session|false
 	 */
 	public static function get_by_sid( $sid ) {
@@ -27,6 +63,7 @@ class Session {
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$column_name = self::get_session_id_column();
+		// phpcs:ignore
 		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
 		if ( ! $session_row ) {
 			return false;
@@ -38,7 +75,7 @@ class Session {
 	/**
 	 * Create a database entry for this session
 	 *
-	 * @param string $sid
+	 * @param string $sid Session id.
 	 * @return Session
 	 */
 	public static function create_for_sid( $sid ) {
@@ -47,9 +84,9 @@ class Session {
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$insert_data = array(
-			'session_id'          => $sid,
-			'user_id'             => (int) get_current_user_id(),
-			);
+			'session_id' => $sid,
+			'user_id'    => (int) get_current_user_id(),
+		);
 		if ( function_exists( 'is_ssl' ) && is_ssl() ) {
 			$insert_data['secure_session_id'] = $sid;
 		}
@@ -57,9 +94,16 @@ class Session {
 		return self::get_by_sid( $sid );
 	}
 
+	/**
+	 * Instantiates a session object.
+	 *
+	 * @param string  $sid     Session id.
+	 * @param mixed   $data    Any session data.
+	 * @param integer $user_id User id for the session.
+	 */
 	private function __construct( $sid, $data, $user_id ) {
-		$this->sid = $sid;
-		$this->data = $data;
+		$this->sid     = $sid;
+		$this->data    = $data;
 		$this->user_id = $user_id;
 	}
 
@@ -93,7 +137,7 @@ class Session {
 	/**
 	 * Set the user id for this session.
 	 *
-	 * @param integer $user_id
+	 * @param integer $user_id User id.
 	 */
 	public function set_user_id( $user_id ) {
 		global $wpdb;
@@ -101,15 +145,19 @@ class Session {
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$this->user_id = (int) $user_id;
-		$wpdb->update( $wpdb->pantheon_sessions, array(
-			'user_id'         => $this->user_id,
-		), array( self::get_session_id_column() => $this->get_id() ) );
+		$wpdb->update(
+			$wpdb->pantheon_sessions,
+			array(
+				'user_id' => $this->user_id,
+			),
+			array( self::get_session_id_column() => $this->get_id() )
+		);
 	}
 
 	/**
 	 * Set the session's data
 	 *
-	 * @param mixed $data
+	 * @param mixed $data Session data.
 	 */
 	public function set_data( $data ) {
 		global $wpdb;
@@ -124,12 +172,16 @@ class Session {
 
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
-		$wpdb->update( $wpdb->pantheon_sessions, array(
-			'user_id'         => (int) get_current_user_id(),
-			'datetime'        => date( 'Y-m-d H:i:s' ),
-			'ip_address'      => preg_replace( '/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR'] ),
-			'data'            => maybe_serialize( $data ),
-			), array( self::get_session_id_column() => $this->get_id() ) );
+		$wpdb->update(
+			$wpdb->pantheon_sessions,
+			array(
+				'user_id'    => (int) get_current_user_id(),
+				'datetime'   => date( 'Y-m-d H:i:s' ),
+				'ip_address' => preg_replace( '/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR'] ),
+				'data'       => maybe_serialize( $data ),
+			),
+			array( self::get_session_id_column() => $this->get_id() )
+		);
 
 		$this->data = maybe_serialize( $data );
 	}
@@ -144,7 +196,7 @@ class Session {
 
 		$wpdb->delete( $wpdb->pantheon_sessions, array( self::get_session_id_column() => $this->get_id() ) );
 
-		// Reset $_SESSION to prevent a new session from being started
+		// Reset $_SESSION to prevent a new session from being started.
 		$_SESSION = array();
 
 		$this->delete_cookies();
@@ -174,19 +226,19 @@ class Session {
 	 */
 	private function delete_cookies() {
 
-		// Cookies don't exist on CLI
+		// Cookies don't exist on CLI.
 		if ( self::is_cli() ) {
 			return;
 		}
 
 		$session_name = session_name();
-		$cookies = array(
+		$cookies      = array(
 			$session_name,
 			substr( $session_name, 1 ),
 			'S' . $session_name,
-			);
+		);
 
-		foreach( $cookies as $cookie_name ) {
+		foreach ( $cookies as $cookie_name ) {
 
 			if ( ! isset( $_COOKIE[ $cookie_name ] ) ) {
 				continue;
