@@ -8,23 +8,38 @@
  * Plugin URI: https://wordpress.org/plugins/wp-native-php-sessions/
  * Text Domain: pantheon-sessions
  * Domain Path: /languages
+ *
+ * @package WPNPS
  **/
 
 use Pantheon_Sessions\Session;
 
 define( 'PANTHEON_SESSIONS_VERSION', '0.7.0' );
 
+/**
+ * Main controller class for the plugin.
+ */
 class Pantheon_Sessions {
 
+	/**
+	 * Copy of the singleton instance.
+	 *
+	 * @var object
+	 */
 	private static $instance;
 
+	/**
+	 * Gets a copy of the singleton instance.
+	 *
+	 * @return object
+	 */
 	public static function get_instance() {
 
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new Pantheon_Sessions;
 			self::$instance->load();
 		}
-
+		return self::$instance;
 	}
 
 	/**
@@ -91,9 +106,10 @@ class Pantheon_Sessions {
 
 		// If the user specifies the cookie domain, also use it for session name.
 		if ( defined( 'COOKIE_DOMAIN' ) && constant( 'COOKIE_DOMAIN' ) ) {
-			$session_name = $cookie_domain = constant( 'COOKIE_DOMAIN' );
+			$cookie_domain = constant( 'COOKIE_DOMAIN' );
+			$session_name  = $cookie_domain;
 		} else {
-			$session_name = parse_url( home_url(), PHP_URL_HOST );
+			$session_name  = parse_url( home_url(), PHP_URL_HOST );
 			$cookie_domain = ltrim( $session_name, '.' );
 			// Strip leading periods, www., and port numbers from cookie domain.
 			if ( strpos( $cookie_domain, 'www.' ) === 0 ) {
@@ -115,7 +131,7 @@ class Pantheon_Sessions {
 		// must use different session identifiers for HTTPS and HTTP to prevent a
 		// cookie collision.
 		if ( is_ssl() ) {
-			ini_set( 'session.cookie_secure', TRUE );
+			ini_set( 'session.cookie_secure', true );
 		}
 		$prefix = ini_get( 'session.cookie_secure' ) ? 'SSESS' : 'SESS';
 
@@ -129,9 +145,9 @@ class Pantheon_Sessions {
 		// Don't send HTTP headers using PHP's session handler.
 		// An empty string is used here to disable the cache limiter.
 		ini_set( 'session.cache_limiter', '' );
-		// Use httponly session cookies. Limits use by JavaScripts
+		// Use httponly session cookies. Limits use by JavaScripts.
 		ini_set( 'session.cookie_httponly', '1' );
-		// Get cookie lifetime from filters so you can put your custom lifetime 
+		// Get cookie lifetime from filters so you can put your custom lifetime.
 		ini_set( 'session.cookie_lifetime', (int) apply_filters( 'pantheon_session_expiration', 0 ) );
 
 	}
@@ -145,7 +161,7 @@ class Pantheon_Sessions {
 		if ( ! headers_sent() ) {
 			session_set_save_handler( '_pantheon_session_open', '_pantheon_session_close', '_pantheon_session_read', '_pantheon_session_write', '_pantheon_session_destroy', '_pantheon_session_garbage_collection' );
 		}
-		// Close the session before $wpdb destructs itself
+		// Close the session before $wpdb destructs itself.
 		add_action( 'shutdown', 'session_write_close', 999, 0 );
 		require_once dirname( __FILE__ ) . '/inc/class-session.php';
 	}
@@ -156,9 +172,9 @@ class Pantheon_Sessions {
 	private function setup_database() {
 		global $wpdb, $table_prefix;
 
-		$table_name = "{$table_prefix}pantheon_sessions";
+		$table_name              = "{$table_prefix}pantheon_sessions";
 		$wpdb->pantheon_sessions = $table_name;
-		$wpdb->tables[] = 'pantheon_sessions';
+		$wpdb->tables[]          = 'pantheon_sessions';
 
 		if ( get_option( 'pantheon_session_version' ) ) {
 			return;
@@ -174,11 +190,20 @@ class Pantheon_Sessions {
 			KEY `session_id` (`session_id`),
 			KEY `secure_session_id` (`secure_session_id`)
 		)";
+		// phpcs:ignore
 		$wpdb->query( $create_statement );
 		update_option( 'pantheon_session_version', PANTHEON_SESSIONS_VERSION );
 
 	}
 
+	/**
+	 * Sets the user id value to the session when the user logs in.
+	 *
+	 * @param string  $logged_in_cookie Cooke name.
+	 * @param integer $expire           When the cookie is set to expire.
+	 * @param integer $expiration       When the cookie is set to expire.
+	 * @param integer $user_id          Id for the logged-in user.
+	 */
 	public static function action_set_logged_in_cookie( $logged_in_cookie, $expire, $expiration, $user_id ) {
 		$session = Session::get_by_sid( session_id() );
 		if ( $session ) {
@@ -186,6 +211,9 @@ class Pantheon_Sessions {
 		}
 	}
 
+	/**
+	 * Clears the user id value from the session when the user logs out.
+	 */
 	public static function action_clear_auth_cookie() {
 		$session = Session::get_by_sid( session_id() );
 		if ( $session ) {
@@ -195,14 +223,13 @@ class Pantheon_Sessions {
 
 	/**
 	 * Force the plugin to be the first loaded
-	 *
 	 */
-	static public function force_first_load()
-	{
-
-		$path = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
-		if ( $plugins = get_option( 'active_plugins' ) ) {
-			if ( $key = array_search( $path, $plugins ) ) {
+	static public function force_first_load() {
+		$path    = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
+		$plugins = get_option( 'active_plugins' );
+		if ( $plugins ) {
+			$key = array_search( $path, $plugins, true );
+			if ( $key ) {
 				array_splice( $plugins, $key, 1 );
 				array_unshift( $plugins, $path );
 				update_option( 'active_plugins', $plugins );
@@ -216,11 +243,13 @@ class Pantheon_Sessions {
 
 /**
  * Release the kraken!
+ *
+ * @return object
  */
 function Pantheon_Sessions() {
 	return Pantheon_Sessions::get_instance();
 }
 
-add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load');
+add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load' );
 
 Pantheon_Sessions();
