@@ -180,15 +180,15 @@ class Pantheon_Sessions {
 	}
 
 	public static function action_set_logged_in_cookie( $logged_in_cookie, $expire, $expiration, $user_id ) {
-		$session_id = session_id();
-		if ( $session_id && $session = Session::get_by_sid( $session_id ) ) {
+		$session = Session::get_by_sid( session_id() );
+		if ( $session ) {
 			$session->set_user_id( $user_id );
 		}
 	}
 
 	public static function action_clear_auth_cookie() {
-		$session_id = session_id();
-		if ( $session_id && $session = Session::get_by_sid( $session_id ) ) {
+		$session = Session::get_by_sid( session_id() );
+		if ( $session ) {
 			$session->set_user_id( 0 );
 		}
 	}

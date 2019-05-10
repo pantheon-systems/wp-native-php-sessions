@@ -20,6 +20,10 @@ class Session {
 	public static function get_by_sid( $sid ) {
 		global $wpdb;
 
+		if ( ! $sid ) {
+			return false;
+		}
+
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$column_name = self::get_session_id_column();
