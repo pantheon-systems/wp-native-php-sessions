@@ -1,51 +1,91 @@
 <?php
+/**
+ * Tests plugin interactions with sessions.
+ *
+ * @package WPNPS
+ */
 
 use \Pantheon_Sessions\Session;
 
+/**
+ * Tests plugin interactions with sessions.
+ */
 class Test_Sessions extends WP_UnitTestCase {
 
+	/**
+	 * Name of the table in the tests.
+	 *
+	 * @var string
+	 */
 	protected $table_name;
+
+	/**
+	 * State of the $wpdb->suppress_errors attribute.
+	 *
+	 * @var boolean
+	 */
 	protected $suppress_errors;
+
+	/**
+	 * Name of a mocked session id.
+	 *
+	 * @var string
+	 */
 	protected $mock_session_id = 'SESSabc123';
 
+	/**
+	 * Sets up the test suite prior to every test.
+	 */
 	public function setUp() {
 		global $wpdb;
 		if ( ! isset( $this->table_name ) ) {
 			$this->table_name = $wpdb->pantheon_sessions;
 		}
 		$wpdb->pantheon_sessions = $this->table_name;
-		$this->suppress_errors = $wpdb->suppress_errors();
+		$this->suppress_errors   = $wpdb->suppress_errors();
 		if ( ! Session::get_by_sid( session_id() ) ) {
 			Session::create_for_sid( session_id() );
 		}
 		parent::setUp();
 	}
 
+	/**
+	 * Ensures a session ID is generated and not empty.
+	 */
 	public function test_session_id() {
 		$session_id = session_id();
 		$this->assertNotEmpty( $session_id );
 	}
 
+	/**
+	 * Ensures the session is named correctly.
+	 */
 	public function test_session_name() {
 		$session_name = session_name();
-		$this->assertStringStartsWith( "SESS", $session_name );
+		$this->assertStringStartsWith( 'SESS', $session_name );
 	}
 
+	/**
+	 * Ensures that a session can be written to and then read from.
+	 */
 	public function test_session_write_read() {
 		$_SESSION['foo'] = 'bar';
 		session_commit();
 		$session = \Pantheon_Sessions\Session::get_by_sid( session_id() );
-		$data = $session->get_data();
+		$data    = $session->get_data();
 		$this->assertEquals( 'foo|s:3:"bar";', $session->get_data() );
 		return $session;
 	}
 
+	/**
+	 * Ensures a warning is triggered when a session fails to write.
+	 */
 	public function test_session_write_error() {
 		$this->markTestSkipped( 'Fails to trigger warning when entire suite is run.' );
 
 		global $wpdb;
-		// Set an invalid table to fail queries
-		$backup_table = $wpdb->pantheon_sessions;
+		// Set an invalid table to fail queries.
+		$backup_table            = $wpdb->pantheon_sessions;
 		$wpdb->pantheon_sessions = 'foobar1235';
 		$wpdb->suppress_errors( true );
 		$_SESSION['foo'] = 'bar';
@@ -54,7 +94,11 @@ class Test_Sessions extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Ensures a session is destroyed.
+	 *
 	 * @depends test_session_write_read
+	 *
+	 * @param object $session Existing session instance.
 	 */
 	public function test_session_destroy( $session ) {
 		$session->destroy();
@@ -63,6 +107,9 @@ class Test_Sessions extends WP_UnitTestCase {
 		$this->assertEmpty( $_SESSION );
 	}
 
+	/**
+	 * Ensures the user ID stays in sync with the session.
+	 */
 	public function test_session_sync_user_id_login_logout() {
 		$_SESSION['foo'] = 'bar';
 		session_commit();
@@ -78,6 +125,9 @@ class Test_Sessions extends WP_UnitTestCase {
 		$this->assertEquals( 0, $session->get_user_id() );
 	}
 
+	/**
+	 * Ensures the garbage collection function wroks as expected.
+	 */
 	public function test_session_garbage_collection() {
 		$this->markTestSkipped( 'ini_set() never works once headers have been set' );
 
@@ -95,10 +145,16 @@ class Test_Sessions extends WP_UnitTestCase {
 		ini_set( 'session.gc_maxlifetime', $current_val );
 	}
 
+	/**
+	 * Ensures $wpdb can be restored when missing.
+	 */
 	public function test_restore_wpdb_when_missing() {
 		$this->assertInstanceOf( 'wpdb', Session::restore_wpdb_if_null( null ) );
 	}
 
+	/**
+	 * Runs at the end of every test.
+	 */
 	public function tearDown() {
 		global $wpdb;
 		$wpdb->pantheon_sessions = $this->table_name;

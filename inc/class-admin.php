@@ -1,13 +1,36 @@
 <?php
+/**
+ * Controller for backend functionality.
+ *
+ * @package WPNPS
+ */
 
 namespace Pantheon_Sessions;
 
+/**
+ * Controller for backend functionality.
+ */
 class Admin {
 
+	/**
+	 * Copy of the singleton instance.
+	 *
+	 * @var object
+	 */
 	private static $instance;
 
+	/**
+	 * Name of capability required to perform actions.
+	 *
+	 * @var string
+	 */
 	private static $capability = 'manage_options';
 
+	/**
+	 * Gets a copy of the singleton instance.
+	 *
+	 * @return object
+	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new Admin;
@@ -48,18 +71,18 @@ class Admin {
 
 		echo '<div>';
 		$query_args = array(
-			'action'       => 'pantheon_clear_session',
-			'nonce'        => wp_create_nonce( 'pantheon_clear_session' ),
-			'session'      => 'all',
-			);
+			'action'  => 'pantheon_clear_session',
+			'nonce'   => wp_create_nonce( 'pantheon_clear_session' ),
+			'session' => 'all',
+		);
 		if ( $wpdb->get_var( "SELECT COUNT(session_id) FROM $wpdb->pantheon_sessions" ) ) {
 			echo '<a class="button pantheon-clear-all-sessions" style="float:right; margin-top: 9px;" href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear All', 'pantheon-sessions' ) . '</a>';
 		}
 		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'pantheon-sessions' ) . '</h2>';
-		if ( isset( $_GET['message'] ) && in_array( $_GET['message'], array( 'delete-all-session', 'delete-session' ) ) ) {
+		if ( isset( $_GET['message'] ) && in_array( $_GET['message'], array( 'delete-all-session', 'delete-session' ), true ) ) {
 			if ( 'delete-all-session' === $_GET['message'] ) {
 				$message = __( 'Cleared all sessions.', 'pantheon-sessions' );
-			} else if ( 'delete-session' === $_GET['message'] ) {
+			} elseif ( 'delete-session' === $_GET['message'] ) {
 				$message = __( 'Session cleared.', 'pantheon-sessions' );
 			}
 			echo '<div id="message" class="updated"><p>' . esc_html( $message ) . '</p></div>';
@@ -86,7 +109,7 @@ class Admin {
 			wp_die( esc_html__( "You don't have permission to do this.", 'pantheon-sessions' ) );
 		}
 
-		if ( 'all' == $_GET['session'] ) {
+		if ( ! empty( $_GET['session'] ) && 'all' === $_GET['session'] ) {
 			$wpdb->query( "DELETE FROM $wpdb->pantheon_sessions" );
 			$message = 'delete-all-session';
 		} else {
@@ -107,7 +130,7 @@ class Admin {
 	(function($){
 		$(document).ready(function(){
 			$('.pantheon-clear-all-sessions').on('click', function( e ){
-				if ( ! confirm( '<?php esc_html_e( "Are you sure you want to clear all active sessions?", "pantheon-sessions" ); ?>') ) {
+				if ( ! confirm( '<?php esc_html_e( 'Are you sure you want to clear all active sessions?', 'pantheon-sessions' ); ?>') ) {
 					e.preventDefault();
 				}
 			});
