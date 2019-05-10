@@ -1,4 +1,9 @@
 <?php
+/**
+ * Integrates WPNPS with PHP session handler.
+ *
+ * @package WPNPS
+ */
 
 /**
  * Session handler assigned by session_set_save_handler().
@@ -18,7 +23,7 @@ function _pantheon_session_open() {
 		return true;
 	}
 	// We use !empty() in the following check to ensure that blank session IDs are not valid.
-	if ( ! empty( $_COOKIE[ session_name() ] ) || ( is_ssl() && ! empty( $_COOKIE[ substr(session_name(), 1) ] ) ) ) {
+	if ( ! empty( $_COOKIE[ session_name() ] ) || ( is_ssl() && ! empty( $_COOKIE[ substr( session_name(), 1 ) ] ) ) ) {
 		// If a session cookie exists, initialize the session. Otherwise the
 		// session is only started on demand in _pantheon_session_write(), making
 		// anonymous users not use a session cookie unless something is stored in
@@ -28,16 +33,16 @@ function _pantheon_session_open() {
 		}
 	} else {
 		// Set a session identifier for this request. This is necessary because
-		// we lazily start sessions at the end of this request
-		require_once( ABSPATH . 'wp-includes/class-phpass.php');
+		// we lazily start sessions at the end of this request.
+		require_once( ABSPATH . 'wp-includes/class-phpass.php' );
 		$hasher = new PasswordHash( 8, false );
 		session_id( md5( $hasher->get_random_bytes( 32 ) ) );
 		if ( is_ssl() ) {
 			$insecure_session_name = substr( session_name(), 1 );
-			$insecure_session_id = md5( $hasher->get_random_bytes( 32 ) );
-			//set custom expire time during cookie session creation
+			$insecure_session_id   = md5( $hasher->get_random_bytes( 32 ) );
+			// set custom expire time during cookie session creation.
 			$lifetime = (int) apply_filters( 'pantheon_session_expiration', 0 );
-			setcookie( $insecure_session_name, $insecure_session_id, $_SERVER['REQUEST_TIME'] + $lifetime);
+			setcookie( $insecure_session_name, $insecure_session_id, $_SERVER['REQUEST_TIME'] + $lifetime );
 		}
 	}
 	return true;
@@ -56,11 +61,8 @@ function _pantheon_session_open() {
  * or other unexpected behavior. Session data must always be accessed via the
  * $_SESSION superglobal.
  *
- * @param $sid
- *   The session ID of the session to retrieve.
- *
- * @return
- *   The user's session, or an empty string if no session exists.
+ * @param string $sid The session ID of the session to retrieve.
+ * @return The user's session, or an empty string if no session exists.
  */
 function _pantheon_session_read( $sid ) {
 
@@ -90,8 +92,8 @@ function _pantheon_session_read( $sid ) {
  * Doing so may result in corrupted session data or other unexpected behavior.
  * Session data must always be accessed via the $_SESSION superglobal.
  *
- * @param $sid The session ID of the session to write to.
- * @param $value Session data to write as a serialized string.
+ * @param string $sid   The session ID of the session to write to.
+ * @param mixed  $value Session data to write as a serialized string.
  * @return boolean
  */
 function _pantheon_session_write( $sid, $value ) {
@@ -108,7 +110,7 @@ function _pantheon_session_write( $sid, $value ) {
 	}
 
 	$session->set_data( $value );
-	
+
 	return true;
 }
 
@@ -117,7 +119,8 @@ function _pantheon_session_write( $sid, $value ) {
  *
  * Cleans up a specific session.
  *
- * @param $sid Session ID.
+ * @param string $sid Session ID.
+ * @return mixed
  */
 function _pantheon_session_destroy( $sid ) {
 
