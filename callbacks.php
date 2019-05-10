@@ -160,6 +160,8 @@ function _pantheon_session_close() {
 function _pantheon_session_garbage_collection( $lifetime ) {
 	global $wpdb;
 
+	$wpdb = \Pantheon_Sessions\Session::restore_wpdb_if_null( $wpdb );
+
 	// Be sure to adjust 'php_value session.gc_maxlifetime' to a large enough
 	// value. For example, if you want user sessions to stay in your database
 	// for three weeks before deleting them, you need to set gc_maxlifetime
