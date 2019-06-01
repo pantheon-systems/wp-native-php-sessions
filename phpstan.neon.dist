@@ -1,0 +1,28 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: max
+    paths:
+        - %currentWorkingDirectory%/inc/
+#    excludes_analyse:
+    autoload_files:
+        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
+        - %currentWorkingDirectory%/pantheon-sessions.php
+        # Plugin stubs
+        - %currentWorkingDirectory%/tests/phpstan/wp-cli-stubs-2.2.0.php
+#        # Procedural code
+#        - %currentWorkingDirectory%/myplugin-functions.php
+    autoload_directories:
+        - %currentWorkingDirectory%/inc/
+    dynamicConstantNames:
+        - PANTHEON_SESSIONS_ENABLED
+    ignoreErrors:
+        # Uses func_get_args()
+        - '#^Function add_query_arg invoked with [123] parameters?, 0 required\.$#'
+        # WP-CLI accepts a class as callable
+        - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
+        # $wpdb global
+        - '#^Access to an undefined property wpdb::\$pantheon_sessions\.$#'
+        # A core PHPDoc problem??
+        - '/Parameter #1 \$query of method wpdb::get_row\(\) expects string\|null, string\|void given\./'

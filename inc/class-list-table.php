@@ -62,8 +62,8 @@ class List_Table extends \WP_List_Table {
 	/**
 	 * Render a column value
 	 *
-	 * @param object $item        Session to display.
-	 * @param string $column_name Name of the column.
+	 * @param \Pantheon_Sessions\Session_Data $item        Session to display.
+	 * @param string                          $column_name Name of the column.
 	 */
 	public function column_default( $item, $column_name ) {
 		if ( 'data' === $column_name ) {
@@ -80,7 +80,7 @@ class List_Table extends \WP_List_Table {
 			return esc_html( $item->session_id ) . $this->row_actions( $actions );
 		} elseif ( 'datetime' === $column_name ) {
 			// translators: Time ago.
-			return esc_html( sprintf( esc_html__( '%s ago', 'pantheon-sessions' ), human_time_diff( strtotime( $item->datetime ) ) ) );
+			return esc_html( sprintf( esc_html__( '%s ago', 'pantheon-sessions' ), human_time_diff( (int) strtotime( $item->datetime ) ) ) );
 		} else {
 			return esc_html( $item->$column_name );
 		}

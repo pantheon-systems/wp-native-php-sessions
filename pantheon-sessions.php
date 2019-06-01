@@ -70,7 +70,7 @@ class Pantheon_Sessions {
 	private function define_constants() {
 
 		if ( ! defined( 'PANTHEON_SESSIONS_ENABLED' ) ) {
-			define( 'PANTHEON_SESSIONS_ENABLED', 1 );
+			define( 'PANTHEON_SESSIONS_ENABLED', true );
 		}
 
 	}

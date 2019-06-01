@@ -36,7 +36,7 @@ class Session {
 	/**
 	 * Session data.
 	 *
-	 * @var array
+	 * @var mixed
 	 */
 	private $data;
 
@@ -64,8 +64,9 @@ class Session {
 
 		$column_name = self::get_session_id_column();
 		// phpcs:ignore
+		/** @var \Pantheon_Sessions\Session_Data $session_row */
 		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
-		if ( ! $session_row ) {
+		if ( ! is_object( $session_row ) ) {
 			return false;
 		}
 
@@ -76,7 +77,7 @@ class Session {
 	 * Create a database entry for this session
 	 *
 	 * @param string $sid Session id.
-	 * @return Session
+	 * @return Session|false
 	 */
 	public static function create_for_sid( $sid ) {
 		global $wpdb;
@@ -207,7 +208,7 @@ class Session {
 	 * Restores $wpdb database connection if missing.
 	 *
 	 * @param mixed $wpdb Existing global.
-	 * @return object
+	 * @return \wpdb
 	 */
 	public static function restore_wpdb_if_null( $wpdb ) {
 		if ( $wpdb instanceof \wpdb ) {
