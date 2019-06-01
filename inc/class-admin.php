@@ -67,24 +67,34 @@ class Admin {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 		require_once dirname( __FILE__ ) . '/class-list-table.php';
 
-		echo '<div class="wrap">';
-
-		echo '<div>';
-		$query_args = array(
-			'action'  => 'pantheon_clear_session',
-			'nonce'   => wp_create_nonce( 'pantheon_clear_session' ),
-			'session' => 'all',
-		);
-		if ( $wpdb->get_var( "SELECT COUNT(session_id) FROM $wpdb->pantheon_sessions" ) ) {
-			echo '<a class="button pantheon-clear-all-sessions" style="float:right; margin-top: 9px;" href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear All', 'pantheon-sessions' ) . '</a>';
-		}
-		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'pantheon-sessions' ) . '</h2>';
+		$message = '';
 		if ( isset( $_GET['message'] ) && in_array( $_GET['message'], array( 'delete-all-session', 'delete-session' ), true ) ) {
 			if ( 'delete-all-session' === $_GET['message'] ) {
 				$message = __( 'Cleared all sessions.', 'pantheon-sessions' );
 			} elseif ( 'delete-session' === $_GET['message'] ) {
 				$message = __( 'Session cleared.', 'pantheon-sessions' );
 			}
+		}
+
+		$query_args = array(
+			'action'  => 'pantheon_clear_session',
+			'nonce'   => wp_create_nonce( 'pantheon_clear_session' ),
+			'session' => 'all',
+		);
+
+		// Start displaying page
+		echo '<div class="wrap">';
+
+		echo '<div>';
+		if ( '0' !== $wpdb->get_var( "SELECT COUNT(session_id) FROM $wpdb->pantheon_sessions" ) ) {
+			printf(
+				'<a class="button pantheon-clear-all-sessions" style="float:right; margin-top: 9px;" href="%s">%s</a>',
+				esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ),
+				esc_html__( 'Clear All', 'pantheon-sessions' )
+			);
+		}
+		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'pantheon-sessions' ) . '</h2>';
+		if ( '' !== $message ) {
 			echo '<div id="message" class="updated"><p>' . esc_html( $message ) . '</p></div>';
 		}
 		echo '</div>';
