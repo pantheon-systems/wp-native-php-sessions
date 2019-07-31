@@ -208,7 +208,7 @@ class Session {
 			if ( array_key_exists( $key, $_SERVER )
 				&& $_SERVER[ $key ]
 			) {
-				$ipaddress = $_SERVER[$key];
+				$ipaddress = $_SERVER[ $key ];
 				break;
 			}
 		}
