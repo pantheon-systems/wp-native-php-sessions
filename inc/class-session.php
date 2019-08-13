@@ -191,7 +191,7 @@ class Session {
 	 *
 	 * @return string
 	 */
-	public function get_client_ip_server() {
+	public static function get_client_ip_server() {
 		// Set default.
 		$ipaddress = '127.0.0.1';
 

@@ -153,6 +153,18 @@ class Test_Sessions extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Ensures order respected for getting client IP server.
+	 */
+	public function test_get_client_ip_server() {
+		// Default behavior should be localhost.
+		$this->assertEquals( '127.0.0.1', Session::get_client_ip_server() );
+		// First $_SERVER instance should override.
+		$_SERVER['HTTP_CLIENT_IP']   = '192.168.1.2';
+		$_SERVER['HTTP_X_FORWARDED'] = '192.168.1.3';
+		$this->assertEquals( '192.168.1.2', Session::get_client_ip_server() );
+	}
+
+	/**
 	 * Runs at the end of every test.
 	 */
 	public function tearDown() {
