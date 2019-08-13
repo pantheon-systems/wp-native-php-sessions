@@ -177,13 +177,46 @@ class Session {
 			array(
 				'user_id'    => (int) get_current_user_id(),
 				'datetime'   => date( 'Y-m-d H:i:s' ),
-				'ip_address' => preg_replace( '/[^0-9a-fA-F:., ]/', '', $_SERVER['REMOTE_ADDR'] ),
+				'ip_address' => self::get_client_ip_server(),
 				'data'       => maybe_serialize( $data ),
 			),
 			array( self::get_session_id_column() => $this->get_id() )
 		);
 
 		$this->data = maybe_serialize( $data );
+	}
+
+	/**
+	 * Get the clients ip address
+	 *
+	 * @return string
+	 */
+	public static function get_client_ip_server() {
+		// Set default.
+		$ipaddress = '127.0.0.1';
+
+		$keys = [
+			'HTTP_CLIENT_IP',
+			'HTTP_X_FORWARDED_FOR',
+			'HTTP_X_FORWARDED',
+			'HTTP_FORWARDED_FOR',
+			'HTTP_FORWARDED',
+			'REMOTE_ADDR',
+		];
+
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $_SERVER )
+				&& $_SERVER[ $key ]
+			) {
+				$ipaddress = $_SERVER[ $key ];
+				break;
+			}
+		}
+
+		return apply_filters(
+			'pantheon_client_ip',
+			preg_replace( '/[^0-9a-fA-F:., ]/', '', $ipaddress )
+		);
 	}
 
 	/**
