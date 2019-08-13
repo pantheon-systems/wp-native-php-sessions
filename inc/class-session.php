@@ -177,7 +177,7 @@ class Session {
 			array(
 				'user_id'    => (int) get_current_user_id(),
 				'datetime'   => date( 'Y-m-d H:i:s' ),
-				'ip_address' => $this->get_client_ip_server(),
+				'ip_address' => self::get_client_ip_server(),
 				'data'       => maybe_serialize( $data ),
 			),
 			array( self::get_session_id_column() => $this->get_id() )
