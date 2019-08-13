@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 5.2
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 
 == Changelog ==
+
+= 0.8.0 (August 13th, 2019) =
+* Respects various `HTTP_*` sources for client IP address [[#122](https://github.com/pantheon-systems/wp-native-php-sessions/pull/122)].
 
 = 0.7.0 (April 3rd, 2019) =
 * Adds a safety check that restores `$wpdb` when it's missing.
