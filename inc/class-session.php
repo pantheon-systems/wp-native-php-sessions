@@ -193,7 +193,7 @@ class Session {
 	 */
 	public static function get_client_ip_server() {
 		// Set default.
-		$ipaddress = '127.0.0.1';
+		$ip_address = '127.0.0.1';
 
 		$keys = [
 			'HTTP_CLIENT_IP',
@@ -208,14 +208,14 @@ class Session {
 			if ( array_key_exists( $key, $_SERVER )
 				&& $_SERVER[ $key ]
 			) {
-				$ipaddress = $_SERVER[ $key ];
+				$ip_address = $_SERVER[ $key ];
 				break;
 			}
 		}
 
 		return apply_filters(
 			'pantheon_client_ip',
-			preg_replace( '/[^0-9a-fA-F:., ]/', '', $ipaddress )
+			preg_replace( '/[^0-9a-fA-F:., ]/', '', $ip_address )
 		);
 	}
 
