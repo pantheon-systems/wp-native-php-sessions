@@ -193,7 +193,7 @@ class Session {
 	 */
 	public static function get_client_ip_server() {
 		// Set default.
-		$ip_address = '127.0.0.1';
+		$ip_address = apply_filters( 'pantheon_client_ip_default', '127.0.0.1' );
 		$ip_source  = null;
 
 		$keys = [
@@ -212,6 +212,10 @@ class Session {
 				&& $_SERVER[ $key ]
 			) {
 				$_ip_address = $_SERVER[ $key ];
+
+				if ( false !== strpos( $_ip_address, ',' ) ) {
+					$_ip_address = trim( strstr( $_ip_address, ',', true ) );
+				}
 
 				if ( false === filter_var( $_ip_address, FILTER_VALIDATE_IP, $ip_filter_flags ) ) {
 					return;
