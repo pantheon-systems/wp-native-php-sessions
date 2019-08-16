@@ -218,7 +218,7 @@ class Session {
 				}
 
 				if ( false === filter_var( $_ip_address, FILTER_VALIDATE_IP, $ip_filter_flags ) ) {
-					return;
+					continue;
 				}
 
 				$ip_address = $_ip_address;
