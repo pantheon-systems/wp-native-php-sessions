@@ -205,7 +205,7 @@ class Session {
 			'REMOTE_ADDR',
 		];
 
-		$ip_filter_flags = apply_filters( 'pantheon_client_ip_filter_flags', FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE );
+		$ip_filter_flags = apply_filters( 'pantheon_client_ip_filter_flags', FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_RES_RANGE );
 
 		foreach ( $keys as $key ) {
 			if ( array_key_exists( $key, $_SERVER )
