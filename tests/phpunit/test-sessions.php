@@ -162,6 +162,14 @@ class Test_Sessions extends WP_UnitTestCase {
 		$_SERVER['HTTP_CLIENT_IP']   = '192.168.1.2';
 		$_SERVER['HTTP_X_FORWARDED'] = '192.168.1.3';
 		$this->assertEquals( '192.168.1.2', Session::get_client_ip_server() );
+		// Reset $_SERVER.
+		$_SERVER = [
+			'HTTP_CLIENT_IP'   => null,
+			'HTTP_X_FORWARDED' => null,
+		] + $_SERVER;
+		// 'HTTP_X_FORWARDED_FOR' should be in an comma seperated format. Return first value.
+		$_SERVER['HTTP_X_FORWARDED_FOR'] = '192.168.1.4, 5.6.7.8, 9.10.11.12';
+		$this->assertEquals( '192.168.1.4', Session::get_client_ip_server() );
 	}
 
 	/**
