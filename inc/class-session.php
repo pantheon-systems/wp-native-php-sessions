@@ -193,7 +193,7 @@ class Session {
 	 */
 	public static function get_client_ip_server() {
 		// Set default.
-		$ip_address = apply_filters( 'pantheon_client_ip_default', '127.0.0.1' );
+		$ip_address = apply_filters( 'pantheon_sessions_client_ip_default', '127.0.0.1' );
 		$ip_source  = null;
 
 		$keys = [
@@ -205,7 +205,7 @@ class Session {
 			'REMOTE_ADDR',
 		];
 
-		$ip_filter_flags = apply_filters( 'pantheon_client_ip_filter_flags', FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_RES_RANGE );
+		$ip_filter_flags = apply_filters( 'pantheon_sessions_client_ip_filter_flags', FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_RES_RANGE );
 
 		foreach ( $keys as $key ) {
 			if ( array_key_exists( $key, $_SERVER )
@@ -228,7 +228,7 @@ class Session {
 		}
 
 		return apply_filters(
-			'pantheon_client_ip',
+			'pantheon_sessions_client_ip',
 			preg_replace( '/[^0-9a-fA-F:., ]/', '', $ip_address ),
 			$ip_source
 		);
