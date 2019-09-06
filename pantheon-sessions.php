@@ -100,7 +100,7 @@ class Pantheon_Sessions {
 	 */
 	private function set_ini_values() {
 
-		if ( headers_sent() ) {
+		if ( headers_sent() || session_status() === PHP_SESSION_ACTIVE ) {
 			return;
 		}
 
