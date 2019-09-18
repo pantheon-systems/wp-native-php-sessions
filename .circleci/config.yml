@@ -22,7 +22,7 @@ jobs:
     - image: quay.io/pantheon-public/build-tools-ci:6.x
     steps:
     - checkout
-    - run: echo -e "[Date]\ndate.timezone = UTC" | sudo tee /usr/local/etc/php/php.ini > /dev/null
+    - run: echo -e "[Date]\ndate.timezone = UTC" | tee /usr/local/etc/php/php.ini > /dev/null
     - run: echo $(openssl rand -hex 8) > /tmp/WORDPRESS_ADMIN_PASSWORD
     - run: |
         echo 'export TERMINUS_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
