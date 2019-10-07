@@ -57,8 +57,8 @@ class Pantheon_Sessions {
 		if ( PANTHEON_SESSIONS_ENABLED ) {
 
 			$this->setup_database();
-			$this->set_ini_values();
 			$this->initialize_session_override();
+			$this->set_ini_values();
 			add_action( 'set_logged_in_cookie', array( __CLASS__, 'action_set_logged_in_cookie' ), 10, 4 );
 			add_action( 'clear_auth_cookie', array( __CLASS__, 'action_clear_auth_cookie' ) );
 		}
@@ -83,8 +83,6 @@ class Pantheon_Sessions {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			require_once dirname( __FILE__ ) . '/inc/class-cli-command.php';
 		}
-
-		require_once dirname( __FILE__ ) . '/callbacks.php';
 
 		if ( is_admin() ) {
 			require_once dirname( __FILE__ ) . '/inc/class-admin.php';
@@ -158,12 +156,14 @@ class Pantheon_Sessions {
 	 * Largely adopted from Drupal 7's implementation
 	 */
 	private function initialize_session_override() {
-		if ( ! headers_sent() ) {
-			session_set_save_handler( '_pantheon_session_open', '_pantheon_session_close', '_pantheon_session_read', '_pantheon_session_write', '_pantheon_session_destroy', '_pantheon_session_garbage_collection' );
+		require_once dirname( __FILE__ ) . '/inc/class-session.php';
+		require_once dirname( __FILE__ ) . '/inc/class-session-handler.php';
+		$session_handler = new Pantheon_Sessions\Session_Handler;
+		if ( PHP_SESSION_ACTIVE !== session_status() ) {
+			session_set_save_handler( $session_handler, false );
 		}
 		// Close the session before $wpdb destructs itself.
 		add_action( 'shutdown', 'session_write_close', 999, 0 );
-		require_once dirname( __FILE__ ) . '/inc/class-session.php';
 	}
 
 	/**
