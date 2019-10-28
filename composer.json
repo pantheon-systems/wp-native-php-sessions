@@ -14,14 +14,17 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
         "wp-coding-standards/wpcs": "dev-master",
         "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
         "phpunit/phpunit": "^7",
-        "phpcompatibility/php-compatibility": "dev-master"
+        "phpcompatibility/php-compatibility": "dev-master",
+        "danielbachhuber/composer-lock-updater": "^0.8.1"
     },
     "scripts": {
+        "clu": "vendor/bin/clu",
         "lint": "@phpcs",
         "phpcs": "vendor/bin/phpcs",
         "phpunit": "vendor/bin/phpunit",
