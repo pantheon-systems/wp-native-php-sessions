@@ -20,11 +20,9 @@
         "wp-coding-standards/wpcs": "dev-master",
         "dealerdirect/phpcodesniffer-composer-installer": "dev-master",
         "phpunit/phpunit": "^7",
-        "phpcompatibility/php-compatibility": "dev-master",
-        "danielbachhuber/composer-lock-updater": "^0.8.1"
+        "phpcompatibility/php-compatibility": "dev-master"
     },
     "scripts": {
-        "clu": "vendor/bin/clu",
         "lint": "@phpcs",
         "phpcs": "vendor/bin/phpcs",
         "phpunit": "vendor/bin/phpunit",
