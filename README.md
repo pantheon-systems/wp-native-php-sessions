@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
 **Tested up to:** 5.3  
-**Stable tag:** 0.9.0  
+**Stable tag:** 1.0.0  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -66,6 +66,9 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 
 ## Changelog ##
+
+### 1.0.0 (March 2, 2020) ###
+* Plugin is stable.
 
 ### 0.9.0 (October 14th, 2019) ###
 * Refactors session callback logic into `Session_Handler` abstraction, fixing PHP notice in PHP 7.3 [[#135](https://github.com/pantheon-systems/wp-native-php-sessions/pull/135)].
