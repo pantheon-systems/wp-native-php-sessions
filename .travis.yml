@@ -23,8 +23,8 @@ branches:
 
 matrix:
   include:
-    - php: 7.4snapshot
-      env: WP_VERSION=nightly
+    - php: 7.4
+      env: WP_VERSION=latest
     - php: 7.3
       env: WP_VERSION=latest
     - php: 7.3
@@ -33,10 +33,6 @@ matrix:
       env: WP_TRAVISCI=nightly
     - php: 7.2
       env: WP_VERSION=latest
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.1
-      env: WP_VERSION=5.1
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
