@@ -51,6 +51,10 @@ class Pantheon_Sessions {
 			return;
 		}
 
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			return;
+		}
+
 		$this->define_constants();
 		$this->require_files();
 
