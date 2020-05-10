@@ -47,6 +47,10 @@ class Pantheon_Sessions {
 	 */
 	private function load() {
 
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return;
+		}
+
 		if ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) {
 			return;
 		}
