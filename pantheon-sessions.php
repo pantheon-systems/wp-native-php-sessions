@@ -55,6 +55,10 @@ class Pantheon_Sessions {
 			return;
 		}
 
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return;
+		}
+
 		$this->define_constants();
 		$this->require_files();
 
