@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 5.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 
 
 == Changelog ==
+
+= 1.2.0 (May 18th, 2020) =
+* Avoids using cookies for sessions when WP-CLI is executing [[#154](https://github.com/pantheon-systems/wp-native-php-sessions/pull/154)].
 
 = 1.1.0 (April 23rd, 2020) =
 * Avoids initializing PHP sessions when doing cron [[#149](https://github.com/pantheon-systems/wp-native-php-sessions/pull/149)].
