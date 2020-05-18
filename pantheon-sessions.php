@@ -141,7 +141,11 @@ class Pantheon_Sessions {
 
 		// Use session cookies, not transparent sessions that puts the session id in
 		// the query string.
-		ini_set( 'session.use_cookies', '1' );
+		$use_cookies = '1';
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$use_cookies = '0';
+		}
+		ini_set( 'session.use_cookies', $use_cookies );
 		ini_set( 'session.use_only_cookies', '1' );
 		ini_set( 'session.use_trans_sid', '0' );
 		// Don't send HTTP headers using PHP's session handler.
