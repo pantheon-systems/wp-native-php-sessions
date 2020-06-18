@@ -62,8 +62,14 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Troubleshooting ##
 
-**If you see an error like "Fatal error:** session_start(): Failed to initialize storage module: user (path: ) in .../code/wp-content/plugins/plugin-that-uses-sessions/example.php on line 2" you likely have a plugin in the mu-plugins directory that is instantiating a session prior to this plugin loading. To fix, you will need to deactivate this plugin and instead load it via an mu-plugin that loads first, e.g. create an mu-plugin called 00.php and add a line in it to include the wp-native-php-sessions/pantheon-sessions.php file and the problem should disappear.  
+**If you see an error like "Fatal error:** session_start(): Failed to initialize storage module:" or "Warning: ini_set(): A session is active.", then you likely have a plugin that is starting a session before WP Native PHP Sessions is loading.  
 
+To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include the following:
+
+    <?php
+    require_once WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php';
+
+This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
 
