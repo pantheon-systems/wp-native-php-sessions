@@ -76,7 +76,7 @@ git commit -m "Include WP Native PHP Sessions and its configuration files"
 git push
 
 # Sometimes Pantheon takes a little time to refresh the filesystem
-sleep 10
+terminus build:workflow:wait
 
 ###
 # Set up WordPress, theme, and plugins for the test run
