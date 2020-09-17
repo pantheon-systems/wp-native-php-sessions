@@ -6,8 +6,7 @@
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
  * Plugin URI: https://wordpress.org/plugins/wp-native-php-sessions/
- * Text Domain: pantheon-sessions
- * Domain Path: /languages
+ * Text Domain: wp-native-php-sessions
  *
  * @package WPNPS
  **/
