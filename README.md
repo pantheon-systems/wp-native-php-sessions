@@ -1,8 +1,8 @@
 # WordPress Native PHP Sessions #
-**Contributors:** getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor  
+**Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 5.6  
+**Tested up to:** 5.7  
 **Stable tag:** 1.2.1  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
@@ -62,7 +62,7 @@ However, if you intend to scale your application, local tempfiles are a dangerou
 
 ## Troubleshooting ##
 
-**If you see an error like "Fatal error:** session_start(): Failed to initialize storage module:" or "Warning: ini_set(): A session is active.", then you likely have a plugin that is starting a session before WP Native PHP Sessions is loading.  
+If you see an error like "Fatal error: session_start(): Failed to initialize storage module:" or "Warning: ini_set(): A session is active.", then you likely have a plugin that is starting a session before WP Native PHP Sessions is loading.
 
 To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include the following:
 
