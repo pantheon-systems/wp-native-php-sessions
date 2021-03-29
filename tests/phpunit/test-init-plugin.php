@@ -31,6 +31,7 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
 			array(
+				'id',
 				'user_id',
 				'session_id',
 				'secure_session_id',
