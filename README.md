@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
 **Tested up to:** 5.7  
-**Stable tag:** 1.2.2  
+**Stable tag:** 1.2.3  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -72,6 +72,9 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.2.3 (April 9th, 2021) ###
+* Assigns the table name to a variable before using in query [[#188](https://github.com/pantheon-systems/wp-native-php-sessions/pull/188)].
 
 ### 1.2.2 (March 29th, 2021) ###
 * Includes an auto-incrementing `id` column for replication support [[#187](https://github.com/pantheon-systems/wp-native-php-sessions/pull/187)].

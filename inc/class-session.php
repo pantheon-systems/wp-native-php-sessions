@@ -63,8 +63,9 @@ class Session {
 		$wpdb = self::restore_wpdb_if_null( $wpdb );
 
 		$column_name = self::get_session_id_column();
+		$table_name  = $wpdb->pantheon_sessions;
 		// phpcs:ignore
-		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->pantheon_sessions} WHERE {$column_name}=%s", $sid ) );
+		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE {$column_name}=%s", $sid ) );
 		if ( ! $session_row ) {
 			return false;
 		}
