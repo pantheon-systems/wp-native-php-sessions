@@ -2,7 +2,7 @@
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 5.7  
+**Tested up to:** 5.8  
 **Stable tag:** 1.2.3  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
