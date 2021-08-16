@@ -7,6 +7,8 @@
 
 define( 'WPNPS_RUNNING_TESTS', true );
 
+define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', __DIR__ . '/../../vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php' );
+
 // Replicates some behavior in 'Pantheon_Sessions' that doesn't fire when headers_sent().
 session_name( 'SESS' . substr( hash( 'sha256', 'wordpress-develop.test' ), 0, 32 ) );
 ini_set( 'session.use_cookies', '1' );
