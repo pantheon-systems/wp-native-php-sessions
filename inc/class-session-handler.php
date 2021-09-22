@@ -40,14 +40,12 @@ class Session_Handler implements \SessionHandlerInterface {
 		if ( ! $session ) {
 			$session = Session::create_for_sid( $session_id );
 		}
-
 		if ( ! $session ) {
 			trigger_error( 'Could not write session to the database. Please check MySQL configuration.', E_USER_WARNING );
 			return false;
 		}
 
 		$session->set_data( $session_data );
-
 		return true;
 	}
 
@@ -96,16 +94,15 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param integer $maxlifetime Maximum lifetime in seconds.
 	 */
 	public function gc( $maxlifetime ) {
-		global $wpdb;
-
-		$wpdb = Session::restore_wpdb_if_null( $wpdb );
+		global $sessiondb;
+		$sessiondb = Session::connect_to_session_db();
 
 		// Be sure to adjust 'php_value session.gc_maxlifetime' to a large enough
 		// value. For example, if you want user sessions to stay in your database
 		// for three weeks before deleting them, you need to set gc_maxlifetime
 		// to '1814400'. At that value, only after a user doesn't log in after
 		// three weeks (1814400 seconds) will his/her session be removed.
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE `datetime` <= %s ", gmdate( 'Y-m-d H:i:s', time() - $maxlifetime ) ) );
+		$sessiondb->query( $sessiondb->prepare( "DELETE FROM $sessiondb->pantheon_sessions WHERE `datetime` <= %s ", gmdate( 'Y-m-d H:i:s', time() - $maxlifetime ) ) );
 		return true;
 	}
 

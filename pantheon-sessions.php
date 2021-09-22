@@ -12,6 +12,7 @@
  **/
 
 use Pantheon_Sessions\Session;
+global $sessiondb;
 
 define( 'PANTHEON_SESSIONS_VERSION', '1.2.4' );
 
@@ -163,6 +164,7 @@ class Pantheon_Sessions {
 	 * Largely adopted from Drupal 7's implementation
 	 */
 	private function initialize_session_override() {
+		//var_dump(PHP_SESSION_ACTIVE, session_status());
 		require_once dirname( __FILE__ ) . '/inc/class-session.php';
 		require_once dirname( __FILE__ ) . '/inc/class-session-handler.php';
 		$session_handler = new Pantheon_Sessions\Session_Handler;
@@ -177,16 +179,27 @@ class Pantheon_Sessions {
 	 * Set up the database
 	 */
 	private function setup_database() {
-		global $wpdb, $table_prefix;
+		require_once dirname( __FILE__ ) . '/inc/class-session.php';
+		global $sessiondb;
+		global $table_prefix;
+		$sessiondb = Pantheon_Sessions\Session::connect_to_session_db();
 
 		$table_name              = "{$table_prefix}pantheon_sessions";
-		$wpdb->pantheon_sessions = $table_name;
-		$wpdb->tables[]          = 'pantheon_sessions';
+		$sessiondb->pantheon_sessions = $table_name;
+		$sessiondb->tables[]          = 'pantheon_sessions';
+
+		if(Pantheon_Sessions\Session::check_for_custom_db()) {
+			$customDBHash = md5(SESSION_DB_USER.SESSION_DB_PASSWORD.SESSION_DB_NAME.SESSION_DB_HOST);
+			if(get_option( 'pantheon_session_custom_db_hash' ) != $customDBHash) {
+				delete_option( 'pantheon_session_version' );
+				update_option( 'pantheon_session_custom_db_hash', $customDBHash );
+			}
+		}
 
 		if ( get_option( 'pantheon_session_version' ) ) {
 			return;
 		}
-
+		
 		$create_statement = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 			`id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'An auto-incrementing id to serve as an index.',
 			`user_id` bigint(20) unsigned NOT NULL COMMENT 'The user_id corresponding to a session, or 0 for anonymous user.',
@@ -199,7 +212,7 @@ class Pantheon_Sessions {
 			KEY `secure_session_id` (`secure_session_id`)
 		)";
 		// phpcs:ignore
-		$wpdb->query( $create_statement );
+		$sessiondb->query( $create_statement );
 		update_option( 'pantheon_session_version', PANTHEON_SESSIONS_VERSION );
 
 	}

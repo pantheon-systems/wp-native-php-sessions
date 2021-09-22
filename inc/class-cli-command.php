@@ -23,7 +23,8 @@ class CLI_Command extends \WP_CLI_Command {
 	 * @subcommand list
 	 */
 	public function list_( $args, $assoc_args ) {
-		global $wpdb;
+		global $sessiondb;
+		$sessiondb = \Pantheon_Sessions\Session::connect_to_session_db();
 
 		if ( ! PANTHEON_SESSIONS_ENABLED ) {
 			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
@@ -36,7 +37,7 @@ class CLI_Command extends \WP_CLI_Command {
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
 		$sessions = array();
-		foreach ( new \WP_CLI\Iterators\Query( "SELECT * FROM {$wpdb->pantheon_sessions} ORDER BY datetime DESC" ) as $row ) {
+		foreach ( new \WP_CLI\Iterators\Query( "SELECT * FROM {$sessiondb->pantheon_sessions} ORDER BY datetime DESC" ) as $row ) {
 			$sessions[] = $row;
 		}
 
@@ -56,14 +57,15 @@ class CLI_Command extends \WP_CLI_Command {
 	 * @subcommand delete
 	 */
 	public function delete( $args, $assoc_args ) {
-		global $wpdb;
+		global $sessiondb;
+		$sessiondb = \Pantheon_Sessions\Session::connect_to_session_db();
 
 		if ( ! PANTHEON_SESSIONS_ENABLED ) {
 			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
 		}
 
 		if ( isset( $assoc_args['all'] ) ) {
-			$args = $wpdb->get_col( "SELECT session_id FROM {$wpdb->pantheon_sessions}" );
+			$args = $sessiondb->get_col( "SELECT session_id FROM {$sessiondb->pantheon_sessions}" );
 			if ( empty( $args ) ) {
 				WP_CLI::warning( 'No sessions to delete.' );
 			}

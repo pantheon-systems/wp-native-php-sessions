@@ -54,18 +54,17 @@ class Session {
 	 * @return Session|false
 	 */
 	public static function get_by_sid( $sid ) {
-		global $wpdb;
-
+		global $sessiondb;
 		if ( ! $sid ) {
 			return false;
 		}
 
-		$wpdb = self::restore_wpdb_if_null( $wpdb );
+		$sessiondb = self::connect_to_session_db();
 
 		$column_name = self::get_session_id_column();
-		$table_name  = $wpdb->pantheon_sessions;
+		$table_name  = $sessiondb->pantheon_sessions;
 		// phpcs:ignore
-		$session_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE {$column_name}=%s", $sid ) );
+		$session_row = $sessiondb->get_row( $sessiondb->prepare( "SELECT * FROM {$table_name} WHERE {$column_name}=%s", $sid ) );
 		if ( ! $session_row ) {
 			return false;
 		}
@@ -80,9 +79,8 @@ class Session {
 	 * @return Session
 	 */
 	public static function create_for_sid( $sid ) {
-		global $wpdb;
-
-		$wpdb = self::restore_wpdb_if_null( $wpdb );
+		global $sessiondb;
+		$sessiondb = self::connect_to_session_db();
 
 		$insert_data = array(
 			'session_id' => $sid,
@@ -91,7 +89,7 @@ class Session {
 		if ( function_exists( 'is_ssl' ) && is_ssl() ) {
 			$insert_data['secure_session_id'] = $sid;
 		}
-		$wpdb->insert( $wpdb->pantheon_sessions, $insert_data );
+		$sessiondb->insert( $sessiondb->pantheon_sessions, $insert_data );
 		return self::get_by_sid( $sid );
 	}
 
@@ -141,13 +139,12 @@ class Session {
 	 * @param integer $user_id User id.
 	 */
 	public function set_user_id( $user_id ) {
-		global $wpdb;
-
-		$wpdb = self::restore_wpdb_if_null( $wpdb );
+		global $sessiondb;
+		$sessiondb = self::connect_to_session_db();
 
 		$this->user_id = (int) $user_id;
-		$wpdb->update(
-			$wpdb->pantheon_sessions,
+		$sessiondb->update(
+			$sessiondb->pantheon_sessions,
 			array(
 				'user_id' => $this->user_id,
 			),
@@ -161,8 +158,7 @@ class Session {
 	 * @param mixed $data Session data.
 	 */
 	public function set_data( $data ) {
-		global $wpdb;
-
+		global $sessiondb;
 		if ( $data === $this->get_data() ) {
 			return;
 		}
@@ -171,10 +167,10 @@ class Session {
 			$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		}
 
-		$wpdb = self::restore_wpdb_if_null( $wpdb );
+		$sessiondb = self::connect_to_session_db();
 
-		$wpdb->update(
-			$wpdb->pantheon_sessions,
+		$sessiondb->update(
+			$sessiondb->pantheon_sessions,
 			array(
 				'user_id'    => (int) get_current_user_id(),
 				'datetime'   => gmdate( 'Y-m-d H:i:s' ),
@@ -239,11 +235,10 @@ class Session {
 	 * Destroy this session
 	 */
 	public function destroy() {
-		global $wpdb;
+		global $sessiondb;
+		$sessiondb = self::connect_to_session_db();
 
-		$wpdb = self::restore_wpdb_if_null( $wpdb );
-
-		$wpdb->delete( $wpdb->pantheon_sessions, array( self::get_session_id_column() => $this->get_id() ) );
+		$sessiondb->delete( $sessiondb->pantheon_sessions, array( self::get_session_id_column() => $this->get_id() ) );
 
 		// Reset $_SESSION to prevent a new session from being started.
 		$_SESSION = array();
@@ -255,10 +250,10 @@ class Session {
 	/**
 	 * Restores $wpdb database connection if missing.
 	 *
-	 * @param mixed $wpdb Existing global.
 	 * @return object
 	 */
-	public static function restore_wpdb_if_null( $wpdb ) {
+	public static function restore_wpdb_if_null() {
+		global $wpdb;
 		if ( $wpdb instanceof \wpdb ) {
 			return $wpdb;
 		}
@@ -268,6 +263,39 @@ class Session {
 		$dbhost     = defined( 'DB_HOST' ) ? DB_HOST : '';
 
 		return new \wpdb( $dbuser, $dbpassword, $dbname, $dbhost );
+	}
+
+	/**
+	 * Obtain external database connection if specified otherwise returns the $wpdb database connection.
+	 *
+	 * @return object
+	 */
+	public static function connect_to_session_db() {
+		global $sessiondb;
+		if (self::check_for_custom_db()) {
+			if ( $sessiondb instanceof \wpdb ) {
+				return $sessiondb;
+			}	
+			return new \wpdb( SESSION_DB_USER, SESSION_DB_PASSWORD, SESSION_DB_NAME, SESSION_DB_HOST );
+		}
+		return self::restore_wpdb_if_null();
+	}
+
+	/**
+	 * Check if a custom database table is specified.
+	 *
+	 * @return object
+	 */
+	public static function check_for_custom_db() {
+		if (
+			defined( 'SESSION_DB_USER' ) &&
+			defined( 'SESSION_DB_PASSWORD' ) &&
+			defined( 'SESSION_DB_NAME' ) &&
+			defined( 'SESSION_DB_HOST' )
+		) {	
+			return true;
+		}
+		return false;
 	}
 
 	/**

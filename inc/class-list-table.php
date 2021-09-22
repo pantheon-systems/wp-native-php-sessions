@@ -16,7 +16,8 @@ class List_Table extends \WP_List_Table {
 	 * Prepare the items for the list table
 	 */
 	public function prepare_items() {
-		global $wpdb;
+		global $sessiondb;
+		$sessiondb = Session::connect_to_session_db();
 
 		$columns               = $this->get_columns();
 		$hidden                = array();
@@ -27,8 +28,8 @@ class List_Table extends \WP_List_Table {
 		$paged    = ( isset( $_GET['paged'] ) ) ? (int) $_GET['paged'] : 1;
 		$offset   = $per_page * ( $paged - 1 );
 
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->pantheon_sessions ORDER BY datetime DESC LIMIT %d,%d", $offset, $per_page ) );
-		$total_items = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" );
+		$this->items = $sessiondb->get_results( $sessiondb->prepare( "SELECT * FROM $sessiondb->pantheon_sessions ORDER BY datetime DESC LIMIT %d,%d", $offset, $per_page ) );
+		$total_items = $sessiondb->get_var( "SELECT COUNT(*) FROM $sessiondb->pantheon_sessions" );
 
 		$this->set_pagination_args(
 			array(
@@ -67,7 +68,7 @@ class List_Table extends \WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		if ( 'data' === $column_name ) {
-			return '<code>' . esc_html( $item->data ) . '</code>';
+			return '<code style="max-height: 100px;display: block;overflow: auto;">' . esc_html( $item->data ) . '</code>';
 		} elseif ( 'session_id' === $column_name ) {
 			$query_args = array(
 				'action'  => 'pantheon_clear_session',
