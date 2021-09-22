@@ -37,12 +37,12 @@ class Test_Sessions extends WP_UnitTestCase {
 	 * Sets up the test suite prior to every test.
 	 */
 	public function setUp() {
-		global $wpdb;
+		global $sessiondb;
 		if ( ! isset( $this->table_name ) ) {
-			$this->table_name = $wpdb->pantheon_sessions;
+			$this->table_name = $sessiondb->pantheon_sessions;
 		}
-		$wpdb->pantheon_sessions = $this->table_name;
-		$this->suppress_errors   = $wpdb->suppress_errors();
+		$sessiondb->pantheon_sessions = $this->table_name;
+		$this->suppress_errors   = $sessiondb->suppress_errors();
 		if ( ! Session::get_by_sid( session_id() ) ) {
 			Session::create_for_sid( session_id() );
 		}
@@ -83,11 +83,11 @@ class Test_Sessions extends WP_UnitTestCase {
 	public function test_session_write_error() {
 		$this->markTestSkipped( 'Fails to trigger warning when entire suite is run.' );
 
-		global $wpdb;
+		global $sessiondb;
 		// Set an invalid table to fail queries.
-		$backup_table            = $wpdb->pantheon_sessions;
-		$wpdb->pantheon_sessions = 'foobar1235';
-		$wpdb->suppress_errors( true );
+		$backup_table            = $sessiondb->pantheon_sessions;
+		$sessiondb->pantheon_sessions = 'foobar1235';
+		$sessiondb->suppress_errors( true );
 		$_SESSION['foo'] = 'bar';
 		session_commit();
 		// Error is triggered.
@@ -131,17 +131,17 @@ class Test_Sessions extends WP_UnitTestCase {
 	public function test_session_garbage_collection() {
 		$this->markTestSkipped( 'ini_set() never works once headers have been set' );
 
-		global $wpdb;
+		global $sessiondb;
 		$_SESSION['foo'] = 'bar';
 		session_commit();
-		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
+		$this->assertEquals( 1, $sessiondb->get_var( "SELECT COUNT(*) FROM $sessiondb->pantheon_sessions" ) );
 		$current_val = ini_get( 'session.gc_maxlifetime' );
 		ini_set( 'session.gc_maxlifetime', 100000000 );
 		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
-		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
+		$this->assertEquals( 1, $sessiondb->get_var( "SELECT COUNT(*) FROM $sessiondb->pantheon_sessions" ) );
 		ini_set( 'session.gc_maxlifetime', 0 );
 		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
-		$this->assertEquals( 0, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
+		$this->assertEquals( 0, $sessiondb->get_var( "SELECT COUNT(*) FROM $sessiondb->pantheon_sessions" ) );
 		ini_set( 'session.gc_maxlifetime', $current_val );
 	}
 
@@ -176,10 +176,10 @@ class Test_Sessions extends WP_UnitTestCase {
 	 * Runs at the end of every test.
 	 */
 	public function tearDown() {
-		global $wpdb;
-		$wpdb->pantheon_sessions = $this->table_name;
-		$wpdb->suppress_errors( $this->suppress_errors );
-		$results = $wpdb->query( "DELETE FROM {$wpdb->pantheon_sessions}" );
+		global $sessiondb;
+		$sessiondb->pantheon_sessions = $this->table_name;
+		$sessiondb->suppress_errors( $this->suppress_errors );
+		$results = $sessiondb->query( "DELETE FROM {$sessiondb->pantheon_sessions}" );
 		parent::tearDown();
 	}
 

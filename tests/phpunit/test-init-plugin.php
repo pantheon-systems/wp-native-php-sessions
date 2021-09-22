@@ -21,13 +21,13 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 	 * Ensures the database is created when the test suite runs.
 	 */
 	public function test_database_created() {
-		global $wpdb, $table_prefix;
+		global $sessiondb, $table_prefix;
 
 		$table_name = "{$table_prefix}pantheon_sessions";
-		$this->assertEquals( $table_name, $wpdb->pantheon_sessions );
+		$this->assertEquals( $table_name, $sessiondb->pantheon_sessions );
 
 		// phpcs:ignore
-		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
+		$column_data = $sessiondb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
 			array(
