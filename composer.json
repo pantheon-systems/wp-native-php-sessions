@@ -29,5 +29,10 @@
         "phpcs": "vendor/bin/phpcs",
         "phpunit": "vendor/bin/phpunit",
         "test": "@phpunit"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
