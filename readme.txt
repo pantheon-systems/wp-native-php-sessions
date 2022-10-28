@@ -2,8 +2,8 @@
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 5.9
-Stable tag: 1.2.4
+Tested up to: 6.1
+Stable tag: 1.2.5
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
