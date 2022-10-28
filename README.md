@@ -1,9 +1,9 @@
 # WordPress Native PHP Sessions #
-**Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor)  
+**Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://github.com/stovak)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 5.9  
-**Stable tag:** 1.2.4  
+**Tested up to:** 6.1  
+**Stable tag:** 1.2.5  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -13,7 +13,7 @@ Use native PHP sessions and stay horizontally scalable. Better living through su
 ## Description ##
 
 [![Actively Maintained](https://img.shields.io/badge/Pantheon-Actively_Maintained-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#actively-maintained-support)
-[![Build Status](https://travis-ci.org/pantheon-systems/wp-native-php-sessions.svg?branch=master)](https://travis-ci.org/pantheon-systems/wp-native-php-sessions) [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master)
+ [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master)
 
 WordPress core does not use PHP sessions, but sometimes they are required by your use-case, a plugin or theme.
 
@@ -73,6 +73,9 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.2.5 (October 28th, 2022) ###
+* Added `#[ReturnTypeWillChange]` where required to silence deprecation warnings in PHP 8.1. [[#216](https://github.com/pantheon-systems/wp-native-php-sessions/pull/216)]
 
 ### 1.2.4 (September 14th, 2021) ###
 * Increases data blob size from 64k to 16M for new session tables; existing tables will need to manually modify the column if they want to apply this change [[#193](https://github.com/pantheon-systems/wp-native-php-sessions/pull/193)].
