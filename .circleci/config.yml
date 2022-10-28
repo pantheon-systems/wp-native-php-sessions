@@ -32,6 +32,10 @@ jobs:
           paths:
             - vendor
       - run:
+          name: "Add PUBKEY"
+          command: |
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+      - run:
           name: "Run PHP Lint"
           command: |
             composer phpcs
