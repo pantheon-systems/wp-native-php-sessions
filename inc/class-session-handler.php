@@ -23,6 +23,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_name Name of the session.
 	 * @return boolean
 	 */
+	#[\ReturnTypeWillChange]
 	public function open( $save_path, $session_name ) {
 		return true;
 	}
@@ -34,6 +35,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_data Session data.
 	 * @return boolean
 	 */
+	#[\ReturnTypeWillChange]
 	public function write( $session_id, $session_data ) {
 		$session = Session::get_by_sid( $session_id );
 
@@ -57,6 +59,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_id Session id.
 	 * @return string
 	 */
+	#[\ReturnTypeWillChange]
 	public function read( $session_id ) {
 		// Handle the case of first time visitors and clients that don't store
 		// cookies (eg. web crawlers).
@@ -79,6 +82,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 *
 	 * @param string $session_id Session id.
 	 */
+	#[\ReturnTypeWillChange]
 	public function destroy( $session_id ) {
 		$session = Session::get_by_sid( $session_id );
 		if ( ! $session ) {
@@ -95,6 +99,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 *
 	 * @param integer $maxlifetime Maximum lifetime in seconds.
 	 */
+	#[\ReturnTypeWillChange]
 	public function gc( $maxlifetime ) {
 		global $wpdb;
 
