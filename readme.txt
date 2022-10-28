@@ -73,6 +73,9 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 
 == Changelog ==
 
+= 1.2.5 (October 28, 2022) =
+* Added `#[ReturnTypeWillChange]` where required to silence deprecation warnings in PHP 8.1. [[#216](https://github.com/pantheon-systems/wp-native-php-sessions/pull/216)]
+
 = 1.2.4 (September 14th, 2021) =
 * Increases data blob size from 64k to 16M for new session tables; existing tables will need to manually modify the column if they want to apply this change [[#193](https://github.com/pantheon-systems/wp-native-php-sessions/pull/193)].
 
@@ -141,11 +144,11 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 * Compatibility with PHP 7.
 * Adds `pantheon_session_expiration` filter to modify session expiration value.
 
-= 0.4 = 
+= 0.4 =
 * Adjustment to `session_id()` behavior for wider compatibility
 * Using superglobal for REQUEST_TIME as opposed to `time()`
 
-= 0.3 = 
+= 0.3 =
 * Fixes issue related to WordPress plugin load order
 
 = 0.1 =

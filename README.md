@@ -74,6 +74,9 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 
 ## Changelog ##
 
+### 1.2.5 (October 28th, 2022) ###
+* Added `#[ReturnTypeWillChange]` where required to silence deprecation warnings in PHP 8.1. [[#216](https://github.com/pantheon-systems/wp-native-php-sessions/pull/216)]
+
 ### 1.2.4 (September 14th, 2021) ###
 * Increases data blob size from 64k to 16M for new session tables; existing tables will need to manually modify the column if they want to apply this change [[#193](https://github.com/pantheon-systems/wp-native-php-sessions/pull/193)].
 
