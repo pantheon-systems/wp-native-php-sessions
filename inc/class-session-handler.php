@@ -23,7 +23,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_name Name of the session.
 	 * @return boolean
 	 */
-	public function open( $save_path, $session_name ) {
+	public function open( string $save_path, string $session_name ) : bool {
 		return true;
 	}
 
@@ -34,7 +34,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_data Session data.
 	 * @return boolean
 	 */
-	public function write( $session_id, $session_data ) {
+	public function write( string $session_id, string $session_data ) : bool {
 		$session = Session::get_by_sid( $session_id );
 
 		if ( ! $session ) {
@@ -57,7 +57,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 * @param string $session_id Session id.
 	 * @return string
 	 */
-	public function read( $session_id ) {
+	public function read( string $session_id ) : string|false {
 		// Handle the case of first time visitors and clients that don't store
 		// cookies (eg. web crawlers).
 		$insecure_session_name = substr( session_name(), 1 );
@@ -79,10 +79,10 @@ class Session_Handler implements \SessionHandlerInterface {
 	 *
 	 * @param string $session_id Session id.
 	 */
-	public function destroy( $session_id ) {
+	public function destroy( string $session_id ) : bool {
 		$session = Session::get_by_sid( $session_id );
 		if ( ! $session ) {
-			return;
+			return false;
 		}
 
 		$session->destroy();
@@ -95,7 +95,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 *
 	 * @param integer $maxlifetime Maximum lifetime in seconds.
 	 */
-	public function gc( $maxlifetime ) {
+	public function gc(int $maxlifetime ) : int|false {
 		global $wpdb;
 
 		$wpdb = Session::restore_wpdb_if_null( $wpdb );
