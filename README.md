@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
 **Tested up to:** 6.1  
-**Stable tag:** 1.2.5  
+**Stable tag:** 1.3.0  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -32,22 +32,7 @@ That's it!
 
 ## Contributing ##
 
-The best way to contribute to the development of this plugin is by participating on the GitHub project:
-
-https://github.com/pantheon-systems/wp-native-php-sessions
-
-Pull requests and issues are welcome!
-
-You may notice there are two sets of tests running, on two different services:
-
-* Travis CI runs the [PHPUnit](https://phpunit.de/) test suite.
-* Circle CI runs the [Behat](http://behat.org/) test suite against a Pantheon site, to ensure the plugin's compatibility with the Pantheon platform.
-
-Both of these test suites can be run locally, with a varying amount of setup.
-
-PHPUnit requires the [WordPress PHPUnit test suite](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/), and access to a database with name `wordpress_test`. If you haven't already configured the test suite locally, you can run `bash bin/install-wp-tests.sh wordpress_test root '' localhost`.
-
-Behat requires a Pantheon site. Once you've created the site, you'll need [install Terminus](https://github.com/pantheon-systems/terminus#installation), and set the `TERMINUS_TOKEN`, `TERMINUS_SITE`, and `TERMINUS_ENV` environment variables. Then, you can run `./bin/behat-prepare.sh` to prepare the site for the test suite.
+See [CONTRIBUTING.md](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/CONTRIBUTING.md) for information on contributing.
 
 ## Frequently Asked Questions ##
 
@@ -73,6 +58,9 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.3.0 (November 28th, 2022) ###
+* Added CONTRIBUTING.MD and GitHub action to automate deployments to wp.org. [[#219](https://github.com/pantheon-systems/wp-native-php-sessions/pull/219)]
 
 ### 1.2.5 (October 28th, 2022) ###
 * Added `#[ReturnTypeWillChange]` where required to silence deprecation warnings in PHP 8.1. [[#216](https://github.com/pantheon-systems/wp-native-php-sessions/pull/216)]
