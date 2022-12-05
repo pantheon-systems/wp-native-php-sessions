@@ -36,13 +36,11 @@ By default the session lifetime is set to 0, which is until the browser is close
 
 To override this use the `pantheon_session_expiration` filter before the WordPress Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
 
-```
-<?php
-function my_session_expiration_override() {
-    return 60*60*4; // 4 hours
-}
-add_filter( 'pantheon_session_expiration', 'my_session_expiration_override' );
-```
+    <?php
+    function my_session_expiration_override() {
+        return 60*60*4; // 4 hours
+    }
+    add_filter( 'pantheon_session_expiration', 'my_session_expiration_override' );
 
 ## Contributing ##
 
