@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,6 +28,18 @@ https://github.com/pantheon-systems/wp-native-php-sessions
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 That's it!
+
+== Configuration ==
+
+By default the session lifetime is set to 0, which is until the browser is closed.
+
+To override this use the `pantheon_session_expiration` filter before the WordPress Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
+
+    <?php
+    function my_session_expiration_override() {
+        return 60*60*4; // 4 hours
+    }
+    add_filter( 'pantheon_session_expiration', 'my_session_expiration_override' );
 
 == Contributing ==
 
@@ -57,6 +69,11 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 == Changelog ==
+
+= 1.3.1 (December 5, 2022) =
+* Document session lifetime handling [[#224](https://github.com/pantheon-systems/wp-native-php-sessions/pull/224)].
+* Make dependabot target develop branch [[#226](https://github.com/pantheon-systems/wp-native-php-sessions/pull/226)].
+* Ignore `.wordpress-org` directory [[#223](https://github.com/pantheon-systems/wp-native-php-sessions/pull/223)].
 
 = 1.3.0 (November 28th, 2022) =
 * Added CONTRIBUTING.MD and GitHub action to automate deployments to wp.org. [[#219](https://github.com/pantheon-systems/wp-native-php-sessions/pull/219)]
