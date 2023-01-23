@@ -249,7 +249,6 @@ class Session {
 		$_SESSION = array();
 
 		$this->delete_cookies();
-
 	}
 
 	/**
@@ -297,7 +296,6 @@ class Session {
 			setcookie( $cookie_name, '', $_SERVER['REQUEST_TIME'] - 3600, $params['path'], $params['domain'], $params['secure'], $params['httponly'] );
 			unset( $_COOKIE[ $cookie_name ] );
 		}
-
 	}
 
 	/**
