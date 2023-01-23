@@ -175,7 +175,7 @@ class Test_Sessions extends WP_UnitTestCase {
 	/**
 	 * Runs at the end of every test.
 	 */
-	public function tearDown() : void {
+	public function tearDown(): void {
 		global $wpdb;
 		$wpdb->pantheon_sessions = $this->table_name;
 		$wpdb->suppress_errors( $this->suppress_errors );
