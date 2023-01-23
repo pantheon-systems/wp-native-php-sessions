@@ -119,6 +119,7 @@ class Session_Handler implements \SessionHandlerInterface {
 	 *
 	 * @return boolean
 	 */
+	#[\ReturnTypeWillChange]
 	public function close() {
 		return true;
 	}
