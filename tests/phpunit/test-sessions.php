@@ -73,7 +73,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		session_commit();
 		$session = \Pantheon_Sessions\Session::get_by_sid( session_id() );
 		$data    = $session->get_data();
-		$this->assertEquals( 'foo|s:3:"bar";', $session->get_data() );
+		$this->assertEquals( 'foo|s:3:"bar";', $data );
 		return $session;
 	}
 
