@@ -36,7 +36,7 @@ class Test_Sessions extends WP_UnitTestCase {
 	/**
 	 * Sets up the test suite prior to every test.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		global $wpdb;
 		if ( ! isset( $this->table_name ) ) {
 			$this->table_name = $wpdb->pantheon_sessions;
@@ -175,7 +175,7 @@ class Test_Sessions extends WP_UnitTestCase {
 	/**
 	 * Runs at the end of every test.
 	 */
-	public function tearDown() {
+	public function tearDown() : void {
 		global $wpdb;
 		$wpdb->pantheon_sessions = $this->table_name;
 		$wpdb->suppress_errors( $this->suppress_errors );
