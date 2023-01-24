@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
 **Tested up to:** 6.1  
-**Stable tag:** 1.3.1  
+**Stable tag:** 1.3.2  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -70,6 +70,11 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.3.2 (January 25, 2023) ###
+* PHP 8.2 compatibility [[#232](https://github.com/pantheon-systems/wp-native-php-sessions/pull/232)].
+* Bump dealerdirect/phpcodesniffer-composer-installer from 0.7.2 to 1.0.0 [[#229](https://github.com/pantheon-systems/wp-native-php-sessions/pull/229)].
+* Update images for lint and test-behat jobs [[#228](https://github.com/pantheon-systems/wp-native-php-sessions/pull/228)].
 
 ### 1.3.1 (December 5, 2022) ###
 * Document session lifetime handling [[#224](https://github.com/pantheon-systems/wp-native-php-sessions/pull/224)].

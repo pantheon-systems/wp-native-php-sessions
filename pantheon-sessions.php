@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.3.1' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.3.2' );
 
 /**
  * Main controller class for the plugin.
