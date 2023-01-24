@@ -35,7 +35,7 @@ class Pantheon_Sessions {
 	public static function get_instance() {
 
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Pantheon_Sessions;
+			self::$instance = new Pantheon_Sessions();
 			self::$instance->load();
 		}
 		return self::$instance;
@@ -75,7 +75,6 @@ class Pantheon_Sessions {
 		if ( ! defined( 'PANTHEON_SESSIONS_ENABLED' ) ) {
 			define( 'PANTHEON_SESSIONS_ENABLED', 1 );
 		}
-
 	}
 
 	/**
@@ -84,14 +83,13 @@ class Pantheon_Sessions {
 	private function require_files() {
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			require_once dirname( __FILE__ ) . '/inc/class-cli-command.php';
+			require_once __DIR__ . '/inc/class-cli-command.php';
 		}
 
 		if ( is_admin() ) {
-			require_once dirname( __FILE__ ) . '/inc/class-admin.php';
+			require_once __DIR__ . '/inc/class-admin.php';
 			$this->admin = Pantheon_Sessions\Admin::get_instance();
 		}
-
 	}
 
 	/**
@@ -154,7 +152,6 @@ class Pantheon_Sessions {
 		ini_set( 'session.cookie_httponly', '1' );
 		// Get cookie lifetime from filters so you can put your custom lifetime.
 		ini_set( 'session.cookie_lifetime', (int) apply_filters( 'pantheon_session_expiration', 0 ) );
-
 	}
 
 	/**
@@ -163,9 +160,9 @@ class Pantheon_Sessions {
 	 * Largely adopted from Drupal 7's implementation
 	 */
 	private function initialize_session_override() {
-		require_once dirname( __FILE__ ) . '/inc/class-session.php';
-		require_once dirname( __FILE__ ) . '/inc/class-session-handler.php';
-		$session_handler = new Pantheon_Sessions\Session_Handler;
+		require_once __DIR__ . '/inc/class-session.php';
+		require_once __DIR__ . '/inc/class-session-handler.php';
+		$session_handler = new Pantheon_Sessions\Session_Handler();
 		if ( PHP_SESSION_ACTIVE !== session_status() ) {
 			session_set_save_handler( $session_handler, false );
 		}
@@ -201,7 +198,6 @@ class Pantheon_Sessions {
 		// phpcs:ignore
 		$wpdb->query( $create_statement );
 		update_option( 'pantheon_session_version', PANTHEON_SESSIONS_VERSION );
-
 	}
 
 	/**
@@ -232,7 +228,7 @@ class Pantheon_Sessions {
 	/**
 	 * Force the plugin to be the first loaded
 	 */
-	static public function force_first_load() {
+	public static function force_first_load() {
 		$path    = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
 		$plugins = get_option( 'active_plugins' );
 		if ( $plugins ) {

@@ -33,7 +33,7 @@ class Admin {
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Admin;
+			self::$instance = new Admin();
 			self::$instance->setup_actions();
 		}
 		return self::$instance;
@@ -46,7 +46,6 @@ class Admin {
 
 		add_action( 'admin_menu', array( $this, 'action_admin_menu' ) );
 		add_action( 'wp_ajax_pantheon_clear_session', array( $this, 'handle_clear_session' ) );
-
 	}
 
 	/**
@@ -55,7 +54,6 @@ class Admin {
 	public function action_admin_menu() {
 
 		add_management_page( __( 'Pantheon Sessions', 'wp-native-php-sessions' ), __( 'Sessions', 'wp-native-php-sessions' ), self::$capability, 'pantheon-sessions', array( $this, 'handle_page' ) );
-
 	}
 
 	/**
@@ -65,7 +63,7 @@ class Admin {
 		global $wpdb;
 
 		require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-		require_once dirname( __FILE__ ) . '/class-list-table.php';
+		require_once __DIR__ . '/class-list-table.php';
 
 		echo '<div class="wrap">';
 
@@ -89,14 +87,13 @@ class Admin {
 		}
 		echo '</div>';
 
-		$wp_list_table = new List_Table;
+		$wp_list_table = new List_Table();
 		$wp_list_table->prepare_items();
 		$wp_list_table->display();
 
 		echo '</div>';
 
 		add_action( 'admin_footer', array( $this, 'action_admin_footer' ) );
-
 	}
 
 	/**
@@ -118,7 +115,6 @@ class Admin {
 		}
 		wp_safe_redirect( add_query_arg( 'message', $message, wp_get_referer() ) );
 		exit;
-
 	}
 
 	/**

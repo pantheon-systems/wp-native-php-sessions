@@ -41,7 +41,6 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			),
 			$columns
 		);
-
 	}
 
 }
