@@ -17,9 +17,9 @@ ini_set( 'session.use_trans_sid', '0' );
 ini_set( 'session.cache_limiter', '' );
 ini_set( 'session.cookie_httponly', '1' );
 ini_set( 'session.cookie_lifetime', 0 );
-require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/inc/class-session-handler.php';
-require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/inc/class-session.php';
-$session_handler = new Pantheon_Sessions\Session_Handler;
+require_once dirname( dirname( __DIR__ ) ) . '/inc/class-session-handler.php';
+require_once dirname( dirname( __DIR__ ) ) . '/inc/class-session.php';
+$session_handler = new Pantheon_Sessions\Session_Handler();
 session_set_save_handler( $session_handler, false );
 session_start();
 
@@ -34,7 +34,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Loads the plugin to be tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/../pantheon-sessions.php';
+	require dirname( __DIR__ ) . '/../pantheon-sessions.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

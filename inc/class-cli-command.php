@@ -41,7 +41,6 @@ class CLI_Command extends \WP_CLI_Command {
 		}
 
 		\WP_CLI\Utils\Format_Items( $assoc_args['format'], $sessions, $assoc_args['fields'] );
-
 	}
 
 	/**
@@ -78,7 +77,6 @@ class CLI_Command extends \WP_CLI_Command {
 				WP_CLI::warning( sprintf( "Session doesn't exist: %s", $session_id ) );
 			}
 		}
-
 	}
 
 }
