@@ -72,7 +72,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 ## Changelog ##
 
 ### 1.3.3 (January 25, 2023) ###
-* Bump version in pantheon-sessions.php [[#233](https://github.com/pantheon-systems/wp-native-php-sessions/pull/233)].
+* Bump version in pantheon-sessions.php [[#234](https://github.com/pantheon-systems/wp-native-php-sessions/pull/234)].
 
 ### 1.3.2 (January 25, 2023) ###
 * PHP 8.2 compatibility [[#232](https://github.com/pantheon-systems/wp-native-php-sessions/pull/232)].
