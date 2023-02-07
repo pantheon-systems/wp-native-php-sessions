@@ -31,7 +31,7 @@ The `develop` branch is the development branch which means it contains the next 
 1. Create a PR against the `main` branch.
 1. After all tests pass and you have received approval from a CODEOWNER (including resolving any merge conflicts), merge the PR into `main`.
 1. Pull `main` locally, create a new tag, and push up.
-1. 1. (Optional) Download the zipped asset from the release and unzip locally, confirming that the expected files are present (and unexpected files, e.g. files outlined in [.gitattributes](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/.gitattributes) are omitted).
+1. (Optional) Download the zipped asset from the release and unzip locally, confirming that the expected files are present (and unexpected files, e.g. files outlined in [.gitattributes](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/.gitattributes) are omitted).
 1. Create a [new release](https://github.com/pantheon-systems/wp-native-php-sessions/releases/new) using the tag created in the previous steps, naming the release with the new version number, and targeting the tag created in the previous step. Paste the release changelog from `CHANGELOG.md` into the body of the release and include a link to the closed issues if applicable.
 1. Wait for the [_Release wp-native-php-sessions plugin to wp.org_ action](https://github.com/pantheon-systems/wp-native-php-sessions/actions/workflows/wordpress-plugin-deploy.yml) to finish deploying to the WordPress.org repository. If all goes well, users with SVN commit access for that plugin will receive an emailed diff of changes.
 1. Check WordPress.org: Ensure that the changes are live on https://wordpress.org/plugins/wp-native-php-sessions/. This may take a few minutes.
