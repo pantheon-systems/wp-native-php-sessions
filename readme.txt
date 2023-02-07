@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,12 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 == Changelog ==
+
+= 1.3.4 (February 7, 2023) =
+* Add fallback for $session->get_data() [[#237(https://github.com/pantheon-systems/wp-native-php-sessions/pull/237)]] (reported [on WordPress.org](https://wordpress.org/support/topic/php-warning-session_start-failed-to-read-session-data-user/))
+* Update CODEOWNERS file [[#239](https://github.com/pantheon-systems/wp-native-php-sessions/pull/239)]
+* Fix GPL license in `composer.json` file [[#236](https://github.com/pantheon-systems/wp-native-php-sessions/pull/236)]
+* Bump grunt from 1.5.3 to 1.6.1 [[#235](https://github.com/pantheon-systems/wp-native-php-sessions/pull/235)]
 
 = 1.3.3 (January 25, 2023) =
 * Bump version in pantheon-sessions.php [[#234](https://github.com/pantheon-systems/wp-native-php-sessions/pull/234)].

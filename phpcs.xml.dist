@@ -33,4 +33,10 @@
 	<rule ref="Squiz.Commenting.FunctionComment.MissingParamTag">
 		<exclude-pattern>*/inc/class-cli-command.php</exclude-pattern>
 	</rule>
+
+  <!-- Excluded sniffs -->
+  <rule ref="Universal.Operators.DisallowShortTernary.Found">
+    <exclude-pattern>*/inc/*</exclude-pattern>
+    <exclude-pattern>pantheon-sessions.php</exclude-pattern>
+  </rule>
 </ruleset>
