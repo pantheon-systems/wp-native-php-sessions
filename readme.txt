@@ -70,6 +70,20 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 
 == Changelog ==
 
+= 1.3.4 (February 7, 2023) =
+* Add fallback for $session->get_data() [[#237(https://github.com/pantheon-systems/wp-native-php-sessions/pull/237)]] (reported [on WordPress.org](https://wordpress.org/support/topic/php-warning-session_start-failed-to-read-session-data-user/))
+* Update CODEOWNERS file [[#239](https://github.com/pantheon-systems/wp-native-php-sessions/pull/239)]
+* Fix GPL license in `composer.json` file [[#236](https://github.com/pantheon-systems/wp-native-php-sessions/pull/236)]
+* Bump grunt from 1.5.3 to 1.6.1 [[#235](https://github.com/pantheon-systems/wp-native-php-sessions/pull/235)]
+
+= 1.3.3 (January 25, 2023) =
+* Bump version in pantheon-sessions.php [[#234](https://github.com/pantheon-systems/wp-native-php-sessions/pull/234)].
+
+= 1.3.2 (January 25, 2023) =
+* PHP 8.2 compatibility [[#232](https://github.com/pantheon-systems/wp-native-php-sessions/pull/232)].
+* Bump dealerdirect/phpcodesniffer-composer-installer from 0.7.2 to 1.0.0 [[#229](https://github.com/pantheon-systems/wp-native-php-sessions/pull/229)].
+* Update images for lint and test-behat jobs [[#228](https://github.com/pantheon-systems/wp-native-php-sessions/pull/228)].
+
 = 1.3.1 (December 5, 2022) =
 * Document session lifetime handling [[#224](https://github.com/pantheon-systems/wp-native-php-sessions/pull/224)].
 * Make dependabot target develop branch [[#226](https://github.com/pantheon-systems/wp-native-php-sessions/pull/226)].
