@@ -1,9 +1,9 @@
 === WordPress Native PHP Sessions ===
-Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak
+Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 6.1
-Stable tag: 1.3.4
+Tested up to: 6.2
+Stable tag: 1.3.5
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,9 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 == Changelog ==
+= 1.3.5 (April 7, 2023) =
+* Bump yoast/phpunit-polyfills from 1.0.4 to 1.0.5 [[#245](https://github.com/pantheon-systems/wp-native-php-sessions/pull/245)].
+* Bump tested up to version
 
 = 1.3.4 (February 7, 2023) =
 * Add fallback for $session->get_data() [[#237(https://github.com/pantheon-systems/wp-native-php-sessions/pull/237)]] (reported [on WordPress.org](https://wordpress.org/support/topic/php-warning-session_start-failed-to-read-session-data-user/))
