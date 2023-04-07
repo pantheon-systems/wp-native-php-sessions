@@ -19,7 +19,8 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
         "phpunit/phpunit": "^9",
         "phpcompatibility/php-compatibility": "^9.3",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+        "symfony/yaml": "^5.4 || ^6"
     },
     "scripts": {
         "lint": "@phpcs",
