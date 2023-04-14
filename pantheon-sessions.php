@@ -239,10 +239,7 @@ class Pantheon_Sessions {
 				update_option( 'active_plugins', $plugins );
 			}
 		}
-
-		return;
 	}
-
 }
 
 /**
