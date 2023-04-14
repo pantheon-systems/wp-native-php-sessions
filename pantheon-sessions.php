@@ -62,8 +62,8 @@ class Pantheon_Sessions {
 			$this->setup_database();
 			$this->initialize_session_override();
 			$this->set_ini_values();
-			add_action( 'set_logged_in_cookie', array( __CLASS__, 'action_set_logged_in_cookie' ), 10, 4 );
-			add_action( 'clear_auth_cookie', array( __CLASS__, 'action_clear_auth_cookie' ) );
+			add_action( 'set_logged_in_cookie', [ __CLASS__, 'action_set_logged_in_cookie' ], 10, 4 );
+			add_action( 'clear_auth_cookie', [ __CLASS__, 'action_clear_auth_cookie' ] );
 		}
 	}
 
