@@ -9,7 +9,10 @@
 	<!-- Show progress and sniff codes in all reports -->
 	<arg value="ps"/>
 
-	<rule ref="WordPress-Core" />
+	<rule ref="Pantheon-WP">
+		<!-- Ignore all of the VIP rules. These mostly deal with sessions, and that's explicitly what this plugin does. -->
+		<exclude name="WordPressVIPMinimum" />
+	</rule>
 	<rule ref="WordPress-Docs" />
 	<rule ref="PHPCompatibility"/>
 
@@ -33,10 +36,4 @@
 	<rule ref="Squiz.Commenting.FunctionComment.MissingParamTag">
 		<exclude-pattern>*/inc/class-cli-command.php</exclude-pattern>
 	</rule>
-
-  <!-- Excluded sniffs -->
-  <rule ref="Universal.Operators.DisallowShortTernary.Found">
-    <exclude-pattern>*/inc/*</exclude-pattern>
-    <exclude-pattern>pantheon-sessions.php</exclude-pattern>
-  </rule>
 </ruleset>
