@@ -29,13 +29,13 @@ class CLI_Command extends \WP_CLI_Command {
 			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
 		}
 
-		$defaults   = array(
+		$defaults   = [
 			'format' => 'table',
 			'fields' => 'session_id,user_id,datetime,ip_address,data',
-		);
+		];
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
-		$sessions = array();
+		$sessions = [];
 		foreach ( new \WP_CLI\Iterators\Query( "SELECT * FROM {$wpdb->pantheon_sessions} ORDER BY datetime DESC" ) as $row ) {
 			$sessions[] = $row;
 		}
