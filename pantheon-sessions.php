@@ -170,7 +170,7 @@ class Pantheon_Sessions {
 				trigger_error(
 					sprintf(
 						/* translators: %1s: File path, %2d: Line number */
-						__("Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d."),
+						__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
 						$file,
 						$line
 					),
