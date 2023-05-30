@@ -171,9 +171,9 @@ class Pantheon_Sessions {
 		require_once __DIR__ . '/inc/class-session-handler.php';
 		$session_handler = new Pantheon_Sessions\Session_Handler();
 		if ( PHP_SESSION_ACTIVE !== session_status() ) {
-			// Check if headers have already been sent
+			// Check if headers have already been sent.
 			if ( headers_sent( $file, $line ) ) {
-				// Output a friendly error message if headers are already sent
+				// Output a friendly error message if headers are already sent.
 				trigger_error(
 					sprintf(
 						/* translators: %1s: File path, %2d: Line number */
