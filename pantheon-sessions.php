@@ -28,6 +28,13 @@ class Pantheon_Sessions {
 	private static $instance;
 
 	/**
+	 * The admin instance.
+	 *
+	 * @var \Pantheon_Sessions\Admin
+	 */
+	private $admin;
+
+	/**
 	 * Gets a copy of the singleton instance.
 	 *
 	 * @return object
