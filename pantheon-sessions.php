@@ -177,7 +177,7 @@ class Pantheon_Sessions {
 					E_USER_WARNING
 				);
 			} else {
-				session_set_save_handler($session_handler, false);
+				session_set_save_handler( $session_handler, false );
 			}
 		}
 		// Close the session before $wpdb destructs itself.
