@@ -164,7 +164,21 @@ class Pantheon_Sessions {
 		require_once __DIR__ . '/inc/class-session-handler.php';
 		$session_handler = new Pantheon_Sessions\Session_Handler();
 		if ( PHP_SESSION_ACTIVE !== session_status() ) {
-			session_set_save_handler( $session_handler, false );
+			// Check if headers have already been sent
+			if ( headers_sent( $file, $line ) ) {
+				// Output a friendly error message if headers are already sent
+				trigger_error(
+					sprintf(
+						/* translators: %1s: File path, %2d: Line number */
+						__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
+						$file,
+						$line
+					),
+					E_USER_WARNING
+				);
+			} else {
+				session_set_save_handler( $session_handler, false );
+			}
 		}
 		// Close the session before $wpdb destructs itself.
 		add_action( 'shutdown', 'session_write_close', 999, 0 );
