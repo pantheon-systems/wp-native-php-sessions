@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions for WordPress
- * Version: 1.3.5
+ * Version: 1.3.6-dev
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.3.5' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.3.6-dev' );
 
 /**
  * Main controller class for the plugin.
@@ -164,9 +164,9 @@ class Pantheon_Sessions {
 		require_once __DIR__ . '/inc/class-session-handler.php';
 		$session_handler = new Pantheon_Sessions\Session_Handler();
 		if ( PHP_SESSION_ACTIVE !== session_status() ) {
-			// Check if headers have already been sent
+			// Check if headers have already been sent.
 			if ( headers_sent( $file, $line ) ) {
-				// Output a friendly error message if headers are already sent
+				// Output a friendly error message if headers are already sent.
 				trigger_error(
 					sprintf(
 						/* translators: %1s: File path, %2d: Line number */
