@@ -2,7 +2,7 @@
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 6.2  
+**Tested up to:** 6.2.2  
 **Stable tag:** 1.3.6-dev  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
@@ -72,6 +72,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 ## Changelog ##
 
 ### Latest ###
+* Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)
 * Update CONTRIBUTING.md [[#252](https://github.com/pantheon-systems/wp-native-php-sessions/pull/252)].
 * Update informational Error message for the case of headers already sent [[#249](https://github.com/pantheon-systems/wp-native-php-sessions/pull/249)].
 * Add pantheon-wp-coding-standards [[#247](https://github.com/pantheon-systems/wp-native-php-sessions/pull/247)].
