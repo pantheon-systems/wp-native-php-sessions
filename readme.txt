@@ -71,7 +71,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 == Changelog ==
 = Latest =
 * Update CONTRIBUTING.md [[#252](https://github.com/pantheon-systems/wp-native-php-sessions/pull/252)].
-* Update informational Error message for the case of headers already sent [[#250](https://github.com/pantheon-systems/wp-native-php-sessions/pull/249)].
+* Update informational Error message for the case of headers already sent [[#249](https://github.com/pantheon-systems/wp-native-php-sessions/pull/249)].
 * Add pantheon-wp-coding-standards [[#247](https://github.com/pantheon-systems/wp-native-php-sessions/pull/247)].
 
 = 1.3.5 (April 7, 2023) =
