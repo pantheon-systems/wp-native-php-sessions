@@ -2,8 +2,8 @@
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 6.2  
-**Stable tag:** 1.3.5  
+**Tested up to:** 6.2.2  
+**Stable tag:** 1.3.6  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -70,6 +70,9 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.3.6 (June 1, 2023) ###
+* Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)
 
 ### 1.3.5 (April 7, 2023) ###
 * Bump yoast/phpunit-polyfills from 1.0.4 to 1.0.5 [[#245](https://github.com/pantheon-systems/wp-native-php-sessions/pull/245)].
