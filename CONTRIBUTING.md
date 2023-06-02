@@ -55,4 +55,4 @@ The `main` branch matches the latest stable release deployed to [wp.org](wp.org)
     * Add a new `** X.Y.X-dev **` heading to the changelog
     * `git add -A .`
     * `git commit -m "Prepare X.Y.X-dev"`
-    * `git push origin develop --force`
+    * `git push origin develop`
