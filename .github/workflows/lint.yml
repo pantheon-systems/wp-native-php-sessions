@@ -1,0 +1,24 @@
+name: Lint and Test
+on: push
+  
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/vendor
+        key: test-lint-dependencies-{{ checksum "composer.json" }}
+        restore-keys: test-lint-dependencies-{{ checksum "composer.json" }}
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+    - name: Install dependencies
+      run: composer install -n --prefer-dist
+    - name: Run PHP Lint
+      run: composer phpcs

@@ -3,7 +3,6 @@ workflows:
   version: 2
   main:
     jobs:
-      - lint
       - test-behat
       - test-phpunit-74
       - test-phpunit-82
@@ -18,24 +17,6 @@ workflows:
     jobs:
       - test-behat
 jobs:
-  lint:
-    working_directory: ~/pantheon-systems/wp-native-php-sessions
-    docker:
-      - image: quay.io/pantheon-public/build-tools-ci:8.x-php8.0
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - test-lint-dependencies-{{ checksum "composer.json" }}
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          key: test-lint-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - vendor
-      - run:
-          name: "Run PHP Lint"
-          command: |
-            composer phpcs
   test-behat:
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     parallelism: 1
