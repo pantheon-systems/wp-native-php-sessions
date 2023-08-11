@@ -67,7 +67,7 @@ jobs:
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     docker:
       - image: circleci/php:7.4-node-browsers
-      - image: circleci/mariadb:10.3
+      - image: cimg/mariadb:10.3
     environment:
       - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
       - WP_CORE_DIR: "/tmp/wordpress/"
@@ -105,7 +105,7 @@ jobs:
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     docker:
       - image: cimg/php:8.2.0
-      - image: circleci/mariadb:10.3
+      - image: cimg/mariadb:10.3
     environment:
       - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
       - WP_CORE_DIR: "/tmp/wordpress/"
