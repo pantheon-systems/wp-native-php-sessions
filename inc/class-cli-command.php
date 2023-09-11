@@ -74,9 +74,47 @@ class CLI_Command extends \WP_CLI_Command {
 				$session->destroy();
 				WP_CLI::log( sprintf( 'Session destroyed: %s', $session_id ) );
 			} else {
-				WP_CLI::warning( sprintf( "Session doesn't exist: %s", $session_id ) );
+				WP_CLI::warning( sprintf( "Session doesn't exist: %s",
+					$session_id ) );
 			}
 		}
+	}
+
+	/**
+	 * Set id as primary key in the Native PHP Sessions plugin table.
+	 *
+	 * [<session-id>...]
+	 * : One or more session IDs
+	 *
+	 * [--all]
+	 * : Delete all sessions.
+	 *
+	 * @subcommand add-index
+	 */
+
+	public function add_index( $args, $assoc_arc ) {
+		global $wpdb;
+
+		if ( ! PANTHEON_SESSIONS_ENABLED ) {
+			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
+		}
+
+		// Verify that the ID column/primary key does not already exist.
+		$query         = "SHOW KEYS FROM wp_pantheon_sessions WHERE key_name = 'PRIMARY';";
+		$key_existence = $wpdb->get_results( $query );
+
+		if ( ! empty( $key_existence ) ) {
+			WP_CLI::error( 'ID column already exists and does not need to be
+			added to the table.' );
+		}
+
+		// If there isn't an ID column, add one.
+		$query   = "ALTER TABLE wp_pantheon_sessions ADD COLUMN id BIGINT AUTO_INCREMENT PRIMARY KEY FIRST";
+		$results = $wpdb->query( $query );
+
+		WP_CLI::log( sprintf( 'Primary key added, total rows affected: %s',
+			$results ) );
+
 	}
 
 }

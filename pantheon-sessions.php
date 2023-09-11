@@ -261,6 +261,51 @@ class Pantheon_Sessions {
 			}
 		}
 	}
+
+	/**
+	 * Checks whether primary keys were set and notifies users if not.
+	 */
+	public static function check_native_primary_keys() {
+		global $wpdb;
+		$query = "SHOW KEYS FROM wp_pantheon_sessions WHERE key_name = 'PRIMARY';";
+
+		$key_existence = $wpdb->get_results( $query );
+
+		if ( empty( $key_existence ) ) {
+			// If the key doesn't exist, count how many rows there are in the
+			// table. If there are over 100,000 then recommend that the customer
+			// contact Pantheon for assistance.
+			$count_query = "SELECT COUNT(*) FROM wp_pantheon_sessions;";
+			$count_total = $wpdb->get_results( $count_query );
+
+			if ( $count_total[0]->{'COUNT(*)'} < 100000 ) {
+				?>
+                <div class="notice notice-error is-dismissible">
+                    <p>Your PHP Native Sessions table is missing a primary key.
+                        Please run "terminus wp {site_name}.dev pantheon session
+                        add-index" and verify that the process completes
+                        successfully and that this message goes away, then run
+                        "terminus wp {site_name}.live pantheon session
+                        add-index" to resolve this issue on your live
+                        environment.</p>
+                </div>
+				<?php
+			}
+
+			if ( $count_total[0]->{'COUNT(*)'} >= 100000 ) {
+				?>
+                <div class="notice notice-error is-dismissible">
+                    <p>Your PHP Native Sessions table is missing a primary key.
+                        As your site currently has over 100,000 rows in the
+                        table, Pantheon recommends that you contact XXX for
+                        assistance in resolving this issue, to avoid potential
+                        service interruptions during the table modification.</p>
+                </div>
+				<?php
+			}
+
+		}
+	}
 }
 
 /**
@@ -273,5 +318,6 @@ function Pantheon_Sessions() {
 }
 
 add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load' );
+add_action( 'admin_notices', 'Pantheon_Sessions::check_native_primary_keys' );
 
 Pantheon_Sessions();
