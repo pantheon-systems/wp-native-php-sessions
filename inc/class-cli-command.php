@@ -74,8 +74,7 @@ class CLI_Command extends \WP_CLI_Command {
 				$session->destroy();
 				WP_CLI::log( sprintf( 'Session destroyed: %s', $session_id ) );
 			} else {
-				WP_CLI::warning( sprintf( "Session doesn't exist: %s",
-					$session_id ) );
+				WP_CLI::warning( sprintf( "Session doesn't exist: %s", $session_id ) );
 			}
 		}
 	}
@@ -93,8 +92,7 @@ class CLI_Command extends \WP_CLI_Command {
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
-			$wpdb->esc_like( $temp_clone_table ) );
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
 
 		if ( $wpdb->get_var( $query ) == $temp_clone_table ) {
 			$query = "DROP TABLE {$temp_clone_table};";
@@ -111,22 +109,18 @@ class CLI_Command extends \WP_CLI_Command {
 
 		// Avoid errors by not attempting to add a column that already exists.
 		if ( ! empty( $key_existence ) ) {
-			WP_CLI::error( __( 'ID column already exists and does not need to be added to the table.',
-				'wp-native-php-sessions' ) );
+			WP_CLI::error( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ) );
 		}
 
 		// Alert the user that the action is going to go through.
-		WP_CLI::log( __( 'Primary Key does not exist, resolution starting.',
-			'wp-native-php-sessions' ) );
+		WP_CLI::log( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ) );
 
 		$count_query = "SELECT COUNT(*) FROM {$table};";
 		$count_total = $wpdb->get_results( $count_query );
 		$count_total = $count_total[0]->{'COUNT(*)'};
 
 		if ( $count_total >= 20000 ) {
-			WP_CLI::log( __( 'A total of ',
-					'wp-native-php-sessions' ) . $count_total . __( ' rows exist. To avoid service interruptions, this operation will be run in batches. Any sessions created between now and when operation completes may need to be recreated.',
-					'wp-native-php-sessions' ) );
+			WP_CLI::log( __( 'A total of ', 'wp-native-php-sessions' ) . $count_total . __( ' rows exist. To avoid service interruptions, this operation will be run in batches. Any sessions created between now and when operation completes may need to be recreated.', 'wp-native-php-sessions' ) );
 		}
 		// Create temporary table to copy data into in batches.
 		$query = "CREATE TABLE {$temp_clone_table} LIKE {$table};";
@@ -147,16 +141,13 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$results         = $wpdb->query( $query );
 			$current_results = $results + ( $batch_size * $i );
 
-			WP_CLI::log( __( 'Updated ',
-					'wp-native-php-sessions' ) . $current_results . ' / ' . $count_total . __( ' rows.',
-					'wp-native-php-sessions' ) );
+			WP_CLI::log( __( 'Updated ', 'wp-native-php-sessions' ) . $current_results . ' / ' . $count_total . __( ' rows.', 'wp-native-php-sessions' ) );
 		}
 
 		// Hot swap the old table and the new table, deleting a previous old
 		// table if necessary.
 		$old_table = $wpdb->base_prefix . 'old_' . $unprefixed_table;
-		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s',
-			$wpdb->esc_like( $old_table ) );
+		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
 		if ( $wpdb->get_var( $query ) == $old_table ) {
 			$query = "DROP TABLE {$old_table};";
@@ -167,8 +158,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
 
-		WP_CLI::log( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.',
-			'wp-native-php-sessions' ) );
+		WP_CLI::log( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ) );
 	}
 
 	/**
@@ -180,19 +170,16 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		global $wpdb;
 		$table = $wpdb->base_prefix . 'old_pantheon_sessions';
 
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
-			$wpdb->esc_like( $table ) );
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
 		// Check for table existence and delete if present.
 		if ( ! $wpdb->get_var( $query ) == $table ) {
-			WP_CLI::error( __( 'Old table does not exist to be removed.',
-				'wp-native-php-sessions' ) );
+			WP_CLI::error( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ) );
 		} else {
 			$query = "DROP TABLE {$table};";
 			$wpdb->query( $query );
 
-			WP_CLI::log( __( 'Old table has been successfully removed, process complete.',
-				'wp-native-php-sessions' ) );
+			WP_CLI::log( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ) );
 		}
 	}
 
@@ -208,12 +195,10 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$table            = $wpdb->base_prefix . 'pantheon_sessions';
 
 		// If there is no old table to roll back to, error.
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
-			$wpdb->esc_like( $old_clone_table ) );
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
 
 		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
-			WP_CLI::error( __( 'There is no old table to roll back to.',
-				'wp-native-php-sessions' ) );
+			WP_CLI::error( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ) );
 		}
 
 		// Swap old table and new one.
@@ -221,8 +206,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$wpdb->query( $query );
 		$query = "ALTER TABLE {$old_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
-		WP_CLI::log( __( 'Rolled back to previous state successfully, dropping corrupt table.',
-			'wp-native-php-sessions' ) );
+		WP_CLI::log( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ) );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
