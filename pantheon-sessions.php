@@ -275,15 +275,10 @@ class Pantheon_Sessions {
 
 		if ( empty( $key_existence ) ) {
 			// If the key doesn't exist, recommend remediation.
+			$message = 'Your PHP Native Sessions table is missing a primary key. Please run "terminus wp {site_name}.dev pantheon session add-index" and verify that the process completes successfully and that this message goes away, then run "terminus wp {site_name}.live pantheon session add-index" to resolve this issue on your live environment.';
 			?>
             <div class="notice notice-error is-dismissible">
-                <p>Your PHP Native Sessions table is missing a primary key.
-                    Please run "terminus wp {site_name}.dev pantheon session
-                    add-index" and verify that the process completes
-                    successfully and that this message goes away, then run
-                    "terminus wp {site_name}.live pantheon session
-                    add-index" to resolve this issue on your live
-                    environment.</p>
+                <p><?php print __( $message, 'wp-native-php-sessions' ) ?></p>
             </div>
 			<?php
 		}
@@ -294,15 +289,10 @@ class Pantheon_Sessions {
 		// Check for table existence and delete if present.
 		if ( $wpdb->get_var( $query ) == $old_table ) {
 			// If an old table exists but has not been removed, suggest doing so.
+			$message = "An old version of the PHP Native Sessions table is detected. When testing is complete, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues."
 			?>
             <div class="notice notice-error">
-                <p>An old version of the PHP Native Sessions table is detected.
-                    When testing is complete, run terminus wp {site_name}.{env}
-                    pantheon session primary-key-finalize to clean up old data,
-                    or run
-                    terminus wp {site_name}.{env} pantheon session
-                    primary-key-revert
-                    if there were issues.</p>
+                <p><?php print __( $message, 'wp-native-php-sessions' ) ?></p>
             </div>
 			<?php
 		}
