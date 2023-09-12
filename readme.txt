@@ -71,6 +71,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 == Changelog ==
 
 = 1.3.7-dev =
+* Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-redis/pull/264)]
 
 = 1.3.6 (June 1, 2023) =
 * Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)
