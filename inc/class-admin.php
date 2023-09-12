@@ -135,5 +135,4 @@ class Admin {
 	</script>
 		<?php
 	}
-
 }

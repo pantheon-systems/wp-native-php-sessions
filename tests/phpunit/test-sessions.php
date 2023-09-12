@@ -5,7 +5,7 @@
  * @package WPNPS
  */
 
-use \Pantheon_Sessions\Session;
+use Pantheon_Sessions\Session;
 
 /**
  * Tests plugin interactions with sessions.
@@ -182,5 +182,4 @@ class Test_Sessions extends WP_UnitTestCase {
 		$results = $wpdb->query( "DELETE FROM {$wpdb->pantheon_sessions}" );
 		parent::tearDown();
 	}
-
 }
