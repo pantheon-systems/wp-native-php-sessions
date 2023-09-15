@@ -43,7 +43,7 @@ jobs:
       - image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
     steps:
       - checkout
-      - run: composer cache clear
+      - run: composer clear-cache
       - run: composer install -n --prefer-dist
       - save_cache:
           key: test-behat-dependencies-{{ checksum "composer.json" }}
