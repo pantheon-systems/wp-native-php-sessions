@@ -131,7 +131,7 @@ class CLI_Command extends \WP_CLI_Command {
 		$batch_size = 20000;
 		$loops      = ceil( $count_total / $batch_size );
 
-		for ( $i = 0; $i < $loops; $i ++ ) {
+		for ( $i = 0; $i < $loops; $i++ ) {
 			$offset = $i * $batch_size;
 
 			$query           = sprintf( "INSERT INTO {$temp_clone_table} 

@@ -304,7 +304,6 @@ class Pantheon_Sessions {
 			</div>
 			<?php
 		}
-
 	}
 }
 
