@@ -46,6 +46,10 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
 
 See [CONTRIBUTING.md](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/CONTRIBUTING.md) for information on contributing.
 
+## Security Policy
+### Reporting Security Bugs
+Please report security bugs found in the Native PHP Sessions plugin's source code through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-native-php-sessions). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 ## Frequently Asked Questions ##
 
 ### Why not use another session plugin? ###

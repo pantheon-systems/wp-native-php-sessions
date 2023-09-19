@@ -57,6 +57,10 @@ PHP's fallback default functionality is to allow sessions to be stored in a temp
 
 However, if you intend to scale your application, local tempfiles are a dangerous choice. They are not shared between different instances of the application, producing erratic behavior that can be impossible to debug. By storing them in the database the state of the sessions is shared across all application instances.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the WP Native PHP Sessions plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-native-php-sessions). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Troubleshooting ==
 
 If you see an error like "Fatal error: session_start(): Failed to initialize storage module:" or "Warning: ini_set(): A session is active.", then you likely have a plugin that is starting a session before WP Native PHP Sessions is loading.
