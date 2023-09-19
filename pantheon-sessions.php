@@ -261,6 +261,51 @@ class Pantheon_Sessions {
 			}
 		}
 	}
+
+	/**
+	 * Checks whether primary keys were set and notifies users if not.
+	 */
+	public static function check_native_primary_keys() {
+		global $wpdb;
+		$table_name = $wpdb->base_prefix . 'pantheon_sessions';
+		$old_table  = $wpdb->base_prefix . 'old_pantheon_sessions';
+		$query      = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
+
+		$key_existence = $wpdb->get_results( $query );
+
+		if ( empty( $key_existence ) ) {
+			// If the key doesn't exist, recommend remediation.
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+				<?php
+				print __( 'Your PHP Native Sessions table is missing a primary key. Please run "wp {site_name}.dev pantheon session add-index" and verify that the process completes successfully and that this message goes away, then run "wp {site_name}.live pantheon session add-index" to resolve this issue on your live environment.',
+				'wp-native-php-sessions' );
+				?>
+						</p>
+			</div>
+			<?php
+		}
+
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
+		$wpdb->esc_like( $old_table ) );
+
+		// Check for table existence and delete if present.
+		if ( $wpdb->get_var( $query ) == $old_table ) {
+			// If an old table exists but has not been removed, suggest doing so.
+			?>
+			<div class="notice notice-error">
+				<p>
+				<?php
+				print __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run wp {site_name}.{env} pantheon session primary-key-revert if there were issues.',
+				'wp-native-php-sessions' );
+				?>
+						</p>
+			</div>
+			<?php
+		}
+
+	}
 }
 
 /**
@@ -273,5 +318,6 @@ function Pantheon_Sessions() {
 }
 
 add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load' );
+add_action( 'admin_notices', 'Pantheon_Sessions::check_native_primary_keys' );
 
 Pantheon_Sessions();
