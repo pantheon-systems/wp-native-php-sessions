@@ -2,7 +2,7 @@
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 6.2.2  
+**Tested up to:** 6.3  
 **Stable tag:** 1.3.7-dev  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
@@ -13,7 +13,7 @@ Use native PHP sessions and stay horizontally scalable. Better living through su
 ## Description ##
 
 [![Actively Maintained](https://img.shields.io/badge/Pantheon-Actively_Maintained-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#actively-maintained-support)
- [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master)
+ [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/main.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/main)
 
 WordPress core does not use PHP sessions, but sometimes they are required by your use-case, a plugin or theme.
 
@@ -76,6 +76,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 ## Changelog ##
 
 ### 1.3.7-dev ###
+* Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
 
 ### 1.3.6 (June 1, 2023) ###
 * Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)

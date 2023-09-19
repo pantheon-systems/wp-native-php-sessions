@@ -123,5 +123,4 @@ class Session_Handler implements \SessionHandlerInterface {
 	public function close() {
 		return true;
 	}
-
 }

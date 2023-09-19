@@ -36,4 +36,9 @@
 	<rule ref="Squiz.Commenting.FunctionComment.MissingParamTag">
 		<exclude-pattern>*/inc/class-cli-command.php</exclude-pattern>
 	</rule>
+
+	<!-- Ignoring the either function declarations or structure declarations sniff for the main plugin file. This probably isn't best practice and the function should probably be defined in a separate file, but the function is just an implementation of the class to get the plugin started. -->
+	<rule ref="Universal.Files.SeparateFunctionsFromOO.Mixed">
+		<exclude-pattern>*/pantheon-sessions.php</exclude-pattern>
+	</rule>
 </ruleset>

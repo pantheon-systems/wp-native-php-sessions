@@ -2,7 +2,7 @@
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 6.2.2
+Tested up to: 6.3
 Stable tag: 1.3.7-dev
 Requires PHP: 5.4
 License: GPLv2 or later
@@ -75,7 +75,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 == Changelog ==
 
 = 1.3.7-dev =
-* Updates security policy [[#256](https://github.com/pantheon-systems/wp-native-php-sessions/pull/256)]
+* Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
 
 = 1.3.6 (June 1, 2023) =
 * Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)
