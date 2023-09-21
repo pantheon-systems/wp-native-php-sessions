@@ -48,7 +48,6 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 	 */
 	public function test_primary_key_addition() {
 		global $wpdb, $table_prefix;
-		require_once __DIR__ . '/../../inc/class-cli-command.php';
 
 		$table_name = "{$table_prefix}pantheon_sessions";
 		$pantheon_session = new Pantheon_Sessions();
