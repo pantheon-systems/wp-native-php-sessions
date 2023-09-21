@@ -4,6 +4,7 @@
  *
  * @package WPNPS
  */
+include_once "../../inc/class-cli-command.php";
 
 use Pantheon_Sessions\CLI_Command;
 
