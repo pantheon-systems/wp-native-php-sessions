@@ -23,12 +23,6 @@ Feature: WP Native PHP Sessions plugin
     When I go to "/?action=wpnps_get_session&key=foo"
     Then I should see "(foo:)"
 
-    When I run `echo "foo"`
-    Then STDOUT should CONTAIN
-      """
-      foo
-      """
-
   Scenario: Plugin handles session CRUD operation (logged in)
     Given I log in as an admin
 
