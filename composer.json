@@ -17,7 +17,8 @@
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
         "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
         "phpunit/phpunit": "^9",
-        "yoast/phpunit-polyfills": "^2.0"
+        "yoast/phpunit-polyfills": "^1",
+        "wp-cli/wp-cli-tests": "^4"
     },
     "scripts": {
         "lint": "@phpcs",
