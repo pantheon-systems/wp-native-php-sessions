@@ -51,7 +51,7 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 		require_once __DIR__ . '/../../inc/class-cli-command.php';
 
 		$table_name = "{$table_prefix}pantheon_sessions";
-		$command = new CLI_Command();
+		$pantheon_session = new Pantheon_Sessions();
 
 		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
 		$wpdb->query( $query );
@@ -70,7 +70,7 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			$columns
 		);
 
-		$command->add_index( '', '' );
+		$pantheon_session->add_index( '', '' );
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
