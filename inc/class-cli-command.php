@@ -100,7 +100,7 @@ class CLI_Command extends \WP_CLI_Command {
 		}
 
 		if ( ! PANTHEON_SESSIONS_ENABLED ) {
-			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
+			$this->safe_output( __( 'Pantheon Sessions is currently disabled.', 'wp-native-php-sessions' ), 'error' );
 		}
 
 		// Verify that the ID column/primary key does not already exist.
@@ -109,18 +109,19 @@ class CLI_Command extends \WP_CLI_Command {
 
 		// Avoid errors by not attempting to add a column that already exists.
 		if ( ! empty( $key_existence ) ) {
-			WP_CLI::error( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ) );
+			$this->safe_output( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ), 'error' );
 		}
 
 		// Alert the user that the action is going to go through.
-		WP_CLI::log( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ) );
+		$this->safe_output( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ), 'log' );
 
 		$count_query = "SELECT COUNT(*) FROM {$table};";
 		$count_total = $wpdb->get_results( $count_query );
 		$count_total = $count_total[0]->{'COUNT(*)'};
 
 		if ( $count_total >= 20000 ) {
-			WP_CLI::log( __( 'A total of ', 'wp-native-php-sessions' ) . $count_total . __( ' rows exist. To avoid service interruptions, this operation will be run in batches. Any sessions created between now and when operation completes may need to be recreated.', 'wp-native-php-sessions' ) );
+			// translators: %s is the total number of rows that exist in the pantheon_sessions table.
+			$this->safe_output( __( 'A total of %s rows exist. To avoid service interruptions, this operation will be run in batches. Any sessions created between now and when operation completes may need to be recreated.', 'wp-native-php-sessions' ), 'log', [ $count_total ] );
 		}
 		// Create temporary table to copy data into in batches.
 		$query = "CREATE TABLE {$temp_clone_table} LIKE {$table};";
@@ -141,7 +142,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$results         = $wpdb->query( $query );
 			$current_results = $results + ( $batch_size * $i );
 
-			WP_CLI::log( __( 'Updated ', 'wp-native-php-sessions' ) . $current_results . ' / ' . $count_total . __( ' rows.', 'wp-native-php-sessions' ) );
+			// translators: %1 and %2 are how many rows have been processed out of how many total.
+			$this->safe_output( __( 'Updated %1$s / %2$s rows. ', 'wp-native-php-sessions' ), 'log', [ $current_results, $count_total ] );
 		}
 
 		// Hot swap the old table and the new table, deleting a previous old
@@ -158,7 +160,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
 
-		WP_CLI::log( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ) );
+		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
 	}
 
 	/**
@@ -174,12 +176,12 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Check for table existence and delete if present.
 		if ( ! $wpdb->get_var( $query ) == $table ) {
-			WP_CLI::error( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ) );
+			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), 'error' );
 		} else {
 			$query = "DROP TABLE {$table};";
 			$wpdb->query( $query );
 
-			WP_CLI::log( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ) );
+			$this->safe_output( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ), 'log' );
 		}
 	}
 
@@ -198,7 +200,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
 
 		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
-			WP_CLI::error( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ) );
+			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), 'error' );
 		}
 
 		// Swap old table and new one.
@@ -206,12 +208,35 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$wpdb->query( $query );
 		$query = "ALTER TABLE {$old_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
-		WP_CLI::log( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ) );
+		$this->safe_output( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ), 'log' );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
 		$wpdb->query( $query );
-		WP_CLI::log( __( 'Process complete.', 'wp-native-php-sessions' ) );
+		$this->safe_output( __( 'Process complete.', 'wp-native-php-sessions' ), 'log' );
+	}
+
+	/**
+	 * Provide output to users, whether it's being run in WP_CLI or not.
+	 *
+	 * @param string $message Message to be printed.
+	 * @param string $type If message is being printed through WP_CLI, what type of message.
+	 * @param array $variables If sprintf is needed, an array of values.
+	 *
+	 * @return void
+	 */
+	protected function safe_output( $message, $type, array $variables = [] ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::$type( vsprintf( $message, $variables ) );
+			return;
+		}
+
+		print "\n" . vsprintf( $message, $variables );
+
+		// Calling WP_CLI::error triggers an exit, but we still need to exist even if we don't have WP_CLI available.
+		if ( $type === 'error' ) {
+			exit( 1 );
+		}
 	}
 }
 

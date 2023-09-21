@@ -56,7 +56,6 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
 		$wpdb->query( $query );
 
-		$command->add_index('', '');
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
@@ -71,7 +70,7 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			$columns
 		);
 
-		$command->add_index('', '');
+		$command->add_index( '', '' );
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
@@ -86,7 +85,5 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			],
 			$columns
 		);
-
-
 	}
 }
