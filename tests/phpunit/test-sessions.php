@@ -180,6 +180,9 @@ class Test_Sessions extends WP_UnitTestCase {
 
 		$table_name = "{$table_prefix}pantheon_sessions";
 
+		// @todo REMOVE THIS.
+		print "findme testpka";
+		// @todo END REMOVE.
 		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
 		$wpdb->query( $query );
 

@@ -23,6 +23,9 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 	public function test_database_created() {
 		global $wpdb, $table_prefix;
 
+		// @todo REMOVE THIS.
+		print "findme testdbcreated";
+		// @todo END REMOVE.
 		$table_name = "{$table_prefix}pantheon_sessions";
 		$this->assertEquals( $table_name, $wpdb->pantheon_sessions );
 
