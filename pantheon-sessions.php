@@ -384,11 +384,13 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		// @todo REMOVE THIS.
 		$query = "describe {$table};";
 		$result = $wpdb->get_results( $query );
-		print "\n findme 1: {$result}";
+		print "\n findme 1: ";
+        var_dump($result);
 
 		$query = "describe {$temp_clone_table};";
 		$result = $wpdb->get_results( $query );
-		print "\n findme 2: {$result}";
+		print "\n findme 2: ";
+        var_dump($result);
         // @todo END REMOVE.
 		$query = "ALTER TABLE {$table} RENAME {$old_table};";
 		$wpdb->query( $query );
@@ -398,7 +400,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		// @todo REMOVE THIS.
 		$query = "describe {$table};";
 		$result = $wpdb->get_results( $query );
-		print "\n findme 3: {$result}";
+		print "\n findme 3: ";
+        var_dump($result);
         // @todo END REMOVE.
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
