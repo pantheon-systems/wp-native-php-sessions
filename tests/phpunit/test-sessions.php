@@ -179,7 +179,6 @@ class Test_Sessions extends WP_UnitTestCase {
 		global $wpdb, $table_prefix;
 
 		$table_name = "{$table_prefix}pantheon_sessions";
-		print "findme tablename: {$table_name}";
 		$pantheon_session = new Pantheon_Sessions();
 
 		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
@@ -200,6 +199,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		);
 
 		$pantheon_session->add_index();
+		$pantheon_session->primary_key_finalize();
 
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );

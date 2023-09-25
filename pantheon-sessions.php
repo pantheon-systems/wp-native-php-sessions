@@ -314,7 +314,6 @@ class Pantheon_Sessions {
 		$unprefixed_table = 'pantheon_sessions';
 		$table            = $wpdb->base_prefix . $unprefixed_table;
 		$temp_clone_table = $wpdb->base_prefix . 'sessions_temp_clone';
-        print "findme table: {$table}";
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
