@@ -405,6 +405,11 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$wpdb->query( $query );
 
 			$this->safe_output( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ), 'log' );
+
+			$query = "describe {$table};";
+            print "findme table is: {$table}";
+			$describe = $wpdb->query( $query );
+			var_dump( $describe );
 		}
 	}
 
