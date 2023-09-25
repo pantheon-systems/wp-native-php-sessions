@@ -206,6 +206,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		var_dump($columns);
 		// @todo END REMOVE.
 		$this->assertEquals(
+			$columns,
 			[
 				'id',
 				'user_id',
@@ -214,8 +215,7 @@ class Test_Sessions extends WP_UnitTestCase {
 				'ip_address',
 				'datetime',
 				'data',
-			],
-			$columns
+			]
 		);
 	}
 
