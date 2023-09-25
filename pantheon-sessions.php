@@ -313,9 +313,8 @@ class Pantheon_Sessions {
 		global $wpdb;
 		$unprefixed_table = 'pantheon_sessions';
 		$table            = $wpdb->base_prefix . $unprefixed_table;
-        // @todo REMOVE.
-        print "base prefix: " . $wpdb->base_prefix;
 		$temp_clone_table = $wpdb->base_prefix . 'sessions_temp_clone';
+        print "findme table: {$table}";
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
