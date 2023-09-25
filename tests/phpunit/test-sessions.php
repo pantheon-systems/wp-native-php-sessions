@@ -194,7 +194,11 @@ class Test_Sessions extends WP_UnitTestCase {
 		$result = $wpdb->get_results( $query );
 		print "\n findme 5: ";
 		var_dump($result);
+		print "\n findme 6: ";
+		var_dump($column_data);
+
 		// @todo END REMOVE.
+
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
 			[
