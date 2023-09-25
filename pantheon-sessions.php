@@ -381,28 +381,10 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$wpdb->query( $query );
 		}
 
-		// @todo REMOVE THIS.
-		$query = "describe {$table};";
-		$result = $wpdb->get_results( $query );
-		print "\n findme 1: ";
-        var_dump($result);
-
-		$query = "describe {$temp_clone_table};";
-		$result = $wpdb->get_results( $query );
-		print "\n findme 2: ";
-        var_dump($result);
-        // @todo END REMOVE.
 		$query = "ALTER TABLE {$table} RENAME {$old_table};";
 		$wpdb->query( $query );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
-
-		// @todo REMOVE THIS.
-		$query = "describe {$table};";
-		$result = $wpdb->get_results( $query );
-		print "\n findme 3: ";
-        var_dump($result);
-        // @todo END REMOVE.
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
 	}
@@ -420,13 +402,6 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		if ( ! $wpdb->get_var( $query ) == $table ) {
 			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), 'error' );
 		} else {
-			// @todo REMOVE THIS.
-            $newtable = $wpdb->base_prefix . 'pantheon_sessions';
-			$query = "describe {$newtable};";
-			$result = $wpdb->get_results( $query );
-			print "\n findme 4: ";
-			var_dump($result);
-			// @todo END REMOVE.
 			$query = "DROP TABLE {$table};";
 			$wpdb->query( $query );
 

@@ -181,30 +181,15 @@ class Test_Sessions extends WP_UnitTestCase {
 		$table_name = "{$table_prefix}pantheon_sessions";
 		$pantheon_session = new Pantheon_Sessions();
 
-		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
-		$wpdb->query( $query );
+		// $query = "ALTER TABLE {$table_name} DROP COLUMN id";
+		// $wpdb->query( $query );
 
 		$pantheon_session->add_index();
 		$pantheon_session->primary_key_finalize();
 
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
-		// @todo REMOVE THIS.
-		$newtable = $wpdb->base_prefix . 'pantheon_sessions';
-		$query = "describe {$newtable};";
-		$result = $wpdb->get_results( $query );
-		print "\n findme 5: ";
-		var_dump($result);
-		print "\n findme 6: ";
-		var_dump($column_data);
-
-		// @todo END REMOVE.
-
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 
-		// @todo REMOVE THIS.
-		print "\n findme 7: ";
-		var_dump($columns);
-		// @todo END REMOVE.
 		$this->assertEquals(
 			$columns,
 			[
