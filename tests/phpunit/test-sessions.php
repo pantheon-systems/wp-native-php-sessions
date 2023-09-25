@@ -188,6 +188,13 @@ class Test_Sessions extends WP_UnitTestCase {
 		$pantheon_session->primary_key_finalize();
 
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
+		// @todo REMOVE THIS.
+		$newtable = $wpdb->base_prefix . 'pantheon_sessions';
+		$query = "describe {$newtable};";
+		$result = $wpdb->get_results( $query );
+		print "\n findme 5: ";
+		var_dump($result);
+		// @todo END REMOVE.
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
 			[
