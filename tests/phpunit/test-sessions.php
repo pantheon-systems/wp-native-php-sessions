@@ -179,19 +179,18 @@ class Test_Sessions extends WP_UnitTestCase {
 		global $wpdb, $table_prefix;
 
 		$table_name = "{$table_prefix}pantheon_sessions";
+
+		$query = "ALTER TABLE {$table_name} DROP COLUMN id";
+		$wpdb->query( $query );
+
 		$pantheon_session = new Pantheon_Sessions();
-
-		// $query = "ALTER TABLE {$table_name} DROP COLUMN id";
-		// $wpdb->query( $query );
-
-		// $pantheon_session->add_index();
-		// $pantheon_session->primary_key_finalize();
+		$pantheon_session->add_index();
+		$pantheon_session->primary_key_finalize();
 
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 
 		$this->assertEquals(
-			$columns,
 			[
 				'id',
 				'user_id',
@@ -200,7 +199,8 @@ class Test_Sessions extends WP_UnitTestCase {
 				'ip_address',
 				'datetime',
 				'data',
-			]
+			],
+			$columns
 		);
 	}
 
