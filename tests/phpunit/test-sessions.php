@@ -198,7 +198,7 @@ class Test_Sessions extends WP_UnitTestCase {
 			$columns
 		);
 
-		$pantheon_session->add_index( '', '' );
+		$pantheon_session->add_index();
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
 		$this->assertEquals(
