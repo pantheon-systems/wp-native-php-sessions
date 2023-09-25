@@ -380,10 +380,26 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$query = "DROP TABLE {$old_table};";
 			$wpdb->query( $query );
 		}
+
+		// @todo REMOVE THIS.
+		$query = "describe {$table};";
+		$result = $wpdb->get_results( $query );
+		print "\n findme 1: {$result}";
+
+		$query = "describe {$temp_clone_table};";
+		$result = $wpdb->get_results( $query );
+		print "\n findme 2: {$result}";
+        // @todo END REMOVE.
 		$query = "ALTER TABLE {$table} RENAME {$old_table};";
 		$wpdb->query( $query );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
+
+		// @todo REMOVE THIS.
+		$query = "describe {$table};";
+		$result = $wpdb->get_results( $query );
+		print "\n findme 3: {$result}";
+        // @todo END REMOVE.
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run terminus wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run terminus wp {site_name}.{env} pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
 	}
@@ -406,10 +422,6 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 			$this->safe_output( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ), 'log' );
 
-			$query = "describe {$table};";
-            print "findme table is: {$table}";
-			$describe = $wpdb->get_results( $query );
-			var_dump( $describe );
 		}
 	}
 
