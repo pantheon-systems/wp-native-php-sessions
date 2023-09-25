@@ -420,6 +420,13 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		if ( ! $wpdb->get_var( $query ) == $table ) {
 			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), 'error' );
 		} else {
+			// @todo REMOVE THIS.
+            $newtable = $wpdb->base_prefix . 'pantheon_sessions';
+			$query = "describe {$newtable};";
+			$result = $wpdb->get_results( $query );
+			print "\n findme 4: ";
+			var_dump($result);
+			// @todo END REMOVE.
 			$query = "DROP TABLE {$table};";
 			$wpdb->query( $query );
 
