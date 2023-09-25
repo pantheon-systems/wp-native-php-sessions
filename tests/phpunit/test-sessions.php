@@ -184,8 +184,8 @@ class Test_Sessions extends WP_UnitTestCase {
 		// $query = "ALTER TABLE {$table_name} DROP COLUMN id";
 		// $wpdb->query( $query );
 
-		$pantheon_session->add_index();
-		$pantheon_session->primary_key_finalize();
+		// $pantheon_session->add_index();
+		// $pantheon_session->primary_key_finalize();
 
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
