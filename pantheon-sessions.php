@@ -408,7 +408,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 			$query = "describe {$table};";
             print "findme table is: {$table}";
-			$describe = $wpdb->query( $query );
+			$describe = $wpdb->get_results( $query );
 			var_dump( $describe );
 		}
 	}
@@ -438,8 +438,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
-		$output = $wpdb->get_results( $query );
-        var_dump($output);
+		$wpdb->query( $query );
 		$this->safe_output( __( 'Process complete.', 'wp-native-php-sessions' ), 'log' );
 	}
 
