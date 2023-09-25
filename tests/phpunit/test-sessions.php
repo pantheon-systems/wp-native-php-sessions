@@ -200,6 +200,11 @@ class Test_Sessions extends WP_UnitTestCase {
 		// @todo END REMOVE.
 
 		$columns     = wp_list_pluck( $column_data, 'Field' );
+
+		// @todo REMOVE THIS.
+		print "\n findme 7: ";
+		var_dump($columns);
+		// @todo END REMOVE.
 		$this->assertEquals(
 			[
 				'id',
