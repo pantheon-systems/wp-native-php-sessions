@@ -438,7 +438,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
-		$wpdb->get_results( $query );
+		$output = $wpdb->get_results( $query );
+        var_dump($output);
 		$this->safe_output( __( 'Process complete.', 'wp-native-php-sessions' ), 'log' );
 	}
 
