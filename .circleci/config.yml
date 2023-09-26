@@ -137,13 +137,13 @@ jobs:
           name: "Run Tests"
           command: |
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit --group db_create
+            vendor/bin/phpunit --group db_create
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest true            
-            WP_MULTISITE=1 composer phpunit --group db_create
+            WP_MULTISITE=1 vendor/bin/phpunit --group db_create
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest true
-            composer phpunit --group db_create
+            vendor/bin/phpunit --group db_create
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit --group db_create
+            vendor/bin/phpunit --group db_create

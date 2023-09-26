@@ -174,6 +174,8 @@ class Test_Sessions extends WP_UnitTestCase {
 
 	/**
 	 * Ensure that the primary key addition command works.
+	 *
+	 * @group cli_command
 	 */
 	public function test_primary_key_addition() {
 		global $wpdb, $table_prefix;
