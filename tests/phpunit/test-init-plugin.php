@@ -19,6 +19,8 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 
 	/**
 	 * Ensures the database is created when the test suite runs.
+	 *
+	 * @group db_create
 	 */
 	public function test_database_created() {
 		global $wpdb, $table_prefix;
