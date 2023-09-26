@@ -136,10 +136,9 @@ jobs:
       - run:
           name: "Run Tests"
           command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            # @todo REMOVE ME
-            # WP_MULTISITE=1 composer phpunit
+            # bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            # composer phpunit
+            WP_MULTISITE=1 composer phpunit
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
             composer phpunit
