@@ -37,7 +37,7 @@ drop_db() {
 	fi
 
 	# create database
-	mysqladmin drop database $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	mysqladmin drop database $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA -y
 }
 
 file_delete
