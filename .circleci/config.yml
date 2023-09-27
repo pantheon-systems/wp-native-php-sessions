@@ -146,25 +146,9 @@ jobs:
       - run:
           name: "Run Tests"
           command: |
-            echo "started one"
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            vendor/bin/phpunit --group db_create
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest true  
-            vendor/bin/phpunit --group cli_command
-            
-            echo "started three"
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest true
-            vendor/bin/phpunit --group db_create
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest true
-            vendor/bin/phpunit --group cli_command
-            
-            echo "started four"
+            composer phpunit
+            WP_MULTISITE=1 composer phpunit
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            vendor/bin/phpunit --group db_create
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            vendor/bin/phpunit --group cli_command
+            composer phpunit
