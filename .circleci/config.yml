@@ -1,6 +1,6 @@
-version: 2
+version: 2.1
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
       - test-behat
