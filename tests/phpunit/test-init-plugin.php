@@ -25,27 +25,12 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 	public function test_database_created() {
 		global $wpdb, $table_prefix;
 
-		// @todo REMOVE THIS.
-		print "findme testdbcreated";
-		// @todo END REMOVE.
 		$table_name = "{$table_prefix}pantheon_sessions";
 		$this->assertEquals( $table_name, $wpdb->pantheon_sessions );
 
 		// phpcs:ignore
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
-
-		// @todo REMOVE THIS.
-		// if ( count( $columns ) == 6 ) {
-		// 	$pantheon_session = new Pantheon_Sessions();
-		// 	$pantheon_session->add_index();
-		// 	$pantheon_session->primary_key_finalize();
-		//
-		// 	// phpcs:ignore
-		// 	$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
-		// 	$columns     = wp_list_pluck( $column_data, 'Field' );
-		// }
-		// @todo END REMOVE.
 
 		$this->assertEquals(
 			[
@@ -60,5 +45,4 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 			$columns
 		);
 	}
-
 }
