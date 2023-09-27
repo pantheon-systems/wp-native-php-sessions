@@ -16,6 +16,18 @@ workflows:
                 - master
     jobs:
       - test-behat
+commands:
+  run_test:
+    steps:
+      - run:
+          name: "Run Tests"
+          command: |
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            composer phpunit
+            WP_MULTISITE=1 composer phpunit
+            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
+            composer phpunit
 jobs:
   test-behat:
     resource_class: small
@@ -94,15 +106,7 @@ jobs:
             sudo docker-php-ext-enable imagick
             sudo docker-php-ext-install mysqli
             sudo apt-get install mariadb-client-10.5
-      - run:
-          name: "Run Tests"
-          command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            WP_MULTISITE=1 composer phpunit
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit
+      - run_test
 
   test-phpunit-82:
     resource_class: small
@@ -134,12 +138,4 @@ jobs:
             sudo docker-php-ext-enable imagick
             sudo docker-php-ext-install mysqli
             sudo apt-get install mariadb-client-10.6
-      - run:
-          name: "Run Tests"
-          command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            WP_MULTISITE=1 composer phpunit
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit
+      - run_test
