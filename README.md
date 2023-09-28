@@ -42,6 +42,20 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
     }
     add_filter( 'pantheon_session_expiration', 'my_session_expiration_override' );
 
+## CLI Commands ##
+
+### `add-index` ###
+
+This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
+
+### `primary-key-finalize` ###
+
+If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
+
+### `primary-key-revert` ###
+
+If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.  
+
 ## Contributing ##
 
 See [CONTRIBUTING.md](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/CONTRIBUTING.md) for information on contributing.
@@ -70,6 +84,10 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
 ## Changelog ##
+
+### 1.4.0 ###
+* Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
+* Adds alert to dashboard for users who need to run the command.
 
 ### 1.3.7-dev ###
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
