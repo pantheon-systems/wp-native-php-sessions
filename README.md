@@ -85,11 +85,9 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 
 ## Changelog ##
 
-### 1.4.0 ###
+### 1.4.0-dev ###
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
-* Adds alert to dashboard for users who need to run the command.
-
-### 1.3.7-dev ###
+* Adds alert to dashboard for users who need to run the new command.
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
 
 ### 1.3.6 (June 1, 2023) ###
