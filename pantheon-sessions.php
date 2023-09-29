@@ -49,7 +49,7 @@ class Pantheon_Sessions {
 	}
 
 	/**
-	 * Load the plugin
+	 * Load the plugin.
 	 */
 	private function load() {
 
