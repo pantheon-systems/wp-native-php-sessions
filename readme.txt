@@ -43,17 +43,17 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
 
 == CLI Commands ==
 
-= `add-index` =
+= `wp pantheon session add-index` =
 
-This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
+Added in 1.4.0-dev. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
 
-= `primary-key-finalize` =
+= `wp pantheon session primary-key-finalize` =
 
-If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
+Added in 1.4.0-dev. If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
 
-= `primary-key-revert` =
+= `wp pantheon session primary-key-revert` =
 
-If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.
+Added in 1.4.0-dev. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.
 
 == Contributing ==
 
