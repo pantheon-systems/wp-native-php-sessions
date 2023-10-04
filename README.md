@@ -83,6 +83,11 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
+## Upgrade Notice ##
+
+### 1.4.0-dev ###
+Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you need to run this command, a notice will appear in your admin dashboard. Otherwise, no action is necessary.
+
 ## Changelog ##
 
 ### 1.4.0-dev ###
