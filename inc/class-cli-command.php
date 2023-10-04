@@ -85,8 +85,8 @@ class CLI_Command extends \WP_CLI_Command {
 	 * @subcommand add-index
 	 */
 	public function add_index( $args, $assoc_arc ) {
-		$pan_session = new \Pantheon_Sessions();
-		$pan_session->add_index();
+		$pantheon_session = new \Pantheon_Sessions();
+		$pantheon_session->add_index();
 	}
 
 	/**
