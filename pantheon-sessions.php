@@ -296,8 +296,7 @@ class Pantheon_Sessions {
 			<div class="notice notice-error">
 				<p>
 				<?php
-				print __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run wp {site_name}.{env} pantheon session primary-key-finalize to clean up old data, or run wp {site_name}.{env} pantheon session primary-key-revert if there were issues.',
-				'wp-native-php-sessions' );
+				print wp_kses_post( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run <code>wp pantheon session primary-key-finalize</code> to clean up old data, or run <code>wp pantheon session primary-key-revert</code> if there were issues.', 'wp-native-php-sessions' ) );
 				?>
 						</p>
 			</div>
