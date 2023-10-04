@@ -46,7 +46,7 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
 
 ### `wp pantheon session add-index` ###
 
-Added in 1.4.0-dev. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
+Added in 1.4.0-dev. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table in version 1.2.2. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
 
 ### `wp pantheon session primary-key-finalize` ###
 
@@ -86,7 +86,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 ## Upgrade Notice ##
 
 ### 1.4.0-dev ###
-Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you need to run this command, a notice will appear in your admin dashboard. Otherwise, no action is necessary.
+Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 ## Changelog ##
 
