@@ -29,7 +29,6 @@ class Test_Init_Plugin extends WP_UnitTestCase {
 		// phpcs:ignore
 		$column_data = $wpdb->get_results( "SHOW COLUMNS FROM {$table_name}" );
 		$columns     = wp_list_pluck( $column_data, 'Field' );
-
 		$this->assertEquals(
 			[
 				'id',
