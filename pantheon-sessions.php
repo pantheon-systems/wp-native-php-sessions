@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions for WordPress
- * Version: 1.3.7-dev
+ * Version: 1.4.0-dev
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.3.7-dev' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.4.0-dev' );
 
 /**
  * Main controller class for the plugin.
@@ -49,7 +49,7 @@ class Pantheon_Sessions {
 	}
 
 	/**
-	 * Load the plugin
+	 * Load the plugin.
 	 */
 	private function load() {
 
@@ -261,6 +261,204 @@ class Pantheon_Sessions {
 			}
 		}
 	}
+
+	/**
+	 * Checks whether primary keys were set and notifies users if not.
+	 */
+	public static function check_native_primary_keys() {
+		global $wpdb;
+		$table_name = $wpdb->base_prefix . 'pantheon_sessions';
+		$old_table  = $wpdb->base_prefix . 'bak_pantheon_sessions';
+		$query      = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
+
+		$key_existence = $wpdb->get_results( $query );
+
+		if ( empty( $key_existence ) ) {
+			// If the key doesn't exist, recommend remediation.
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+				<?php
+				print wp_kses_post( __( 'Your PHP Native Sessions table is missing a primary key. Please run <code>wp pantheon session add-index</code> and verify that the process completes successfully and that this message goes away to resolve this issue on your live environment.', 'wp-native-php-sessions' ) );
+				?>
+						</p>
+			</div>
+			<?php
+		}
+
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
+		$wpdb->esc_like( $old_table ) );
+
+		// Check for table existence and delete if present.
+		if ( $wpdb->get_var( $query ) == $old_table ) {
+			// If an old table exists but has not been removed, suggest doing so.
+			?>
+			<div class="notice notice-error">
+				<p>
+				<?php
+				print wp_kses_post( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run <code>wp pantheon session primary-key-finalize</code> to clean up old data, or run <code>wp pantheon session primary-key-revert</code> if there were issues.', 'wp-native-php-sessions' ) );
+				?>
+						</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Set id as primary key in the Native PHP Sessions plugin table.
+	 */
+	public function add_index() {
+		global $wpdb;
+		$unprefixed_table = 'pantheon_sessions';
+		$table            = $wpdb->base_prefix . $unprefixed_table;
+		$temp_clone_table = $wpdb->base_prefix . 'sessions_temp_clone';
+
+		// If the command has been run multiple times and there is already a
+		// temp_clone table, drop it.
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
+
+		if ( $wpdb->get_var( $query ) == $temp_clone_table ) {
+			$query = "DROP TABLE {$temp_clone_table};";
+			$wpdb->query( $query );
+		}
+
+		if ( ! PANTHEON_SESSIONS_ENABLED ) {
+			$this->safe_output( __( 'Pantheon Sessions is currently disabled.', 'wp-native-php-sessions' ), 'error' );
+		}
+
+		// Verify that the ID column/primary key does not already exist.
+		$query         = "SHOW KEYS FROM {$table} WHERE key_name = 'PRIMARY';";
+		$key_existence = $wpdb->get_results( $query );
+
+		// Avoid errors by not attempting to add a column that already exists.
+		if ( ! empty( $key_existence ) ) {
+			$this->safe_output( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ), 'error' );
+		}
+
+		// Alert the user that the action is going to go through.
+		$this->safe_output( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ), 'log' );
+
+		$count_query = "SELECT COUNT(*) FROM {$table};";
+		$count_total = $wpdb->get_results( $count_query );
+		$count_total = $count_total[0]->{'COUNT(*)'};
+
+		if ( $count_total >= 20000 ) {
+			// translators: %s is the total number of rows that exist in the pantheon_sessions table.
+			$this->safe_output( __( 'A total of %s rows exist. To avoid service interruptions, this operation will be run in batches. Any sessions created between now and when operation completes may need to be recreated.', 'wp-native-php-sessions' ), 'log', [ $count_total ] );
+		}
+		// Create temporary table to copy data into in batches.
+		$query = "CREATE TABLE {$temp_clone_table} LIKE {$table};";
+		$wpdb->query( $query );
+		$query = "ALTER TABLE {$temp_clone_table} ADD COLUMN id BIGINT AUTO_INCREMENT PRIMARY KEY FIRST";
+		$wpdb->query( $query );
+
+		$batch_size = 20000;
+		$loops      = ceil( $count_total / $batch_size );
+
+		for ( $i = 0; $i < $loops; $i++ ) {
+			$offset = $i * $batch_size;
+
+			$query           = sprintf( "INSERT INTO {$temp_clone_table} 
+(user_id, session_id, secure_session_id, ip_address, datetime, data) 
+SELECT user_id,session_id,secure_session_id,ip_address,datetime,data 
+FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
+			$results         = $wpdb->query( $query );
+			$current_results = $results + ( $batch_size * $i );
+
+			// translators: %1 and %2 are how many rows have been processed out of how many total.
+			$this->safe_output( __( 'Updated %1$s / %2$s rows. ', 'wp-native-php-sessions' ), 'log', [ $current_results, $count_total ] );
+		}
+
+		// Hot swap the old table and the new table, deleting a previous old
+		// table if necessary.
+		$old_table = $wpdb->base_prefix . 'bak_' . $unprefixed_table;
+		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
+
+		if ( $wpdb->get_var( $query ) == $old_table ) {
+			$query = "DROP TABLE {$old_table};";
+			$wpdb->query( $query );
+		}
+
+		$query = "ALTER TABLE {$table} RENAME {$old_table};";
+		$wpdb->query( $query );
+		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
+		$wpdb->query( $query );
+
+		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run wp pantheon session primary-key-finalize to clean up old data, or run wp pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
+	}
+
+	/**
+	 * Finalizes the creation of a primary key by deleting the old data.
+	 */
+	public function primary_key_finalize() {
+		global $wpdb;
+		$table = $wpdb->base_prefix . 'bak_pantheon_sessions';
+
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
+
+		// Check for table existence and delete if present.
+		if ( ! $wpdb->get_var( $query ) == $table ) {
+			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), 'error' );
+		} else {
+			$query = "DROP TABLE {$table};";
+			$wpdb->query( $query );
+
+			$this->safe_output( __( 'Old table has been successfully removed, process complete.', 'wp-native-php-sessions' ), 'log' );
+
+		}
+	}
+
+	/**
+	 * Reverts addition of primary key.
+	 */
+	public function primary_key_revert() {
+		global $wpdb;
+		$old_clone_table  = $wpdb->base_prefix . 'bak_pantheon_sessions';
+		$temp_clone_table = $wpdb->base_prefix . 'temp_pantheon_sessions';
+		$table            = $wpdb->base_prefix . 'pantheon_sessions';
+
+		// If there is no old table to roll back to, error.
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
+
+		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
+			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), 'error' );
+		}
+
+		// Swap old table and new one.
+		$query = "ALTER TABLE {$table} RENAME {$temp_clone_table};";
+		$wpdb->query( $query );
+		$query = "ALTER TABLE {$old_clone_table} RENAME {$table};";
+		$wpdb->query( $query );
+		$this->safe_output( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ), 'log' );
+
+		// Remove table which did not function.
+		$query = "DROP TABLE {$temp_clone_table}";
+		$wpdb->query( $query );
+		$this->safe_output( __( 'Process complete.', 'wp-native-php-sessions' ), 'log' );
+	}
+
+	/**
+	 * Provide output to users, whether it's being run in WP_CLI or not.
+	 *
+	 * @param string $message Message to be printed.
+	 * @param string $type If message is being printed through WP_CLI, what type of message.
+	 * @param array $variables If sprintf is needed, an array of values.
+	 *
+	 * @return void
+	 */
+	protected function safe_output( $message, $type, array $variables = [] ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::$type( vsprintf( $message, $variables ) );
+			return;
+		}
+
+		print "\n" . vsprintf( $message, $variables );
+
+		// Calling WP_CLI::error triggers an exit, but we still need to exist even if we don't have WP_CLI available.
+		if ( $type === 'error' ) {
+			exit( 1 );
+		}
+	}
 }
 
 /**
@@ -273,5 +471,6 @@ function Pantheon_Sessions() {
 }
 
 add_action( 'activated_plugin', 'Pantheon_Sessions::force_first_load' );
+add_action( 'admin_notices', 'Pantheon_Sessions::check_native_primary_keys' );
 
 Pantheon_Sessions();

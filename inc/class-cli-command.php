@@ -78,6 +78,36 @@ class CLI_Command extends \WP_CLI_Command {
 			}
 		}
 	}
+
+	/**
+	 * Set id as primary key in the Native PHP Sessions plugin table.
+	 *
+	 * @subcommand add-index
+	 */
+	public function add_index( $args, $assoc_arc ) {
+		$pantheon_session = new \Pantheon_Sessions();
+		$pantheon_session->add_index();
+	}
+
+	/**
+	 * Finalizes the creation of a primary key by deleting the old data.
+	 *
+	 * @subcommand primary-key-finalize
+	 */
+	public function primary_key_finalize() {
+		$pan_session = new \Pantheon_Sessions();
+		$pan_session->primary_key_finalize();
+	}
+
+	/**
+	 * Reverts addition of primary key.
+	 *
+	 * @subcommand primary-key-revert
+	 */
+	public function primary_key_revert() {
+		$pan_session = new \Pantheon_Sessions();
+		$pan_session->primary_key_revert();
+	}
 }
 
 \WP_CLI::add_command( 'pantheon session', '\Pantheon_Sessions\CLI_Command' );
