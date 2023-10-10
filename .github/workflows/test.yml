@@ -44,4 +44,4 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
       - name: Run PHPUnit
-        run: bash ./bin/phpunit-test.sh
+        run: composer test
