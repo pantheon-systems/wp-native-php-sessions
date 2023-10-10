@@ -6,6 +6,7 @@ workflows:
       - test-behat
       - test-phpunit-74
       - test-phpunit-82
+      - test-phpunit-83
   nightly:
     triggers:
       - schedule:
@@ -132,6 +133,37 @@ jobs:
       - run: composer install -n --prefer-dist
       - save_cache:
           key: test-phpunit-82-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+      - run:
+          name: "Install Extras"
+          command: |
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+            sudo apt-get update
+            sudo apt-get install subversion
+            sudo apt-get install -y libmagickwand-dev --no-install-recommends
+            yes '' | sudo pecl install imagick || true
+            sudo docker-php-ext-enable imagick
+            sudo docker-php-ext-install mysqli
+            sudo apt-get install mariadb-client-10.6
+      - run_test
+  test-phpunit-83:
+    resource_class: small
+    working_directory: ~/pantheon-systems/wp-native-php-sessions
+    docker:
+      - image: cimg/php:8.3.0
+      - image: cimg/mariadb:10.3
+    environment:
+      - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
+      - WP_CORE_DIR: "/tmp/wordpress/"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - test-phpunit-83-dependencies-{{ checksum "composer.json" }}
+      - run: composer install -n --prefer-dist
+      - save_cache:
+          key: test-phpunit-83-dependencies-{{ checksum "composer.json" }}
           paths:
             - vendor
       - run:
