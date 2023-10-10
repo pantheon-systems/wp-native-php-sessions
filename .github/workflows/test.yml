@@ -43,5 +43,7 @@ jobs:
           restore-keys: test-phpunit-dependencies-${{ hashFiles('composer.json') }}
       - name: Install Composer dependencies
         run: composer install
+      - name: Prepare PHPUnit Tests
+        run: ./bin/install-wp-tests.sh wp_native_php_sess_tests 'root' ''
       - name: Run PHPUnit
         run: composer test
