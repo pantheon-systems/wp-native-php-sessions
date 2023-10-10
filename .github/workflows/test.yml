@@ -44,6 +44,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
       - name: Prepare PHPUnit Tests
-        run: ./bin/install-wp-tests.sh wp_native_php_sess_tests 'root' '' 127.0.0.1
+        run: ./bin/install-wp-tests.sh wp_native_php_sess_tests 'root' '' 127.0.0.1:3306
       - name: Run PHPUnit
         run: composer test
