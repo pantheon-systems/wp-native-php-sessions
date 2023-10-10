@@ -6,7 +6,6 @@ workflows:
       - test-behat
       - test-phpunit-74
       - test-phpunit-82
-      - test-phpunit-83
   nightly:
     triggers:
       - schedule:
