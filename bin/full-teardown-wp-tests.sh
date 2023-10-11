@@ -15,29 +15,29 @@ WP_TESTS_DIR=${WP_TESTS_DIR-$TMPDIR/wordpress-tests-lib}
 WP_CORE_DIR=${WP_CORE_DIR-$TMPDIR/wordpress/}
 
 file_delete() {
-  rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+  rm -rf "$WP_TESTS_DIR" "$WP_CORE_DIR"
 }
 
 drop_db() {
 
 	# parse DB_HOST for port or socket references
-	local PARTS=(${DB_HOST//\:/ })
+	local PARTS=("${DB_HOST//\:/ }")
 	local DB_HOSTNAME=${PARTS[0]};
 	local DB_SOCK_OR_PORT=${PARTS[1]};
 	local EXTRA=""
 
 	if ! [ -z $DB_HOSTNAME ] ; then
-		if [ $(echo $DB_SOCK_OR_PORT | grep -e '^[0-9]\{1,\}$') ]; then
+		if [ $(echo "$DB_SOCK_OR_PORT" | grep -e '^[0-9]\{1,\}$') ]; then
 			EXTRA=" --host=$DB_HOSTNAME --port=$DB_SOCK_OR_PORT --protocol=tcp"
-		elif ! [ -z $DB_SOCK_OR_PORT ] ; then
+		elif ! [ -z "$DB_SOCK_OR_PORT" ] ; then
 			EXTRA=" --socket=$DB_SOCK_OR_PORT"
-		elif ! [ -z $DB_HOSTNAME ] ; then
+		elif ! [ -z "$DB_HOSTNAME" ] ; then
 			EXTRA=" --host=$DB_HOSTNAME --protocol=tcp"
 		fi
 	fi
 
 	# create database
-	echo Y | mysqladmin drop $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	echo Y | mysqladmin drop "$DB_NAME" --user="$DB_USER" --password="$DB_PASS""$EXTRA"
 }
 
 file_delete
