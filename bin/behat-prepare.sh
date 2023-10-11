@@ -6,8 +6,7 @@
 # such that it can be run a second time if a step fails.
 ###
 
-terminus whoami > /dev/null
-if [ $? -ne 0 ]; then
+if [ "$(terminus whoami)" -ne 0 ]; then
 	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi
