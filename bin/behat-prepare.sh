@@ -77,7 +77,7 @@ terminus build:workflow:wait "$TERMINUS_SITE"."$TERMINUS_ENV"
 ###
 # Silence output so as not to show the password.
 {
-  terminus wp "$SITE_ENV" -- core install --title="$TERMINUS_ENV"-"$TERMINUS_SITE" --url=$PANTHEON_SITE_URL --admin_user=$WORDPRESS_ADMIN_USERNAME --admin_email=wp-native-php-sessions@getpantheon.com --admin_password="$WORDPRESS_ADMIN_PASSWORD"
+  terminus wp "$SITE_ENV" -- core install --title="$TERMINUS_ENV"-"$TERMINUS_SITE" --url="$PANTHEON_SITE_URL" --admin_user="$WORDPRESS_ADMIN_USERNAME" --admin_email=wp-native-php-sessions@getpantheon.com --admin_password="$WORDPRESS_ADMIN_PASSWORD"
 } &> /dev/null
 terminus wp "$SITE_ENV" -- plugin activate wp-native-php-sessions
 terminus wp "$SITE_ENV" -- theme activate twentytwentythree
