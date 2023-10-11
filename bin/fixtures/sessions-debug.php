@@ -13,7 +13,7 @@ add_action( 'template_redirect', function() {
 		return;
 	}
 	session_start();
-	echo "(" . $_GET['key'] . ':' . $_SESSION[ $_GET['key'] ] . ")";
+	echo "(" . esc_html($_GET['key']) . ':' . $_SESSION[ esc_html($_GET['key']) ] . ")";
 	exit;
 });
 
@@ -44,7 +44,7 @@ add_action( 'template_redirect', function() {
 	global $wpdb;
 	$results = $wpdb->get_results( "SELECT user_id,data FROM {$wpdb->pantheon_sessions}" );
 	foreach( $results as $result ) {
-		echo $result->user_id . '-' . $result->data . PHP_EOL;
+		echo esc_html($result->user_id) . '-' . esc_html($result->data) . PHP_EOL;
 	}
 	exit;
 });
