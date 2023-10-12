@@ -13,7 +13,7 @@ add_action( 'template_redirect', function() {
 		return;
 	}
 	session_start();
-	echo "(" . esc_html($_GET['key']) . ':' . esc_html( $_SESSION[ $_GET['key'] ] ) . ")";
+	echo "(" . esc_html($_GET['key']) . ':' . esc_html( $_SESSION[ $_GET['key'] ] ) . ")"; // guardrails-disable-line
 	exit;
 });
 
