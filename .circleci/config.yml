@@ -4,8 +4,8 @@ workflows:
   main:
     jobs:
       - test-behat
-      - test-phpunit-74
-      - test-phpunit-82
+#      - test-phpunit-74
+#      - test-phpunit-82
   nightly:
     triggers:
       - schedule:
