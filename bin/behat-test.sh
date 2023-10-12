@@ -4,7 +4,7 @@
 # Execute the Behat test suite against a prepared Pantheon site environment.
 ###
 
-if ! terminus whoami > dev/null; then
+if terminus whoami > dev/null; then
 	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi

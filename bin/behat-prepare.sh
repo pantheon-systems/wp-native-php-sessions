@@ -6,7 +6,7 @@
 # such that it can be run a second time if a step fails.
 ###
 
-if ! terminus whoami > dev/null; then
+if terminus whoami > dev/null; then
 	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi
