@@ -24,8 +24,8 @@
             "@phpcs",
             "@phplint"
         ],
-        "phpcs": "vendor/bin/phpcs --ignore=tests/* -s .",
-        "phpcbf": "vendor/bin/phpcbf --ignore=tests/* .",
+        "phpcs": "vendor/bin/phpcs .",
+        "phpcbf": "vendor/bin/phpcbf .",
         "phplint": "find . -type f -name '*.php' -not -path './vendor/*' -not -path './tests/*' -exec php -l {} \\;",
         "phpunit": "vendor/bin/phpunit --do-not-cache-result",
         "test": "@phpunit",

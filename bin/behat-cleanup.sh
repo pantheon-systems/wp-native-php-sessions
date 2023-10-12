@@ -4,7 +4,7 @@
 # Delete the Pantheon site environment after the Behat test suite has run.
 ###
 
-if ! "$(terminus whoami)"; then
+if ! terminus whoami > dev/null; then
 	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi

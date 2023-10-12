@@ -6,7 +6,7 @@
 # such that it can be run a second time if a step fails.
 ###
 
-if ! "$(terminus whoami)"; then
+if ! terminus whoami > dev/null; then
 	echo "Terminus unauthenticated; assuming unauthenticated build"
 	exit 0
 fi
@@ -26,7 +26,7 @@ set -ex
 ###
 # Create a new environment for this particular test run.
 ###
-terminus env:create  "$TERMINUS_SITE".dev "$TERMINUS_ENV"
+terminus env:create  "{$TERMINUS_SITE}.dev" "$TERMINUS_ENV"
 terminus env:wipe "$SITE_ENV" --yes
 
 ###
