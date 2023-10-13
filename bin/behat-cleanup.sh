@@ -4,11 +4,6 @@
 # Delete the Pantheon site environment after the Behat test suite has run.
 ###
 
-if terminus whoami > dev/null; then
-	echo "Terminus unauthenticated; assuming unauthenticated build"
-	exit 0
-fi
-
 if [ -z "$TERMINUS_SITE" ] || [ -z "$TERMINUS_ENV" ]; then
 	echo "TERMINUS_SITE and TERMINUS_ENV environment variables must be set"
 	exit 1
