@@ -42,7 +42,7 @@ class List_Table extends \WP_List_Table {
 	 * Message for no items found
 	 */
 	public function no_items() {
-		_e( 'No sessions found.', 'wp-native-php-sessions' );
+		esc_html_e( 'No sessions found.', 'wp-native-php-sessions' );
 	}
 
 	/**

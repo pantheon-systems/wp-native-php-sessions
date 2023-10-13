@@ -98,6 +98,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
 * Adds alert to dashboard for users who need to run the new command.
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
+* 8.3 compatibility and code quality updates
 
 ### 1.3.6 (June 1, 2023) ###
 * Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)

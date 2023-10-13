@@ -178,8 +178,8 @@ class Pantheon_Sessions {
 					sprintf(
 						/* translators: %1s: File path, %2d: Line number */
 						__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
-						$file,
-						$line
+						esc_html( $file ),
+						esc_html( $line )
 					),
 					E_USER_WARNING
 				);
@@ -452,7 +452,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			return;
 		}
 
-		print "\n" . vsprintf( $message, $variables );
+		print "\n" . wp_kses_post( vsprintf( $message, $variables ) );
 
 		// Calling WP_CLI::error triggers an exit, but we still need to exist even if we don't have WP_CLI available.
 		if ( $type === 'error' ) {
