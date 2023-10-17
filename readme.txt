@@ -88,7 +88,7 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 
 == Upgrade Notice ==
 
-= 1.4.0 (October 16, 2023) =
+= 1.4.0 (October 17, 2023) =
 Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 == Changelog ==

@@ -94,7 +94,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ## Changelog ##
 
-### 1.4.0 (October 16, 2023) ###
+### 1.4.0 (October 17, 2023) ###
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
 * Adds alert to dashboard for users who need to run the new command.
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
