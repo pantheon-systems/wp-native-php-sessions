@@ -2,8 +2,8 @@
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
-**Tested up to:** 6.2.2  
-**Stable tag:** 1.3.6  
+**Tested up to:** 6.3  
+**Stable tag:** 1.4.0  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -13,7 +13,7 @@ Use native PHP sessions and stay horizontally scalable. Better living through su
 ## Description ##
 
 [![Actively Maintained](https://img.shields.io/badge/Pantheon-Actively_Maintained-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#actively-maintained-support)
- [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/master)
+ [![CircleCI](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/main.svg?style=svg)](https://circleci.com/gh/pantheon-systems/wp-native-php-sessions/tree/main)
 
 WordPress core does not use PHP sessions, but sometimes they are required by your use-case, a plugin or theme.
 
@@ -42,9 +42,27 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
     }
     add_filter( 'pantheon_session_expiration', 'my_session_expiration_override' );
 
+## CLI Commands ##
+
+### `wp pantheon session add-index` ###
+
+Added in 1.4.0. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table in version 1.2.2. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
+
+### `wp pantheon session primary-key-finalize` ###
+
+Added in 1.4.0. If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
+
+### `wp pantheon session primary-key-revert` ###
+
+Added in 1.4.0. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.  
+
 ## Contributing ##
 
 See [CONTRIBUTING.md](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/CONTRIBUTING.md) for information on contributing.
+
+## Security Policy
+### Reporting Security Bugs
+Please report security bugs found in the Native PHP Sessions plugin's source code through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-native-php-sessions). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 ## Frequently Asked Questions ##
 
@@ -69,7 +87,18 @@ To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include 
 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
+## Upgrade Notice ##
+
+### 1.4.0 ###
+Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
+
 ## Changelog ##
+
+### 1.4.0 (October 17, 2023) ###
+* Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
+* Adds alert to dashboard for users who need to run the new command.
+* Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
+* 8.3 compatibility and code quality updates
 
 ### 1.3.6 (June 1, 2023) ###
 * Fixes PHP 8.2 deprecated dynamic property error [[#251](https://github.com/pantheon-systems/wp-native-php-sessions/pull/251)] (props @miguelaxcar)

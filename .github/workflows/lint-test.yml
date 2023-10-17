@@ -1,0 +1,82 @@
+name: Linting & Test
+on: [push]
+jobs:
+  validate-readme-spacing:
+    name: Validate README Spacing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pantheon-systems/validate-readme-spacing@v1
+  lint:
+    name: PHPCS Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/vendor
+          key: test-lint-dependencies-{{ checksum "composer.json" }}
+          restore-keys: test-lint-dependencies-{{ checksum "composer.json" }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+      - name: Install dependencies
+        run: composer install -n --prefer-dist
+      - name: Run PHPCS
+        run: composer lint
+  php8-compatibility:
+    name: PHP 8.x Compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pantheon-systems/phpcompatibility-action@dev
+        with:
+          paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
+          test-versions: 8.0-
+  wporg-validation:
+    name: WP.org Plugin Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pantheon-systems/action-wporg-validator@1.0.0
+        with:
+          type: 'plugin'
+  test:
+    needs: lint
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.5
+    strategy:
+      matrix:
+        php_version: [7.4, 8.2, 8.3]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+          extensions: mysqli, zip, imagick
+      - name: Start MySQL Service
+        run: sudo systemctl start mysql
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/vendor
+          key: test-dependencies-{{ checksum "composer.json" }}
+          restore-keys: test-dependencies-{{ checksum "composer.json" }}
+      - name: Install dependencies
+        run: |
+          if [ ${{ matrix.php_version }} = "7.4" ]; then
+            composer update
+          fi
+          composer install
+      - name: Run PHPUnit
+        run: bash ./bin/phpunit-test.sh

@@ -1,12 +1,9 @@
-version: 2
+version: 2.1
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
-      - lint
       - test-behat
-      - test-phpunit-74
-      - test-phpunit-82
   nightly:
     triggers:
       - schedule:
@@ -17,26 +14,28 @@ workflows:
                 - master
     jobs:
       - test-behat
-jobs:
-  lint:
-    working_directory: ~/pantheon-systems/wp-native-php-sessions
-    docker:
-      - image: quay.io/pantheon-public/build-tools-ci:8.x-php8.0
+commands:
+  run_test:
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - test-lint-dependencies-{{ checksum "composer.json" }}
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          key: test-lint-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - vendor
       - run:
-          name: "Run PHP Lint"
+          name: "Run Tests"
           command: |
-            composer phpcs
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            composer phpunit
+            WP_MULTISITE=1 composer phpunit
+            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
+            composer phpunit
+            bash bin/full-teardown-wp-tests.sh wordpress_test root '' 127.0.0.1 latest            
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+            vendor/bin/phpunit --group=cli_command
+            WP_MULTISITE=1 vendor/bin/phpunit --group=cli_command
+            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
+            vendor/bin/phpunit --group=cli_command
+jobs:
   test-behat:
+    resource_class: small
     working_directory: ~/pantheon-systems/wp-native-php-sessions
     parallelism: 1
     docker:
@@ -76,84 +75,10 @@ jobs:
             exit 0
           fi
           terminus auth:login --machine-token=$TERMINUS_TOKEN
+      - run: ./bin/validate-fixture-version.sh
       - run: ./bin/behat-prepare.sh
       - run: ./bin/behat-test.sh --strict
       - run:
           command: ./bin/behat-cleanup.sh
           when: always
-  test-phpunit-74:
-    working_directory: ~/pantheon-systems/wp-native-php-sessions
-    docker:
-      - image: circleci/php:7.4-node-browsers
-      - image: circleci/mariadb:10.3
-    environment:
-      - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
-      - WP_CORE_DIR: "/tmp/wordpress/"
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - test-phpunit-74-dependencies-{{ checksum "composer.json" }}
-      - run: composer update && composer install -n --prefer-dist
-      - save_cache:
-          key: test-phpunit-74-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - vendor
-      - run:
-          name: "Install Extras"
-          command: |
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
-            sudo apt-get update
-            sudo apt-get install subversion
-            sudo apt-get install -y libmagickwand-dev --no-install-recommends
-            yes '' | sudo pecl install imagick || true
-            sudo docker-php-ext-enable imagick
-            sudo docker-php-ext-install mysqli
-            sudo apt-get install mariadb-client-10.5
-      - run:
-          name: "Run Tests"
-          command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            WP_MULTISITE=1 composer phpunit
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit
-  test-phpunit-82:
-    working_directory: ~/pantheon-systems/wp-native-php-sessions
-    docker:
-      - image: cimg/php:8.2.0
-      - image: circleci/mariadb:10.3
-    environment:
-      - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
-      - WP_CORE_DIR: "/tmp/wordpress/"
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - test-phpunit-82-dependencies-{{ checksum "composer.json" }}
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          key: test-phpunit-82-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - vendor
-      - run:
-          name: "Install Extras"
-          command: |
-            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
-            sudo apt-get update
-            sudo apt-get install subversion
-            sudo apt-get install -y libmagickwand-dev --no-install-recommends
-            yes '' | sudo pecl install imagick || true
-            sudo docker-php-ext-enable imagick
-            sudo docker-php-ext-install mysqli
-            sudo apt-get install mariadb-client-10.6
-      - run:
-          name: "Run Tests"
-          command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            WP_MULTISITE=1 composer phpunit
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit
+

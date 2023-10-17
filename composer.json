@@ -15,16 +15,22 @@
     ],
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
-        "pantheon-systems/pantheon-wp-coding-standards": "^1.0",
+        "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
         "phpunit/phpunit": "^9",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^2.0"
     },
     "scripts": {
-        "lint": "@phpcs",
-        "phpcs": "vendor/bin/phpcs",
-        "phpcbf": "vendor/bin/phpcbf",
-        "phpunit": "vendor/bin/phpunit",
-        "test": "@phpunit"
+        "lint": [
+            "@phpcs",
+            "@phplint"
+        ],
+        "phpcs": "vendor/bin/phpcs .",
+        "phpcbf": "vendor/bin/phpcbf .",
+        "phplint": "find . -type f -name '*.php' -not -path './vendor/*' -not -path './tests/*' -exec php -l {} \\;",
+        "phpunit": "vendor/bin/phpunit --do-not-cache-result",
+        "test": "@phpunit",
+        "test:install": "bin/install-local-tests.sh --no-db",
+        "test:install:withdb": "bin/install-local-tests.sh"
     },
     "config": {
         "allow-plugins": {
