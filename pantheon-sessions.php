@@ -72,7 +72,25 @@ class Pantheon_Sessions {
 			add_action( 'set_logged_in_cookie', [ __CLASS__, 'action_set_logged_in_cookie' ], 10, 4 );
 			add_action( 'clear_auth_cookie', [ __CLASS__, 'action_clear_auth_cookie' ] );
 		}
+
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        add_action( 'wp_ajax_dismiss_notice', [ $this, 'dismiss_notice' ] );
 	}
+
+    /**
+     * Enqueue scripts
+     */
+    public function enqueue_scripts() {
+        wp_enqueue_script( 'notices', plugins_url( '/assets/js/notices.js', __FILE__ ), ['jquery'], PANTHEON_SESSIONS_VERSION, true );
+    }
+
+    /**
+     * Dismiss the notice when the button is clicked.
+     */
+    public function dismiss_notice() {
+        $user_id = get_current_user_id();
+        update_user_meta( $user_id, 'notice_dismissed', true );
+    }
 
 	/**
 	 * Define our constants
@@ -273,26 +291,29 @@ class Pantheon_Sessions {
         $is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
         $wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; --' : 'wp';
         $cli_add_index = $wp_cli_cmd . 'pantheon session add-index';
-
 		$key_existence = $wpdb->get_results( $query );
+        $user_id = get_current_user_id();
+        $dismissed = get_user_meta( $user_id, 'notice_dismissed', true );
 
 		if ( empty( $key_existence ) ) {
-			// If the key doesn't exist, recommend remediation.
-			?>
-			<div class="notice notice-error is-dismissible">
-				<p>
-				    <?php
-				    echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
-                    ?>
-                </p>
-                <p>
-                    <?php
-                    // TODO: Integrate the notice into the Health Check page. See
-                    echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
-				    ?>
-                </p>
-			</div>
-			<?php
+            if ( ! $dismissed ) {
+                // If the key doesn't exist, recommend remediation.
+                ?>
+                <div class="notice notice-error is-dismissible">
+                    <p>
+                        <?php
+                        echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
+                        ?>
+                    </p>
+                    <p>
+                        <?php
+                        // TODO: Integrate the notice into the Health Check page. See
+                        echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
+                        ?>
+                    </p>
+                </div>
+                <?php
+            }
 		}
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
