@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "104888d7217d064bbf2a3a1378841c75",
+    "content-hash": "6e8dd6781922c762b41393a0dcae6a6b",
     "packages": [
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -1368,6 +1368,52 @@
             ],
             "description": "PHPCS Rulesets for WordPress projects on Pantheon.",
             "time": "2023-09-12T17:25:08+00:00"
+        },
+        {
+            "name": "pantheon-systems/wpunit-helpers",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pantheon-systems/wpunit-helpers.git",
+                "reference": "683c9eb83a76c5229a40eef2ec1b19162f162a50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pantheon-systems/wpunit-helpers/zipball/683c9eb83a76c5229a40eef2ec1b19162f162a50",
+                "reference": "683c9eb83a76c5229a40eef2ec1b19162f162a50",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Pantheon\\WPUnitHelpers\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pantheon\\WPUnitHelpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pantheon",
+                    "email": "noreply@pantheon.io"
+                }
+            ],
+            "description": "Unified scripts for installing and running automated WP Unit Tests.",
+            "support": {
+                "issues": "https://github.com/pantheon-systems/wpunit-helpers/issues",
+                "source": "https://github.com/pantheon-systems/wpunit-helpers/tree/v1.0.1"
+            },
+            "time": "2023-10-12T20:08:14+00:00"
         },
         {
             "name": "phar-io/manifest",

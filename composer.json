@@ -20,10 +20,18 @@
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
         "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
+        "pantheon-systems/wpunit-helpers": "^1.0",
         "phpunit/phpunit": "^9",
         "yoast/phpunit-polyfills": "^2.0"
     },
     "scripts": {
+        "post-install-cmd": [
+          "@get-wptrt-loader"
+        ],
+        "post-update-cmd": [
+          "@get-wptrt-loader"
+        ],
+        "get-wptrt-loader": "bash bin/get-wptrt-loader.sh",
         "lint": [
             "@phpcs",
             "@phplint"
@@ -40,7 +48,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "composer/installers": true,
-            "mnsami/composer-custom-directory-installer": true
+            "mnsami/composer-custom-directory-installer": true,
+            "pantheon-systems/wpunit-helpers": true
         },
         "sort-packages": true
     },
