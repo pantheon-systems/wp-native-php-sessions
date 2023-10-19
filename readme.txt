@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.3
-Stable tag: 1.4.0
+Stable tag: 1.4.1-dev
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -94,6 +94,9 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 == Changelog ==
 
 = 1.4.1-dev =
+* Fixed an issue with the `pantheon session add-index` command not working properly on WP multisite [[#270](https://github.com/pantheon-systems/wp-native-php-sessions/pull/270)]
+* Made the notice added in 1.4.0 dismissable (stores in user meta) & hides for multisite (an update is coming to iterate through all sites on a network) [[#271](https://github.com/pantheon-systems/wp-native-php-sessions/pull/271)]
+
 
 = 1.4.0 =
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
