@@ -281,10 +281,16 @@ class Pantheon_Sessions {
 			?>
 			<div class="notice notice-error is-dismissible">
 				<p>
-				<?php
-				print wp_kses_post( __( 'Your PHP Native Sessions table is missing a primary key. Please run <code>wp pantheon session add-index</code> and verify that the process completes successfully and that this message goes away to resolve this issue on your live environment.', 'wp-native-php-sessions' ) );
-				?>
-						</p>
+				    <?php
+				    echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
+                    ?>
+                </p>
+                <p>
+                    <?php
+                    // TODO: Integrate the notice into the Health Check page. See
+                    echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
+				    ?>
+                </p>
 			</div>
 			<?php
 		}
