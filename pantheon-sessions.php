@@ -268,8 +268,11 @@ class Pantheon_Sessions {
 	public static function check_native_primary_keys() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'pantheon_sessions';
-		$old_table  = $wpdb->prefix . 'bak_pantheon_sessions';
-		$query      = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
+		$old_table = $wpdb->prefix . 'bak_pantheon_sessions';
+		$query = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
+        $is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
+        $wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; --' : 'wp';
+        $cli_add_index = $wp_cli_cmd . 'pantheon session add-index';
 
 		$key_existence = $wpdb->get_results( $query );
 
