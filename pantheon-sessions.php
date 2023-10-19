@@ -267,8 +267,8 @@ class Pantheon_Sessions {
 	 */
 	public static function check_native_primary_keys() {
 		global $wpdb;
-		$table_name = $wpdb->base_prefix . 'pantheon_sessions';
-		$old_table  = $wpdb->base_prefix . 'bak_pantheon_sessions';
+		$table_name = $wpdb->prefix . 'pantheon_sessions';
+		$old_table  = $wpdb->prefix . 'bak_pantheon_sessions';
 		$query      = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
 
 		$key_existence = $wpdb->get_results( $query );
@@ -310,8 +310,8 @@ class Pantheon_Sessions {
 	public function add_index() {
 		global $wpdb;
 		$unprefixed_table = 'pantheon_sessions';
-		$table            = $wpdb->base_prefix . $unprefixed_table;
-		$temp_clone_table = $wpdb->base_prefix . 'sessions_temp_clone';
+		$table            = $wpdb->prefix . $unprefixed_table;
+		$temp_clone_table = $wpdb->prefix . 'sessions_temp_clone';
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
@@ -371,7 +371,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Hot swap the old table and the new table, deleting a previous old
 		// table if necessary.
-		$old_table = $wpdb->base_prefix . 'bak_' . $unprefixed_table;
+		$old_table = $wpdb->prefix . 'bak_' . $unprefixed_table;
 		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
 		if ( $wpdb->get_var( $query ) == $old_table ) {
@@ -392,7 +392,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_finalize() {
 		global $wpdb;
-		$table = $wpdb->base_prefix . 'bak_pantheon_sessions';
+		$table = $wpdb->prefix . 'bak_pantheon_sessions';
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
@@ -413,9 +413,9 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_revert() {
 		global $wpdb;
-		$old_clone_table  = $wpdb->base_prefix . 'bak_pantheon_sessions';
-		$temp_clone_table = $wpdb->base_prefix . 'temp_pantheon_sessions';
-		$table            = $wpdb->base_prefix . 'pantheon_sessions';
+		$old_clone_table  = $wpdb->prefix . 'bak_pantheon_sessions';
+		$temp_clone_table = $wpdb->prefix . 'temp_pantheon_sessions';
+		$table            = $wpdb->prefix . 'pantheon_sessions';
 
 		// If there is no old table to roll back to, error.
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
