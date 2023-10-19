@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions for WordPress
- * Version: 1.4.0
+ * Version: 1.4.1-dev
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.4.0' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.4.1-dev' );
 
 /**
  * Main controller class for the plugin.
@@ -72,6 +72,24 @@ class Pantheon_Sessions {
 			add_action( 'set_logged_in_cookie', [ __CLASS__, 'action_set_logged_in_cookie' ], 10, 4 );
 			add_action( 'clear_auth_cookie', [ __CLASS__, 'action_clear_auth_cookie' ] );
 		}
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_ajax_dismiss_notice', [ $this, 'dismiss_notice' ] );
+	}
+
+	/**
+	 * Enqueue scripts
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_script( 'notices', plugins_url( '/assets/js/notices.js', __FILE__ ), [ 'jquery' ], PANTHEON_SESSIONS_VERSION, true );
+	}
+
+	/**
+	 * Dismiss the notice when the button is clicked.
+	 */
+	public function dismiss_notice() {
+		$user_id = get_current_user_id();
+		update_user_meta( $user_id, 'notice_dismissed', true );
 	}
 
 	/**
@@ -268,22 +286,36 @@ class Pantheon_Sessions {
 	public static function check_native_primary_keys() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'pantheon_sessions';
-		$old_table  = $wpdb->prefix . 'bak_pantheon_sessions';
-		$query      = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
-
+		$old_table = $wpdb->prefix . 'bak_pantheon_sessions';
+		$query = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
+		$is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
+		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; --' : 'wp';
+		$cli_add_index = $wp_cli_cmd . 'pantheon session add-index';
 		$key_existence = $wpdb->get_results( $query );
+		$user_id = get_current_user_id();
+		$dismissed = get_user_meta( $user_id, 'notice_dismissed', true );
 
 		if ( empty( $key_existence ) ) {
-			// If the key doesn't exist, recommend remediation.
-			?>
-			<div class="notice notice-error is-dismissible">
-				<p>
-				<?php
-				print wp_kses_post( __( 'Your PHP Native Sessions table is missing a primary key. Please run <code>wp pantheon session add-index</code> and verify that the process completes successfully and that this message goes away to resolve this issue on your live environment.', 'wp-native-php-sessions' ) );
+			// TODO: Remove this conditional for multisite. See https://getpantheon.atlassian.net/browse/CMSP-744.
+			if ( is_multisite() || ! $dismissed ) {
+				// If the key doesn't exist, recommend remediation.
 				?>
-						</p>
-			</div>
-			<?php
+				<div class="notice notice-error is-dismissible">
+					<p>
+						<?php
+						echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
+						?>
+					</p>
+					<p>
+						<?php
+						// TODO: Integrate the notice into the Health Check page. See https://getpantheon.atlassian.net/browse/CMSP-745.
+						// Translators: %s is the add-index command.
+						echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
+						?>
+					</p>
+				</div>
+				<?php
+			}
 		}
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
@@ -291,14 +323,18 @@ class Pantheon_Sessions {
 
 		// Check for table existence and delete if present.
 		if ( $wpdb->get_var( $query ) == $old_table ) {
+			$cli_key_finalize = $wp_cli_cmd . 'pantheon session primary-key-finalize';
+			$cli_key_revert = $wp_cli_cmd . 'pantheon session primary-key-revert';
+
 			// If an old table exists but has not been removed, suggest doing so.
 			?>
 			<div class="notice notice-error">
 				<p>
-				<?php
-				print wp_kses_post( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run <code>wp pantheon session primary-key-finalize</code> to clean up old data, or run <code>wp pantheon session primary-key-revert</code> if there were issues.', 'wp-native-php-sessions' ) );
-				?>
-						</p>
+					<?php
+					// Translators: 1: the primary-key-finalize command, 2: the primary-key-revert command.
+					echo wp_kses_post( sprintf( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run %1$s to clean up old data, or run %2$s if there were issues.', 'wp-native-php-sessions' ), "<code>$cli_key_finalize</code>", "<code>$cli_key_revert</code>" ) );
+					?>
+				</p>
 			</div>
 			<?php
 		}
@@ -358,9 +394,9 @@ class Pantheon_Sessions {
 		for ( $i = 0; $i < $loops; $i++ ) {
 			$offset = $i * $batch_size;
 
-			$query           = sprintf( "INSERT INTO {$temp_clone_table} 
-(user_id, session_id, secure_session_id, ip_address, datetime, data) 
-SELECT user_id,session_id,secure_session_id,ip_address,datetime,data 
+			$query           = sprintf( "INSERT INTO {$temp_clone_table}
+(user_id, session_id, secure_session_id, ip_address, datetime, data)
+SELECT user_id,session_id,secure_session_id,ip_address,datetime,data
 FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$results         = $wpdb->query( $query );
 			$current_results = $results + ( $batch_size * $i );
