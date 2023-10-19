@@ -62,7 +62,7 @@ However, you can script this process in bash by getting a list of sites and loop
 
   for site in $(wp site list --field=url);
   then
-    wp pantheon session add-index
+    wp pantheon session add-index --url=$site
   done
 
 This can be applied to any of the other commands as needed to do them all in one go. We will be updating the command to iterate over all the sites in a multisite in a forthcoming release.
