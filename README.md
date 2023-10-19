@@ -56,6 +56,21 @@ Added in 1.4.0. If you have run the `add-index` command and have verified that t
 
 Added in 1.4.0. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.  
 
+### WordPress Multisite
+As of 1.4.1 the `add-index`, `primary-key-add` and `primary-key-revert` commands only apply to a single site. This means that to run on a WordPress multisite, for sites beyond the main site, you would need to pass the `--url=` flag for each subsite.
+
+However, you can script this process in bash by getting a list of sites and looping over them:
+
+```bash
+for site in $(wp site list --field=url);
+then
+	wp pantheon session add-index
+done
+```
+
+This can be applied to any of the other commands as needed to do them all in one go. We will be updating the command to iterate over all the sites in a multisite in a forthcoming release.
+
+
 ## Contributing ##
 
 See [CONTRIBUTING.md](https://github.com/pantheon-systems/wp-native-php-sessions/blob/main/CONTRIBUTING.md) for information on contributing.
