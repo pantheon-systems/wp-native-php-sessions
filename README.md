@@ -62,9 +62,8 @@ As of 1.4.1 the `add-index`, `primary-key-add` and `primary-key-revert` commands
 However, you can script this process in bash by getting a list of sites and looping over them:
 
 ```bash
-for site in $(wp site list --field=url);
-then
-	wp pantheon session add-index
+for site in $(wp site list --field=url); do
+	wp pantheon session add-index --url=$site
 done
 ```
 
