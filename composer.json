@@ -13,6 +13,10 @@
             "email": "daniel@handbuilt.co"
         }
     ],
+    "require": {
+        "mnsami/composer-custom-directory-installer": "^2.0",
+        "wptrt/admin-notices": "^1.0"
+    },
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
         "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
@@ -34,7 +38,15 @@
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true,
+            "mnsami/composer-custom-directory-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+      "installer-paths": {
+        "lib/{$name}/": ["wptrt/admin-notices"]
+      }
     }
 }
