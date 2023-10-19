@@ -300,14 +300,18 @@ class Pantheon_Sessions {
 
 		// Check for table existence and delete if present.
 		if ( $wpdb->get_var( $query ) == $old_table ) {
+            $cli_key_finalize = $wp_cli_cmd . 'pantheon session primary-key-finalize';
+            $cli_key_revert = $wp_cli_cmd . 'pantheon session primary-key-revert';
+
 			// If an old table exists but has not been removed, suggest doing so.
 			?>
 			<div class="notice notice-error">
 				<p>
-				<?php
-				print wp_kses_post( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run <code>wp pantheon session primary-key-finalize</code> to clean up old data, or run <code>wp pantheon session primary-key-revert</code> if there were issues.', 'wp-native-php-sessions' ) );
-				?>
-						</p>
+				    <?php
+                    // Translators: 1: the primary-key-finalize command, 2: the primary-key-revert command.
+				    echo wp_kses_post( sprintf( __( 'An old version of the PHP Native Sessions table is detected. When testing is complete, run %1$s to clean up old data, or run %2$s if there were issues.', 'wp-native-php-sessions' ), "<code>$cli_key_finalize</code>", "<code>$cli_key_revert</code>" ) );
+				    ?>
+                </p>
 			</div>
 			<?php
 		}
@@ -367,9 +371,9 @@ class Pantheon_Sessions {
 		for ( $i = 0; $i < $loops; $i++ ) {
 			$offset = $i * $batch_size;
 
-			$query           = sprintf( "INSERT INTO {$temp_clone_table} 
-(user_id, session_id, secure_session_id, ip_address, datetime, data) 
-SELECT user_id,session_id,secure_session_id,ip_address,datetime,data 
+			$query           = sprintf( "INSERT INTO {$temp_clone_table}
+(user_id, session_id, secure_session_id, ip_address, datetime, data)
+SELECT user_id,session_id,secure_session_id,ip_address,datetime,data
 FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$results         = $wpdb->query( $query );
 			$current_results = $results + ( $batch_size * $i );
