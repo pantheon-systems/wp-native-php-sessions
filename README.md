@@ -64,7 +64,7 @@ However, you can script this process in bash by getting a list of sites and loop
 ```bash
 for site in $(wp site list --field=url);
 then
-	wp pantheon session add-index
+	wp pantheon session add-index --url=$site
 done
 ```
 
