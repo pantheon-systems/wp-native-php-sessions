@@ -36,7 +36,6 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "composer/installers": true,
             "pantheon-systems/wpunit-helpers": true
         },
         "sort-packages": true
