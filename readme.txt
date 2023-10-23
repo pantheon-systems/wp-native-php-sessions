@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.3
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -43,17 +43,28 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
 
 == CLI Commands ==
 
-= `wp pantheon session add-index` =
+**wp pantheon session add-index**
 
 Added in 1.4.0. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table in version 1.2.2. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
 
-= `wp pantheon session primary-key-finalize` =
+**wp pantheon session primary-key-finalize**
 
 Added in 1.4.0. If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
 
-= `wp pantheon session primary-key-revert` =
+**wp pantheon session primary-key-revert**
 
 Added in 1.4.0. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.
+
+= WordPress Multisite =
+As of 1.4.1 the `add-index`, `primary-key-add` and `primary-key-revert` commands only apply to a single site. This means that to run on a WordPress multisite, for sites beyond the main site, you would need to pass the `--url=` flag for each subsite.
+
+However, you can script this process in bash by getting a list of sites and looping over them:
+
+  for site in $(wp site list --field=url); do
+    wp pantheon session add-index --url=$site
+  done
+
+This can be applied to any of the other commands as needed to do them all in one go. We will be updating the command to iterate over all the sites in a multisite in a forthcoming release.
 
 == Contributing ==
 
@@ -93,12 +104,15 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 == Changelog ==
 
-= 1.4.0 =
+= 1.4.1 (October 23, 2023) =
+* Fixed an issue with the `pantheon session add-index` command not working properly on WP multisite [[#270](https://github.com/pantheon-systems/wp-native-php-sessions/pull/270)]
+* Made the notice added in 1.4.0 dismissable (stores in user meta) & hides for multisite (an update is coming to iterate through all sites on a network) [[#271](https://github.com/pantheon-systems/wp-native-php-sessions/pull/271)]
+
+
+= 1.4.0 (October 17, 2023) =
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
 * Adds alert to dashboard for users who need to run the command.
 * 8.3 compatibility and code quality updates
-
-= 1.3.7-dev =
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
 
 = 1.3.6 (June 1, 2023) =
