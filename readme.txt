@@ -43,15 +43,15 @@ To override this use the `pantheon_session_expiration` filter before the WordPre
 
 == CLI Commands ==
 
-**`wp pantheon session add-index`**
+**wp pantheon session add-index**
 
 Added in 1.4.0. This command should be run if your installation of the plugin occurred before the addition of the primary ID key to the session table in version 1.2.2. You will be automatically notified when you visit any admin page if this is the case. If there's no message, your version is good to go. Note that this command is non-destructive, a new table will be created and the existing one preserved in a backup state until you have verified that the upgrade is functioning as expected.
 
-**`wp pantheon session primary-key-finalize`**
+**wp pantheon session primary-key-finalize**
 
 Added in 1.4.0. If you have run the `add-index` command and have verified that the new table is functioning correctly, running the `primary-key-finalize` command will perform a database cleanup and remove the backup table.
 
-**`wp pantheon session primary-key-revert`**
+**wp pantheon session primary-key-revert**
 
 Added in 1.4.0. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.
 
@@ -104,17 +104,15 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 == Changelog ==
 
-= 1.4.1 =
+= 1.4.1 (October 23, 2023) =
 * Fixed an issue with the `pantheon session add-index` command not working properly on WP multisite [[#270](https://github.com/pantheon-systems/wp-native-php-sessions/pull/270)]
 * Made the notice added in 1.4.0 dismissable (stores in user meta) & hides for multisite (an update is coming to iterate through all sites on a network) [[#271](https://github.com/pantheon-systems/wp-native-php-sessions/pull/271)]
 
 
-= 1.4.0 =
+= 1.4.0 (October 17, 2023) =
 * Adds new CLI command to add a Primary Column (id) to the `pantheon_sessions` table for users who do not have one. [[#265](https://github.com/pantheon-systems/wp-native-php-sessions/pull/265)]
 * Adds alert to dashboard for users who need to run the command.
 * 8.3 compatibility and code quality updates
-
-= 1.3.7-dev =
 * Updates Pantheon WP Coding Standards to 2.0 [[#264](https://github.com/pantheon-systems/wp-native-php-sessions/pull/264)]
 
 = 1.3.6 (June 1, 2023) =
