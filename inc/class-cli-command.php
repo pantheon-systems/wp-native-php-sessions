@@ -86,7 +86,8 @@ class CLI_Command extends \WP_CLI_Command {
 	 */
 	public function add_index( $args, $assoc_arc ) {
 		$pantheon_session = new \Pantheon_Sessions();
-		$pantheon_session->add_index();
+		$resume_point = $assoc_args['start_point'] ?? 0;
+		$pantheon_session->add_index( $resume_point );
 	}
 
 	/**
@@ -94,9 +95,10 @@ class CLI_Command extends \WP_CLI_Command {
 	 *
 	 * @subcommand primary-key-finalize
 	 */
-	public function primary_key_finalize() {
-		$pan_session = new \Pantheon_Sessions();
-		$pan_session->primary_key_finalize();
+	public function primary_key_finalize( $args, $assoc_args ) {
+		$pantheon_session = new \Pantheon_Sessions();
+		$resume_point = $assoc_args['start_point'] ?? 0;
+		$pantheon_session->primary_key_finalize( $resume_point );
 	}
 
 	/**
@@ -104,9 +106,10 @@ class CLI_Command extends \WP_CLI_Command {
 	 *
 	 * @subcommand primary-key-revert
 	 */
-	public function primary_key_revert() {
-		$pan_session = new \Pantheon_Sessions();
-		$pan_session->primary_key_revert();
+	public function primary_key_revert( $args, $assoc_args ) {
+		$pantheon_session = new \Pantheon_Sessions();
+		$resume_point = $assoc_args['start_point'] ?? 0;
+		$pantheon_session->primary_key_revert( $resume_point );
 	}
 }
 
