@@ -452,8 +452,8 @@ class Pantheon_Sessions {
 	public function add_single_index( $prefix, $multisite = false ) {
 		global $wpdb;
 		$unprefixed_table = 'pantheon_sessions';
-		$table            = $wpdb->_escape($prefix . $unprefixed_table);
-		$temp_clone_table = $wpdb->_escape($prefix . 'sessions_temp_clone');
+		$table            = $wpdb->_escape( $prefix . $unprefixed_table );
+		$temp_clone_table = $wpdb->_escape( $prefix . 'sessions_temp_clone' );
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
