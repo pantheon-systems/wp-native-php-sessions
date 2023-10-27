@@ -527,7 +527,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Hot swap the old table and the new table, deleting a previous old
 		// table if necessary.
-		$old_table = $prefix . 'bak_' . $unprefixed_table;
+		$old_table = esc_sql( $prefix . 'bak_' . $unprefixed_table );
 		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
 		if ( $wpdb->get_var( $query ) == $old_table ) {
