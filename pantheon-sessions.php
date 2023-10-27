@@ -452,8 +452,8 @@ class Pantheon_Sessions {
 	public function add_single_index( $prefix, $multisite = false ) {
 		global $wpdb;
 		$unprefixed_table = 'pantheon_sessions';
-		$table            = $wpdb->_escape( $prefix ) . $unprefixed_table;
-		$temp_clone_table = $wpdb->_escape( $prefix ) . 'sessions_temp_clone';
+		$table            = $wpdb->_escape($prefix . $unprefixed_table);
+		$temp_clone_table = $wpdb->_escape($prefix . 'sessions_temp_clone');
 
 		// If the command has been run multiple times and there is already a
 		// temp_clone table, drop it.
@@ -549,7 +549,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_finalize_single( $prefix = null, $multisite = false ) {
 		global $wpdb;
-		$table = $wpdb->_escape( $prefix ) . 'bak_pantheon_sessions';
+		$table = $wpdb->_escape( $prefix . 'bak_pantheon_sessions' );
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
@@ -584,9 +584,9 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_revert_single( $prefix = null, $multisite = false ) {
 		global $wpdb;
-		$old_clone_table  = $wpdb->_escape( $prefix ) . 'bak_pantheon_sessions';
-		$temp_clone_table = $wpdb->_escape( $prefix ) . 'temp_pantheon_sessions';
-		$table            = $wpdb->_escape( $prefix ) . 'pantheon_sessions';
+		$old_clone_table  = $wpdb->_escape( $prefix . 'bak_pantheon_sessions' );
+		$temp_clone_table = $wpdb->_escape( $prefix . 'temp_pantheon_sessions' );
+		$table            = $wpdb->_escape( $prefix . 'pantheon_sessions' );
 
 		// If there is no old table to roll back to, error.
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
