@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.3
-Stable tag: 1.4.2-dev
+Stable tag: 1.4.2
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -96,10 +96,10 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 == Changelog ==
 
-= 1.4.2-dev =
+= 1.4.2 (November 7, 2023) =
 * Fixed an issue with the `pantheon session add-index` PHP warning. [[#276](https://github.com/pantheon-systems/wp-native-php-sessions/pull/276/files)]
 * Fixed a syntax issue with the suggested WP CLI commands [[#278](https://github.com/pantheon-systems/wp-native-php-sessions/pull/278)]
-* Made `wp pantheon session add-index`, `wp pantheon session primary-key-finalize`, and `wp pantheon session primary-key-revert` fully multisite compatible. [[#275](https://github.com/pantheon-systems/wp-native-php-sessions/pull/275)] 
+* Made `wp pantheon session add-index`, `wp pantheon session primary-key-finalize`, and `wp pantheon session primary-key-revert` fully multisite compatible. [[#275](https://github.com/pantheon-systems/wp-native-php-sessions/pull/275)]
 
 = 1.4.1 (October 23, 2023) =
 * Fixed an issue with the `pantheon session add-index` command not working properly on WP multisite [[#270](https://github.com/pantheon-systems/wp-native-php-sessions/pull/270)]
