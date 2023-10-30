@@ -376,7 +376,13 @@ class Pantheon_Sessions {
 
 		$count_query = "SELECT COUNT(*) FROM {$table};";
 		$count_total = $wpdb->get_results( $count_query );
-		$count_total = $count_total[0]->{'COUNT(*)'};
+
+		// Avoid errors when object returns an empty object.
+		if ( ! empty( $count_total ) ) {
+			$count_total = $count_total[0]->{'COUNT(*)'};
+		} else {
+			$count_total = 0;
+		}
 
 		if ( $count_total >= 20000 ) {
 			// translators: %s is the total number of rows that exist in the pantheon_sessions table.
