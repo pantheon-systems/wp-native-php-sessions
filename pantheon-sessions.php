@@ -366,7 +366,8 @@ class Pantheon_Sessions {
 			// translators: %s is the current blog, and then the array index of the current site.
 			$this->safe_output( __( 'Processing blog %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session add-index %s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
 
-			$this->add_single_index( $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id ), true );
+			$prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
+			$this->add_single_index( $prefix, true );
 
 			// translators: %s is the current blog id.
 			$this->safe_output( __( 'Processing for blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
