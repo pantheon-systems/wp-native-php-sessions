@@ -359,7 +359,7 @@ class Pantheon_Sessions {
 
 		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually...', 'wp-native-php-sessions' ), 'log' );
 
-		$site_list = get_sites( [ 'number' => 500 ] );
+		$site_list = get_sites( [ 'number' => 99999 ] );
 		$site_count = count( $site_list );
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
@@ -572,7 +572,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			if ( ! $multisite ) {
 				$this->safe_output( __( 'Old table has been successfully removed.', 'wp-native-php-sessions' ), 'log' );
 			} else {
-				$this->safe_output( __( 'Old table has been successfully removed for this blog.', 'wp-native-php-sessions' ), 'log' );
+				$this->safe_output( __( 'Old table has been successfully removed for this site.', 'wp-native-php-sessions' ), 'log' );
 			}
 		}
 	}

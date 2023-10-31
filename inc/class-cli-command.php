@@ -84,9 +84,9 @@ class CLI_Command extends \WP_CLI_Command {
 	 *
 	 * @subcommand add-index
 	 */
-	public function add_index( $args, $assoc_arc ) {
+	public function add_index( $args, $assoc_args ) {
 		$pantheon_session = new \Pantheon_Sessions();
-		$resume_point = $assoc_args['start_point'] ?? 0;
+		$resume_point = isset( $assoc_args['start_point'] ) ? $assoc_args['start_point'] : 0;
 		$pantheon_session->add_index( $resume_point );
 	}
 
