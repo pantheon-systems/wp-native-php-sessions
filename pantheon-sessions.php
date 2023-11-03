@@ -359,21 +359,55 @@ class Pantheon_Sessions {
 
 		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually...', 'wp-native-php-sessions' ), 'log' );
 
-		$site_list = get_sites( [ 'number' => 99999 ] );
+		$site_list = $this->get_all_sites( $start_position );
 		$site_count = count( $site_list );
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: %s is the current blog, and then the array index of the current site.
-			$this->safe_output( __( 'Processing blog %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session add-index %s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing blog %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session add-index --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
-			$prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
-			$this->add_single_index( $prefix, true );
+			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
+			$this->add_single_index( $blog_prefix, true );
 
 			// translators: %s is the current blog id.
-			$this->safe_output( __( 'Processing for blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
+			$this->safe_output( __( 'Processing for blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
 		}
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run wp pantheon session primary-key-finalize to clean up old data, or run wp pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
+	}
+
+	/**
+	 * Retrieves all sites with query batches.
+	 *
+	 * @param int $start_position Starting position of query.
+	 *
+	 * @return array
+	 */
+	public function get_all_sites( $start_position ) {
+		$num_sites = 2;
+		$sites = ( $start_position == 0 ) ? [] : array_fill( 0, $start_position, null );
+		$page = 0;
+
+		while ( true ) {
+			$offset         = ( $page * $num_sites ) + $start_position;
+			$next_page = get_sites( [
+				'number' => $num_sites,
+				'offset' => $offset,
+				'fields' => 'ids',
+			] );
+
+			if ( empty( $next_page ) || empty( array_diff( $next_page, $sites ) ) ) {
+				break;
+			}
+			$sites = array_merge( $sites, $next_page );
+
+			++$page;
+		}
+
+		if ( $start_position == 0 ) {
+			unset( $sites[ $start_position - 1 ] );
+		}
+		return $sites;
 	}
 
 	/**
@@ -401,9 +435,10 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Finalizing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index %s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize %s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
+			$this->safe_output( __( 'Finalizing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
 
-			$this->primary_key_finalize_single( $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id ), true );
+			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
+			$this->primary_key_finalize_single( $blog_prefix, true );
 
 			// translators: %s is the current blog id.
 			$this->safe_output( __( 'Finalization of blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
@@ -435,9 +470,10 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Processing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index %s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize %s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
 
-			$this->primary_key_revert_single( $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id ), true );
+			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
+			$this->primary_key_revert_single( $blog_prefix, true );
 
 			// translators: %s is the current blog id.
 			$this->safe_output( __( 'Revert of blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
@@ -564,7 +600,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 				$type = 'log';
 			}
 
-			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), 'error' );
+			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), $type );
 		} else {
 			$query = "DROP TABLE {$table};";
 			$wpdb->query( $query );
@@ -602,6 +638,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
+
+            return;
 		}
 
 		// Swap old table and new one.
