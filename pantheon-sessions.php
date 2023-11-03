@@ -289,7 +289,7 @@ class Pantheon_Sessions {
 		$old_table = $wpdb->prefix . 'bak_pantheon_sessions';
 		$query = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
 		$is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
-		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; --' : 'wp';
+		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; -- ' : 'wp ';
 		$cli_add_index = $wp_cli_cmd . 'pantheon session add-index';
 		$key_existence = $wpdb->get_results( $query );
 		$user_id = get_current_user_id();
