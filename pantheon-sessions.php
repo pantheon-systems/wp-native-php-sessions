@@ -528,7 +528,7 @@ class Pantheon_Sessions {
 			}
 			$this->safe_output( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ), $type );
 
-            return;
+			return;
 		}
 
 		// Alert the user that the action is going to go through.
