@@ -364,13 +364,13 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: %s is the current blog, and then the array index of the current site.
-			$this->safe_output( __( 'Processing blog %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session add-index --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%s". To skip this site if it does not need processing, run "wp pantheon session add-index --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
 			$this->add_single_index( $blog_prefix, true );
 
-			// translators: %s is the current blog id.
-			$this->safe_output( __( 'Processing for blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
+			// translators: %s is the current site id.
+			$this->safe_output( __( 'Processing for site %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
 		}
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run wp pantheon session primary-key-finalize to clean up old data, or run wp pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
@@ -435,13 +435,13 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Finalizing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
+			$this->safe_output( __( 'Finalizing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
 			$this->primary_key_finalize_single( $blog_prefix, true );
 
-			// translators: %s is the current blog id.
-			$this->safe_output( __( 'Finalization of blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
+			// translators: %s is the current site id.
+			$this->safe_output( __( 'Finalization of site %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
 		}
 	}
 
@@ -470,13 +470,13 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Processing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this blog if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing site %s. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%s". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%s".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id, $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ]->blog_id );
 			$this->primary_key_revert_single( $blog_prefix, true );
 
-			// translators: %s is the current blog id.
-			$this->safe_output( __( 'Revert of blog %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
+			// translators: %s is the current site id.
+			$this->safe_output( __( 'Revert of site %s complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ]->blog_id ] );
 		}
 	}
 
@@ -652,7 +652,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
 		$wpdb->query( $query );
-		$this->safe_output( __( 'Blog processing complete.', 'wp-native-php-sessions' ), 'log' );
+		$this->safe_output( __( 'Site processing complete.', 'wp-native-php-sessions' ), 'log' );
 	}
 
 	/**
