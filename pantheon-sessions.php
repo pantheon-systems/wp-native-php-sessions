@@ -359,6 +359,10 @@ class Pantheon_Sessions {
 
 		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually...', 'wp-native-php-sessions' ), 'log' );
 
+		$output = [
+			'no_session_table' => 0,
+			'id_column_exists' => 0,
+		];
 		$site_list = $this->get_all_sites( $start_position );
 		$site_count = count( $site_list );
 
@@ -367,10 +371,20 @@ class Pantheon_Sessions {
 			$this->safe_output( __( 'Processing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session add-index --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
-			$this->add_single_index( $blog_prefix, true );
+			$output = $this->add_single_index( $blog_prefix, $output, true );
 
 			// translators: %s is the current site id.
 			$this->safe_output( __( 'Processing for site %d complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
+		}
+
+		if ( $output['no_session_table'] != 0 ) {
+			// translators: %d is the number of sites which did not have a session table.
+			$this->safe_output( __( '%d site(s) did not have a session table and were skipped. If this was unexpected, please review output.', 'wp-native-php-sessions' ), 'log', [ $output['no_session_table'] ] );
+		}
+
+		if ( $output['id_column_exists'] != 0 ) {
+			// translators: %d is the number of sites which had an ID column already.
+			$this->safe_output( __( '%d site(s) already had an ID column and were skipped. If this was unexpected, please review output.', 'wp-native-php-sessions' ), 'log', [ $output['id_column_exists'] ] );
 		}
 
 		$this->safe_output( __( 'Operation complete, please verify that your site is working as expected. When ready, run wp pantheon session primary-key-finalize to clean up old data, or run wp pantheon session primary-key-revert if there were issues.', 'wp-native-php-sessions' ), 'log' );
@@ -421,7 +435,7 @@ class Pantheon_Sessions {
 		if ( ! is_multisite() ) {
 			$this->safe_output( __( 'Single site detected. Beginning finalization.', 'wp-native-php-sessions' ), 'log' );
 
-			$this->add_single_index( $wpdb->prefix );
+			$this->primary_key_finalize_single( $wpdb->prefix );
 
 			$this->safe_output( __( 'Operation complete.', 'wp-native-php-sessions' ), 'log' );
 
@@ -431,6 +445,7 @@ class Pantheon_Sessions {
 		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually.', 'wp-native-php-sessions' ), 'log' );
 
 		$site_list = $this->get_all_sites( $start_position );
+		$output = [ 'no_old_table' => 0 ];
 		$site_count = count( $site_list );
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
@@ -438,11 +453,18 @@ class Pantheon_Sessions {
 			$this->safe_output( __( 'Finalizing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
-			$this->primary_key_finalize_single( $blog_prefix, true );
+			$output = $this->primary_key_finalize_single( $blog_prefix, $output, true );
 
 			// translators: %s is the current site id.
 			$this->safe_output( __( 'Finalization of site %d complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
 		}
+
+		if ( $output['no_old_table'] != 0 ) {
+			// translators: %d is the number of sites which did not have an old table.
+			$this->safe_output( __( '%d site(s) did not have an old table to delete and were skipped. If this is not expected, please review output.', 'wp-native-php-sessions' ), 'log', [ $output['no_old_table'] ] );
+		}
+
+		$this->safe_output( __( 'Finalization of all sites complete.', 'wp-native-php-sessions' ), 'log' );
 	}
 
 	/**
@@ -466,6 +488,7 @@ class Pantheon_Sessions {
 		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually.', 'wp-native-php-sessions' ), 'log' );
 
 		$site_list = $this->get_all_sites( $start_position );
+		$output = [ 'no_rollback_table' => 0 ];
 		$site_count = count( $site_list );
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
@@ -473,20 +496,28 @@ class Pantheon_Sessions {
 			$this->safe_output( __( 'Processing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
-			$this->primary_key_revert_single( $blog_prefix, true );
+			$output = $this->primary_key_revert_single( $blog_prefix, $output, true );
 
 			// translators: %d is the current site id.
 			$this->safe_output( __( 'Revert of site %d complete.', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ] ] );
 		}
+
+		if ( $output['no_rollback_table'] != 0 ) {
+			// translators: %d is the number of sites which did not have a rollback table.
+			$this->safe_output( __( '%d site(s) did not have a table to roll back to and were skipped. If this is not expected, please review output.', 'wp-native-php-sessions' ), 'log', [ $output['no_rollback_table'] ] );
+		}
+
+		$this->safe_output( __( 'Revert operation complete.', 'wp-native-php-sessions' ), 'log' );
 	}
 
 	/**
 	 * Perform add_index functionality for a single site.
 	 *
 	 * @param string $prefix Database prefix for the blog.
+	 * @param array $output An array of logs/errors which may occur.
 	 * @param bool $multisite Whether the site is a multisite.
 	 */
-	public function add_single_index( $prefix, $multisite = false ) {
+	public function add_single_index( $prefix, $output = [], $multisite = false ) {
 		global $wpdb;
 		$unprefixed_table = 'pantheon_sessions';
 		$table            = esc_sql( $prefix . $unprefixed_table );
@@ -508,8 +539,9 @@ class Pantheon_Sessions {
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 		if ( ! $wpdb->get_var( $query ) == $table ) {
 			$this->safe_output( __( 'This site does not have a pantheon_sessions table, and is being skipped.', 'wp-native-php-sessions' ), 'log' );
+			$output['no_session_table'] = $output['no_session_table'] + 1;
 
-			return;
+			return $output;
 		}
 
 		// Verify that the ID column/primary key does not already exist.
@@ -526,9 +558,11 @@ class Pantheon_Sessions {
 			} else {
 				$type = 'log';
 			}
+
+			$output['id_column_exists'] = $output['id_column_exists'] + 1;
 			$this->safe_output( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ), $type );
 
-			return;
+			return $output;
 		}
 
 		// Alert the user that the action is going to go through.
@@ -585,15 +619,18 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$wpdb->query( $query );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
 		$wpdb->query( $query );
+
+		return $output;
 	}
 
 	/**
 	 * Finalizes the creation of a primary key by deleting the old data.
 	 *
 	 * @param string $prefix Database prefix for the blog.
+	 * @param array $output An array of logs/errors which may occur.
 	 * @param bool $multisite Whether the site is a multisite.
 	 */
-	public function primary_key_finalize_single( $prefix = null, $multisite = false ) {
+	public function primary_key_finalize_single( $prefix = null, $output = [], $multisite = false ) {
 		global $wpdb;
 		$table = esc_sql( $prefix . 'bak_pantheon_sessions' );
 
@@ -606,6 +643,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			if ( ! $multisite ) {
 				$type = 'error';
 			} else {
+				$output['no_old_table'] = $output['no_old_table'] + 1;
 				$type = 'log';
 			}
 
@@ -620,15 +658,18 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 				$this->safe_output( __( 'Old table has been successfully removed for this site.', 'wp-native-php-sessions' ), 'log' );
 			}
 		}
+
+		return $output;
 	}
 
 	/**
 	 * Reverts addition of primary key.
 	 *
 	 * @param string $prefix Database prefix for the blog.
+	 * @param array $output An array of logs/errors which may occur.
 	 * @param bool $multisite Whether the site is a multisite.
 	 */
-	public function primary_key_revert_single( $prefix = null, $multisite = false ) {
+	public function primary_key_revert_single( $prefix = null, $output = [], $multisite = false ) {
 		global $wpdb;
 		$old_clone_table  = esc_sql( $prefix . 'bak_pantheon_sessions' );
 		$temp_clone_table = esc_sql( $prefix . 'temp_pantheon_sessions' );
@@ -647,8 +688,9 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
+			$output['no_rollback_table'] = $output['no_rollback_table'] + 1;
 
-			return;
+			return $output;
 		}
 
 		// Swap old table and new one.
@@ -662,6 +704,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = "DROP TABLE {$temp_clone_table}";
 		$wpdb->query( $query );
 		$this->safe_output( __( 'Site processing complete.', 'wp-native-php-sessions' ), 'log' );
+
+		return $output;
 	}
 
 	/**
