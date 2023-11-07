@@ -19,6 +19,9 @@ define( 'PANTHEON_SESSIONS_VERSION', '1.4.2-dev' );
  * Main controller class for the plugin.
  */
 class Pantheon_Sessions {
+	private const BAK_PANTHEON_SESSIONS_TABLE = 'bak_pantheon_sessions';
+	private const TEMP_PANTHEON_SESSIONS_TABLE = 'temp_pantheon_sessions';
+	private const PANTHEON_SESSIONS_TABLE = 'pantheon_sessions';
 
 	/**
 	 * Copy of the singleton instance.
@@ -217,7 +220,7 @@ class Pantheon_Sessions {
 
 		$table_name              = "{$table_prefix}pantheon_sessions";
 		$wpdb->pantheon_sessions = $table_name;
-		$wpdb->tables[]          = 'pantheon_sessions';
+		$wpdb->tables[]          = self::PANTHEON_SESSIONS_TABLE;
 
 		if ( get_option( 'pantheon_session_version' ) ) {
 			return;
@@ -285,8 +288,8 @@ class Pantheon_Sessions {
 	 */
 	public static function check_native_primary_keys() {
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'pantheon_sessions';
-		$old_table = $wpdb->prefix . 'bak_pantheon_sessions';
+		$table_name = $wpdb->prefix . self::PANTHEON_SESSIONS_TABLE;
+		$old_table = $wpdb->prefix . self::BAK_PANTHEON_SESSIONS_TABLE;
 		$query = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
 		$is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
 		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; -- ' : 'wp ';
@@ -519,7 +522,7 @@ class Pantheon_Sessions {
 	 */
 	public function add_single_index( $prefix, $output = [], $multisite = false ) {
 		global $wpdb;
-		$unprefixed_table = 'pantheon_sessions';
+		$unprefixed_table = self::PANTHEON_SESSIONS_TABLE;
 		$table            = esc_sql( $prefix . $unprefixed_table );
 		$temp_clone_table = esc_sql( $prefix . 'sessions_temp_clone' );
 
@@ -632,7 +635,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_finalize_single( $prefix = null, $output = [], $multisite = false ) {
 		global $wpdb;
-		$table = esc_sql( $prefix . 'bak_pantheon_sessions' );
+		$table = esc_sql( $prefix . self::BAK_PANTHEON_SESSIONS_TABLE );
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
@@ -671,9 +674,9 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 	 */
 	public function primary_key_revert_single( $prefix = null, $output = [], $multisite = false ) {
 		global $wpdb;
-		$old_clone_table  = esc_sql( $prefix . 'bak_pantheon_sessions' );
-		$temp_clone_table = esc_sql( $prefix . 'temp_pantheon_sessions' );
-		$table            = esc_sql( $prefix . 'pantheon_sessions' );
+		$old_clone_table  = esc_sql( $prefix . self::BAK_PANTHEON_SESSIONS_TABLE );
+		$temp_clone_table = esc_sql( $prefix . self::TEMP_PANTHEON_SESSIONS_TABLE );
+		$table            = esc_sql( $prefix . self::PANTHEON_SESSIONS_TABLE );
 
 		// If there is no old table to roll back to, error.
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
