@@ -403,7 +403,7 @@ class Pantheon_Sessions {
 		$page = 0;
 
 		while ( true ) {
-			$offset         = ( $page * $num_sites ) + $start_position;
+			$offset = ( $page * $num_sites ) + $start_position;
 			$next_page = get_sites( [
 				'number' => $num_sites,
 				'offset' => $offset,
