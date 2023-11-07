@@ -57,17 +57,7 @@ Added in 1.4.0. If you have run the `add-index` command and have verified that t
 Added in 1.4.0. If you have run the `add-index` command and something unexpected has occurred, just run the `primary-key-revert` command and the backup table will immediately be returned to being the active table.  
 
 ### WordPress Multisite
-As of 1.4.1 the `add-index`, `primary-key-add` and `primary-key-revert` commands only apply to a single site. This means that to run on a WordPress multisite, for sites beyond the main site, you would need to pass the `--url=` flag for each subsite.
-
-However, you can script this process in bash by getting a list of sites and looping over them:
-
-```bash
-for site in $(wp site list --field=url); do
-	wp pantheon session add-index --url=$site
-done
-```
-
-This can be applied to any of the other commands as needed to do them all in one go. We will be updating the command to iterate over all the sites in a multisite in a forthcoming release.
+As of 1.4.2 the `add-index`, `primary-key-add` and `primary-key-revert` commands are fully multisite compatible.
 
 
 ## Contributing ##
@@ -111,6 +101,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 ### 1.4.2-dev ###
 * Fixed an issue with the `pantheon session add-index` PHP warning. [[#276](https://github.com/pantheon-systems/wp-native-php-sessions/pull/276/files)]
 * Fixed a syntax issue with the suggested WP CLI commands [[#278](https://github.com/pantheon-systems/wp-native-php-sessions/pull/278)]
+* Made `wp pantheon session add-index`, `wp pantheon session primary-key-finalize`, and `wp pantheon session primary-key-revert` fully multisite compatible. [[#275](https://github.com/pantheon-systems/wp-native-php-sessions/pull/275)] 
 
 ### 1.4.1 (October 23, 2023) ###
 * Fixed an issue with the `pantheon session add-index` command not working properly on WP multisite [[#270](https://github.com/pantheon-systems/wp-native-php-sessions/pull/270)]
