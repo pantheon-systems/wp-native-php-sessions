@@ -442,7 +442,7 @@ class Pantheon_Sessions {
 			return;
 		}
 
-		$this->safe_output( __( 'Multisite installation detected. Processing Sites individually.', 'wp-native-php-sessions' ), 'log' );
+		$this->safe_output( __( 'Multisite installation detected. Processing sites individually.', 'wp-native-php-sessions' ), 'log' );
 
 		$site_list = $this->get_all_sites( $start_position );
 		$output = [ 'no_old_table' => 0 ];
