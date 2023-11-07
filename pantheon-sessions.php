@@ -288,8 +288,8 @@ class Pantheon_Sessions {
 	 */
 	public static function check_native_primary_keys() {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::PANTHEON_SESSIONS_TABLE;
-		$old_table = $wpdb->prefix . self::BAK_PANTHEON_SESSIONS_TABLE;
+		$table_name = $wpdb->get_blog_prefix() . self::PANTHEON_SESSIONS_TABLE;
+		$old_table = $wpdb->get_blog_prefix() . self::BAK_PANTHEON_SESSIONS_TABLE;
 		$query = "SHOW KEYS FROM {$table_name} WHERE key_name = 'PRIMARY';";
 		$is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
 		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; -- ' : 'wp ';
@@ -298,27 +298,24 @@ class Pantheon_Sessions {
 		$user_id = get_current_user_id();
 		$dismissed = get_user_meta( $user_id, 'notice_dismissed', true );
 
-		if ( empty( $key_existence ) ) {
-			// TODO: Remove this conditional for multisite. See https://getpantheon.atlassian.net/browse/CMSP-744.
-			if ( is_multisite() || ! $dismissed ) {
-				// If the key doesn't exist, recommend remediation.
-				?>
-				<div class="notice notice-error is-dismissible">
-					<p>
-						<?php
-						echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
-						?>
-					</p>
-					<p>
-						<?php
-						// TODO: Integrate the notice into the Health Check page. See https://getpantheon.atlassian.net/browse/CMSP-745.
-						// Translators: %s is the add-index command.
-						echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
-						?>
-					</p>
-				</div>
-				<?php
-			}
+		if ( empty( $key_existence ) && ! $dismissed ) {
+			// If the key doesn't exist, recommend remediation.
+			?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+					<?php
+					echo esc_html__( 'Your PHP Native Sessions table is missing a primary key. This can cause performance issues for high-traffic sites.', 'wp-native-php-sessions' );
+					?>
+				</p>
+				<p>
+					<?php
+					// TODO: Integrate the notice into the Health Check page. See https://getpantheon.atlassian.net/browse/CMSP-745.
+					// Translators: %s is the add-index command.
+					echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
+					?>
+				</p>
+			</div>
+			<?php
 		}
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
