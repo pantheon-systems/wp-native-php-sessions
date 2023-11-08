@@ -22,12 +22,12 @@ if [ -v PHP_VERSION ] && [ "$PHP_VERSION" == "8.3" ]; then
 	###
 	# Create a new environment for this particular test run on PHP 8.3.
 	###
-	terminus multidev:create "$TERMINUS_SITE".83 --from-env="83-$TERMINUS_ENV" --yes
+	terminus multidev:create "$TERMINUS_SITE".83 "83-$TERMINUS_ENV" --yes
 else
 	###
 	# Create a new environment for this particular test run on PHP 7.4.
 	###
-	terminus multidev:create "$TERMINUS_SITE".dev --from-env="$TERMINUS_ENV" --yes
+	terminus multidev:create "$TERMINUS_SITE".dev "$TERMINUS_ENV" --yes
 fi
 terminus env:wipe "$SITE_ENV" --yes
 
