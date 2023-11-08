@@ -98,7 +98,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ## Changelog ##
 
-### 1.4.2 (November 7, 2023) ###
+### 1.4.2 (November 8, 2023) ###
 * Fixed an issue with the `pantheon session add-index` PHP warning. [[#276](https://github.com/pantheon-systems/wp-native-php-sessions/pull/276/files)]
 * Fixed a syntax issue with the suggested WP CLI commands [[#278](https://github.com/pantheon-systems/wp-native-php-sessions/pull/278)]
 * Made `wp pantheon session add-index`, `wp pantheon session primary-key-finalize`, and `wp pantheon session primary-key-revert` fully multisite compatible. [[#275](https://github.com/pantheon-systems/wp-native-php-sessions/pull/275)] 
