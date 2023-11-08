@@ -14,10 +14,6 @@ if [ -z "$WORDPRESS_ADMIN_USERNAME" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ]; the
 	exit 1
 fi
 
-if [ -v PHP_VERSION ] && [ "$PHP_VERSION" == "8.3" ]; then
-	SITE_ENV="83-$SITE_ENV"
-fi
-
 set -ex
 
 ###
