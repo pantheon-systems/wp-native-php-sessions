@@ -3,7 +3,8 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - test-behat
+      - test-behat-74
+      - test-behat-83
   nightly:
     triggers:
       - schedule:
