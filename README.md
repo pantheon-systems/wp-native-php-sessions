@@ -1,9 +1,9 @@
 # WordPress Native PHP Sessions #
-**Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/)  
+**Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/), [rwagner00](https://profiles.wordpress.org/rwagner00/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
 **Tested up to:** 6.3  
-**Stable tag:** 1.4.2  
+**Stable tag:** 1.4.3-dev  
 **Requires PHP:** 5.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -97,6 +97,8 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 ## Changelog ##
+
+### 1.4.3-dev ###
 
 ### 1.4.2 (November 8, 2023) ###
 * Fixed an issue with the `pantheon session add-index` PHP warning. [[#276](https://github.com/pantheon-systems/wp-native-php-sessions/pull/276/files)]
