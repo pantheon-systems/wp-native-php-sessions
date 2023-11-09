@@ -21,7 +21,7 @@ set -ex
 ###
 # Create a new environment for this particular test run.
 ###
-terminus multidev:create "$TERMINUS_SITE".dev "$TERMINUS_ENV" --yes
+terminus env:create "${TERMINUS_SITE}".dev "$TERMINUS_ENV"
 terminus env:wipe "$SITE_ENV" --yes
 
 ###
