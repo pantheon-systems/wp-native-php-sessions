@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions for WordPress
- * Version: 1.4.2
+ * Version: 1.4.3
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.4.2' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.4.3' );
 
 /**
  * Main controller class for the plugin.
@@ -539,7 +539,7 @@ class Pantheon_Sessions {
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 		if ( ! $wpdb->get_var( $query ) == $table ) {
 			$this->safe_output( __( 'This site does not have a pantheon_sessions table, and is being skipped.', 'wp-native-php-sessions' ), 'log' );
-			$output['no_session_table'] = $output['no_session_table'] + 1;
+			$output['no_session_table'] = isset( $output['no_session_table'] ) ? $output['no_session_table'] + 1 : 1;
 
 			return $output;
 		}
@@ -559,7 +559,7 @@ class Pantheon_Sessions {
 				$type = 'log';
 			}
 
-			$output['id_column_exists'] = $output['id_column_exists'] + 1;
+			$output['id_column_exists'] = isset( $output['id_column_exists'] ) ? $output['id_column_exists'] + 1 : 1;
 			$this->safe_output( __( 'ID column already exists and does not need to be added to the table.', 'wp-native-php-sessions' ), $type );
 
 			return $output;
@@ -643,7 +643,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			if ( ! $multisite ) {
 				$type = 'error';
 			} else {
-				$output['no_old_table'] = $output['no_old_table'] + 1;
+				$output['no_old_table'] = isset( $output['no_old_table'] ) ? $output['no_old_table'] + 1 : 1;
 				$type = 'log';
 			}
 
@@ -688,7 +688,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
-			$output['no_rollback_table'] = $output['no_rollback_table'] + 1;
+			$output['no_rollback_table'] = isset( $output['no_rollback_table'] ) ? $output['no_rollback_table'] + 1 : 1;
 
 			return $output;
 		}
