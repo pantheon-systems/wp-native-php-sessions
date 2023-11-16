@@ -14,25 +14,6 @@ workflows:
                 - master
     jobs:
       - test-behat
-commands:
-  run_test:
-    steps:
-      - run:
-          name: "Run Tests"
-          command: |
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            composer phpunit
-            WP_MULTISITE=1 composer phpunit
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            composer phpunit
-            bash bin/full-teardown-wp-tests.sh wordpress_test root '' 127.0.0.1 latest            
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            vendor/bin/phpunit --group=cli_command
-            WP_MULTISITE=1 vendor/bin/phpunit --group=cli_command
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 nightly true
-            vendor/bin/phpunit --group=cli_command
 jobs:
   test-behat:
     resource_class: small
@@ -81,4 +62,3 @@ jobs:
       - run:
           command: ./bin/behat-cleanup.sh
           when: always
-
