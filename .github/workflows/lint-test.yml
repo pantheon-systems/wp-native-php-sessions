@@ -1,19 +1,30 @@
 name: Linting & Test
-on: [push]
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - '**'
+
 jobs:
   validate-readme-spacing:
     name: Validate README Spacing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/validate-readme-spacing@v1
   lint:
     name: PHPCS Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -33,17 +44,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/phpcompatibility-action@dev
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
-          test-versions: 8.0-
+          test-versions: 8.3-
   wporg-validation:
     name: WP.org Plugin Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/action-wporg-validator@1.0.0
         with:
           type: 'plugin'
@@ -53,12 +64,12 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mariadb:
-        image: mariadb:10.5
+        image: mariadb:10.6
     strategy:
       matrix:
         php_version: [7.4, 8.2, 8.3]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
