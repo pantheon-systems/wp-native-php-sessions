@@ -7,3 +7,4 @@ vendor/
 bin/install-local-tests.sh
 bin/install-wp-tests.sh
 bin/phpunit-test.sh
+bin/helpers.sh
