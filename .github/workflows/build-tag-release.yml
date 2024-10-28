@@ -30,6 +30,7 @@ jobs:
               [[ "$file" != "readme.txt" ]] && \ 
               [[ $file != "readme.md" ]] && \
               [[ $file != ".gitignore" ]] && \
+              [[ $file != *.yml ]] && \
               [[ $file != *"composer"* ]]; then
                 run_plugin_update="false"
                 break
