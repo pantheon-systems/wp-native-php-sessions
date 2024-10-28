@@ -21,7 +21,7 @@ set -ex
 ###
 # Create a new environment for this particular test run.
 ###
-terminus env:create  "${TERMINUS_SITE}.dev" "$TERMINUS_ENV"
+terminus env:create "${TERMINUS_SITE}.dev" "$TERMINUS_ENV"
 terminus env:wipe "$SITE_ENV" --yes
 
 ###
@@ -31,6 +31,9 @@ PANTHEON_GIT_URL=$(terminus connection:info "$SITE_ENV" --field=git_url)
 PANTHEON_SITE_URL="$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io"
 PREPARE_DIR="/tmp/$TERMINUS_ENV-$TERMINUS_SITE"
 BASH_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+PHP_VERSION="$(terminus env:info "$SITE_ENV" --field=php_version)"
+echo "PHP Version: $PHP_VERSION"
 
 ###
 # Switch to git mode for pushing the files up
