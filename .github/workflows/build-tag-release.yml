@@ -13,33 +13,39 @@ jobs:
     name: Check Status
     runs-on: ubuntu-latest
     outputs:
-      is-asset-update: ${{ steps.set-outputs.outputs.is-asset-update }}
+      is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
       - uses: actions/checkout@v4
       - id: get-changed-files
         uses: jitterbit/get-changed-files@v1
       - id: set-outputs
+        shell: bash
         run: |
           echo "Changed files: ${{ steps.get-changed-files.outputs.all }}"
           shopt -s nocasematch
-          run_plugin_update="true"
+          run_plugin_update="false"
           for file in ${{ steps.get-changed-files.outputs.all }}; do
-            if 
-              [[ ! "$file" =~ ^\.wordpress\.org/ ]] && \
-              [[ ! $file =~ ^\.github/ ]] && \
-              [[ "$file" != "readme.txt" ]] && \ 
-              [[ $file != "readme.md" ]] && \
-              [[ $file != ".gitignore" ]] && \
-              [[ $file != *"composer"* ]]; then
-                run_plugin_update="false"
+            echo "Checking if file '$file' should trigger a plugin release"
+            if [[ "$file" == .github/* ]] || \
+               [[ "$file" == .wordpress.org/* ]]; then
+                echo "'$file' is inside an ignored directory."
+                continue
+            fi
+            if [[ "$file" != readme.* ]] && \ 
+               [[ "$file" != .gitattributes ]] && \
+               [[ "$file" != .gitignore ]] && \
+               [[ "$file" != catalog-info.yml ]] && \
+               [[ "$file" != *composer* ]]; then
+                echo "'$file' is not an ignored file."
+                run_plugin_update="true"
                 break
             fi
           done
-          echo "::set-output name=is-asset-update::$run_plugin_update"
+          echo "is-plugin-update=${run_plugin_update}" >> $GITHUB_OUTPUT
   asset-only:
     name: WP.org Asset Only Update
     needs: check-status
-    if: ${{ needs.check-status.outputs.is-asset-update == 'true' }}
+    if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +56,7 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
   tag:
     needs: check-status
-    if: ${{ needs.check-status.outputs.is-asset-update == 'false' }}
+    if: ${{ needs.check-status.outputs.is-plugin-update == 'true' }}
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:

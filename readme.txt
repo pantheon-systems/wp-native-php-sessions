@@ -2,7 +2,7 @@
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 6.3
+Tested up to: 6.6.2
 Stable tag: 1.4.4-dev
 Requires PHP: 5.4
 License: GPLv2 or later
