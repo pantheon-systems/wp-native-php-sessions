@@ -26,17 +26,15 @@ jobs:
           run_plugin_update="false"
           for file in ${{ steps.get-changed-files.outputs.all }}; do
             echo "Checking if file '$file' should trigger a plugin release"
-            if [[ "$file" == */.github/* ]]; then
-              echo "'$file' is an absolute path containing .github/."
-            elif [[ "$file" == .github/* ]]; then
-              echo "'$file' is a relative path inside .github/."
+            if [[ "$file" == .github/* ]] || \
+               [[ "$file" == .wordpress.org/ ]] then
+                echo "'$file' is inside an ignored directory."
+                continue
             fi
-            if [[ "$file" != *".wordpress.org/"* ]] && \
-               [[ "$file" != *".github/"* ]] && \
-               [[ "$file" != *"readme." ]] && \ 
-               [[ "$file" != *".gitattributes" ]] && \
-               [[ "$file" != *".gitignore" ]] && \
-               [[ "$file" != *"catalog-info.yml" ]] && \
+            if [[ "$file" != readme.* ]] && \ 
+               [[ "$file" != .gitattributes ]] && \
+               [[ "$file" != .gitignore ]] && \
+               [[ "$file" != catalog-info.yml ]] && \
                [[ "$file" != *composer* ]]; then
                 echo "'$file' is not an ignored file."
                 run_plugin_update="true"
