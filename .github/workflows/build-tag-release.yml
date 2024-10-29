@@ -26,9 +26,9 @@ jobs:
           for file in ${{ steps.get-changed-files.outputs.all }}; do
             echo "Checking if file '$file' should trigger a plugin release"
             if 
-              [[ ! "$file" =~ ^\.wordpress\.org/ ]] && \
-              [[ ! "$file" =~ ^\.github/ ]] && \
-              [[ "$file" != readme.* ]] && \ 
+              [[ "$file" != .wordpress.org/* ]] && \
+              [[ "$file" != .github/* ]] && \
+              [[ "$file" != "readme.*" ]] && \ 
               [[ "$file" != ".gitattributes" ]] && \
               [[ "$file" != ".gitignore" ]] && \
               [[ "$file" != catalog-info.yml ]] && \
