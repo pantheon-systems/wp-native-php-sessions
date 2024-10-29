@@ -13,7 +13,7 @@ jobs:
     name: Check Status
     runs-on: ubuntu-latest
     outputs:
-      is-asset-update: ${{ steps.set-outputs.outputs.is-asset-update }}
+      is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
       - uses: actions/checkout@v4
       - id: get-changed-files
@@ -22,25 +22,26 @@ jobs:
         run: |
           echo "Changed files: ${{ steps.get-changed-files.outputs.all }}"
           shopt -s nocasematch
-          run_plugin_update="true"
+          run_plugin_update="false"
           for file in ${{ steps.get-changed-files.outputs.all }}; do
             if 
               [[ ! "$file" =~ ^\.wordpress\.org/ ]] && \
               [[ ! $file =~ ^\.github/ ]] && \
               [[ "$file" != "readme.txt" ]] && \ 
-              [[ $file != "readme.md" ]] && \
+              [[ $file != "README.md" ]] && \
+              [[ $file != ".gitattributes" ]] && \
               [[ $file != ".gitignore" ]] && \
-              [[ $file != *.yml ]] && \
+              [[ $file != catalog-info.yml ]] && \
               [[ $file != *"composer"* ]]; then
-                run_plugin_update="false"
+                run_plugin_update="true"
                 break
             fi
           done
-          echo "::set-output name=is-asset-update::$run_plugin_update"
+          echo "::set-output name=is-plugin-update::$run_plugin_update"
   asset-only:
     name: WP.org Asset Only Update
     needs: check-status
-    if: ${{ needs.check-status.outputs.is-asset-update == 'true' }}
+    if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +52,7 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
   tag:
     needs: check-status
-    if: ${{ needs.check-status.outputs.is-asset-update == 'false' }}
+    if: ${{ needs.check-status.outputs.is-plugin-update == 'true' }}
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:
