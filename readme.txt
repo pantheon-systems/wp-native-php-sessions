@@ -3,7 +3,7 @@ Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andr
 Tags: comments, sessions
 Requires at least: 4.7
 Tested up to: 6.6.2
-Stable tag: 1.4.4-dev
+Stable tag: 1.4.3
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -95,8 +95,6 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 == Changelog ==
-
-= 1.4.4-dev =
 
 = 1.4.3 (November 13, 2023) =
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
