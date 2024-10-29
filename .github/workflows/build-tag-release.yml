@@ -26,8 +26,10 @@ jobs:
           run_plugin_update="false"
           for file in ${{ steps.get-changed-files.outputs.all }}; do
             echo "Checking if file '$file' should trigger a plugin release"
-            if [[ "$file" == .github/* ]]; then
-              echo "'$file' is inside the .github/ directory."
+            if [[ "$file" == */.github/* ]]; then
+              echo "'$file' is an absolute path containing .github/."
+            elif [[ "$file" == .github/* ]]; then
+              echo "'$file' is a relative path inside .github/."
             fi
             if [[ "$file" != *".wordpress.org/"* ]] && \
                [[ "$file" != *".github/"* ]] && \
