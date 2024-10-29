@@ -38,7 +38,7 @@ jobs:
                 break
             fi
           done
-          echo "::set-output name=is-plugin-update::$run_plugin_update"
+          echo "is-plugin-update=$run_plugin_update" >> $GITHUB_OUTPUT
   asset-only:
     name: WP.org Asset Only Update
     needs: check-status
