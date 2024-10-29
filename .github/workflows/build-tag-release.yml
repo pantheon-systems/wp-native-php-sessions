@@ -29,12 +29,12 @@ jobs:
             if [[ "$file" == .github/* ]]; then
               echo "'$file' is inside the .github/ directory."
             fi
-            if [[ "$file" != */.wordpress.org/* ]] && \
-               [[ "$file" != */.github/* ]] && \
-               [[ "$file" != */readme.* ]] && \ 
-               [[ "$file" != */".gitattributes" ]] && \
-               [[ "$file" != */".gitignore" ]] && \
-               [[ "$file" != */"catalog-info.yml" ]] && \
+            if [[ "$file" != *".wordpress.org/"* ]] && \
+               [[ "$file" != *".github/"* ]] && \
+               [[ "$file" != *"readme." ]] && \ 
+               [[ "$file" != *".gitattributes" ]] && \
+               [[ "$file" != *".gitignore" ]] && \
+               [[ "$file" != *"catalog-info.yml" ]] && \
                [[ "$file" != *composer* ]]; then
                 echo "'$file' is not an ignored file."
                 run_plugin_update="true"
