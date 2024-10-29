@@ -27,7 +27,7 @@ jobs:
           for file in ${{ steps.get-changed-files.outputs.all }}; do
             echo "Checking if file '$file' should trigger a plugin release"
             if [[ "$file" == .github/* ]] || \
-               [[ "$file" == .wordpress.org/ ]] then
+               [[ "$file" == .wordpress.org/ ]]; then
                 echo "'$file' is inside an ignored directory."
                 continue
             fi
