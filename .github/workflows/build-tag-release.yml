@@ -28,7 +28,7 @@ jobs:
             if 
               [[ "$file" != .wordpress.org/* ]] && \
               [[ "$file" != .github/* ]] && \
-              [[ "$file" != "readme.*" ]] && \ 
+              [[ "$file" != readme.* ]] && \ 
               [[ "$file" != ".gitattributes" ]] && \
               [[ "$file" != ".gitignore" ]] && \
               [[ "$file" != catalog-info.yml ]] && \
