@@ -87,7 +87,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include the following:
 
     <?php
-    require_once WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php';
+    if (file_exists(WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php')) {
+        require_once WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php';
+    }
 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
