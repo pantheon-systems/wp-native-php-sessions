@@ -99,6 +99,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 ## Changelog ##
 
 ### 1.4.4-dev (June 19, 2025) ###
+
 * Compatibility: Supports PHP 8.4
 * Increases minimum supported PHP version to 7.4
 * Increases minimum supported WordPress version to 5.2
