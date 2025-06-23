@@ -102,7 +102,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 * Compatibility: Supports PHP 8.4
 * Increases minimum supported PHP version to 7.4
-* Increases minimum supported WordPress version to 5.2
+* Increases minimum supported WordPress version to 5.3
 
 ### 1.4.3 (November 13, 2023) ###
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
