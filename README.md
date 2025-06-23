@@ -1,10 +1,10 @@
 # WordPress Native PHP Sessions #
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/), [rwagner00](https://profiles.wordpress.org/rwagner00/)  
 **Tags:** comments, sessions  
-**Requires at least:** 4.7  
-**Tested up to:** 6.6.2    
+**Requires at least:** 5.3  
+**Tested up to:** 6.8.1  
 **Stable tag:** 1.4.4-dev  
-**Requires PHP:** 5.4  
+**Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -98,7 +98,11 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ## Changelog ##
 
-### 1.4.4-dev ###
+### 1.4.4-dev (June 19, 2025) ###
+
+* Compatibility: Supports PHP 8.4
+* Increases minimum supported PHP version to 7.4
+* Increases minimum supported WordPress version to 5.3
 
 ### 1.4.3 (November 13, 2023) ###
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
