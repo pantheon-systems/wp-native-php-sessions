@@ -15,12 +15,19 @@
     ],
     "require-dev": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
-        "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
-        "pantheon-systems/wpunit-helpers": "^1.0",
+        "pantheon-systems/pantheon-wp-coding-standards": "^3.0",
+        "pantheon-systems/wpunit-helpers": "^2.0",
         "phpunit/phpunit": "^9",
-        "yoast/phpunit-polyfills": "^2.0"
+        "yoast/phpunit-polyfills": "^4.0"
     },
     "scripts": {
+        "fix-perms": "chmod +x ./bin/*.sh",
+        "post-update-cmd": [
+            "@fix-perms"
+        ],
+        "post-install-cmd": [
+            "@fix-perms"
+        ],
         "lint": [
             "@phpcs",
             "@phplint"
@@ -30,7 +37,7 @@
         "phplint": "find . -type f -name '*.php' -not -path './vendor/*' -not -path './tests/*' -exec php -l {} \\;",
         "phpunit": "vendor/bin/phpunit --do-not-cache-result",
         "test": "@phpunit",
-        "test:install": "bin/install-local-tests.sh --no-db",
+        "test:install": "bin/install-local-tests.sh --skip-db=true",
         "test:install:withdb": "bin/install-local-tests.sh"
     },
     "config": {

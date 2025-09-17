@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions
- * Version: 1.4.4
+ * Version: 1.4.4-dev
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.4.4' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.4.4-dev' );
 
 /**
  * Main controller class for the plugin.
@@ -146,17 +146,21 @@ class Pantheon_Sessions {
 			$cookie_domain = '.' . $cookie_domain[0];
 		}
 
-		// Per RFC 2109, cookie domains must contain at least one dot other than the
-		// first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+		/**
+		 * Per RFC 2109, cookie domains must contain at least one dot other than the
+		 * first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+		 */
 		if ( count( explode( '.', $cookie_domain ) ) > 2 && ! is_numeric( str_replace( '.', '', $cookie_domain ) ) ) {
 			ini_set( 'session.cookie_domain', $cookie_domain );
 		}
-		// To prevent session cookies from being hijacked, a user can configure the
-		// SSL version of their website to only transfer session cookies via SSL by
-		// using PHP's session.cookie_secure setting. The browser will then use two
-		// separate session cookies for the HTTPS and HTTP versions of the site. So we
-		// must use different session identifiers for HTTPS and HTTP to prevent a
-		// cookie collision.
+		/**
+		 * To prevent session cookies from being hijacked, a user can configure the
+		 * SSL version of their website to only transfer session cookies via SSL by
+		 * using PHP's session.cookie_secure setting. The browser will then use two
+		 * separate session cookies for the HTTPS and HTTP versions of the site. So we
+		 * must use different session identifiers for HTTPS and HTTP to prevent a
+		 * cookie collision.
+		 */
 		if ( is_ssl() ) {
 			ini_set( 'session.cookie_secure', true );
 		}
@@ -164,8 +168,10 @@ class Pantheon_Sessions {
 
 		session_name( $prefix . substr( hash( 'sha256', $session_name ), 0, 32 ) );
 
-		// Use session cookies, not transparent sessions that puts the session id in
-		// the query string.
+		/**
+		 * Use session cookies, not transparent sessions that puts the session id in
+		 * the query string.
+		 */
 		$use_cookies = '1';
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$use_cookies = '0';
@@ -173,8 +179,10 @@ class Pantheon_Sessions {
 		ini_set( 'session.use_cookies', $use_cookies );
 		ini_set( 'session.use_only_cookies', '1' );
 		ini_set( 'session.use_trans_sid', '0' );
-		// Don't send HTTP headers using PHP's session handler.
-		// An empty string is used here to disable the cache limiter.
+		/**
+		 * Don't send HTTP headers using PHP's session handler.
+		 * An empty string is used here to disable the cache limiter.
+		 */
 		ini_set( 'session.cache_limiter', '' );
 		// Use httponly session cookies. Limits use by JavaScripts.
 		ini_set( 'session.cookie_httponly', '1' );
@@ -309,7 +317,9 @@ class Pantheon_Sessions {
 				</p>
 				<p>
 					<?php
-					// TODO: Integrate the notice into the Health Check page. See https://getpantheon.atlassian.net/browse/CMSP-745.
+					/**
+					 * TODO: Integrate the notice into the Health Check page. See https://getpantheon.atlassian.net/browse/CMSP-745.
+					 */
 					// Translators: %s is the add-index command.
 					echo wp_kses_post( sprintf( __( 'If you\'d like to resolve this, please use this WP CLI command: %s and verify that the process completes successfully. Otherwise, you may dismiss this notice.', 'wp-native-php-sessions' ), "<code>$cli_add_index</code>" ) );
 					?>
@@ -523,8 +533,10 @@ class Pantheon_Sessions {
 		$table            = esc_sql( $prefix . $unprefixed_table );
 		$temp_clone_table = esc_sql( $prefix . 'sessions_temp_clone' );
 
-		// If the command has been run multiple times and there is already a
-		// temp_clone table, drop it.
+		/**
+		 * If the command has been run multiple times and there is already a
+		 * temp_clone table, drop it.
+		 */
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
 
 		if ( $wpdb->get_var( $query ) == $temp_clone_table ) {
@@ -550,9 +562,11 @@ class Pantheon_Sessions {
 
 		// Avoid errors by not attempting to add a column that already exists.
 		if ( ! empty( $key_existence ) ) {
-			// If dealing with multisites, it's feasible that some may have the
-			// column and some may not, so don't stop execution if all that's
-			// wrong is the key exists on one.
+			/**
+			 * If dealing with multisites, it's feasible that some may have the
+			 * column and some may not, so don't stop execution if all that's
+			 * wrong is the key exists on one.
+			 */
 			if ( ! $multisite ) {
 				$type = 'error';
 			} else {
@@ -605,8 +619,10 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$this->safe_output( __( 'Updated %1$s / %2$s rows. ', 'wp-native-php-sessions' ), 'log', [ $current_results, $count_total ] );
 		}
 
-		// Hot swap the old table and the new table, deleting a previous old
-		// table if necessary.
+		/**
+		 * Hot swap the old table and the new table, deleting a previous old
+		 * table if necessary.
+		 */
 		$old_table = esc_sql( $prefix . 'bak_' . $unprefixed_table );
 		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
@@ -638,8 +654,10 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Check for table existence and delete if present.
 		if ( ! $wpdb->get_var( $query ) == $table ) {
-			// If dealing with multisites, it's feasible that some may have a
-			// table and some may not, so don't stop execution if it's not found.
+			/**
+			 * If dealing with multisites, it's feasible that some may have a
+			 * table and some may not, so don't stop execution if it's not found.
+			 */
 			if ( ! $multisite ) {
 				$type = 'error';
 			} else {
@@ -678,8 +696,10 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		// If there is no old table to roll back to, error.
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
 
-		// If dealing with multisites, it's feasible that some may have a
-		// table and some may not, so don't stop execution if it's not found.
+		/**
+		 * If dealing with multisites, it's feasible that some may have a
+		 * table and some may not, so don't stop execution if it's not found.
+		 */
 		if ( ! $multisite ) {
 			$type = 'error';
 		} else {

@@ -1,21 +1,32 @@
 name: Linting & Test
 permissions:
   contents: read
-on: [push]
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - '**'
+
 jobs:
   validate-readme-spacing:
     name: Validate README Spacing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/validate-readme-spacing@v1
   lint:
     name: PHPCS Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -35,17 +46,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/phpcompatibility-action@dev
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
-          test-versions: 8.0-
+          test-versions: 8.3-
   wporg-validation:
     name: WP.org Plugin Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: pantheon-systems/action-wporg-validator@1.0.0
         with:
           type: 'plugin'
@@ -56,13 +67,11 @@ jobs:
     services:
       mariadb:
         image: mariadb:10.6
-        env:
-          MYSQL_ROOT_PASSWORD: ""
     strategy:
       matrix:
         php_version: [7.4, 8.2, 8.3, 8.4]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -85,9 +94,12 @@ jobs:
           path: ~/vendor
           key: test-dependencies-{{ checksum "composer.json" }}
           restore-keys: test-dependencies-{{ checksum "composer.json" }}
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
       - name: Install dependencies
         run: |
           if [ ${{ matrix.php_version }} = "7.4" ]; then
+            composer require pantheon-systems/pantheon-wp-coding-standards:^2 --no-update
             composer update
           fi
           composer install

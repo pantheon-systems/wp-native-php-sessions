@@ -61,8 +61,10 @@ class Session_Handler implements \SessionHandlerInterface {
 	 */
 	#[\ReturnTypeWillChange]
 	public function read( $session_id ) {
-		// Handle the case of first time visitors and clients that don't store
-		// cookies (eg. web crawlers).
+		/**
+		 * Handle the case of first time visitors and clients that don't store
+		 * cookies (eg. web crawlers).
+		 */
 		$insecure_session_name = substr( session_name(), 1 );
 		if ( empty( $session_id )
 			|| ( ! isset( $_COOKIE[ session_name() ] ) && ! isset( $_COOKIE[ $insecure_session_name ] ) ) ) {
@@ -105,11 +107,13 @@ class Session_Handler implements \SessionHandlerInterface {
 
 		$wpdb = Session::restore_wpdb_if_null( $wpdb );
 
-		// Be sure to adjust 'php_value session.gc_maxlifetime' to a large enough
-		// value. For example, if you want user sessions to stay in your database
-		// for three weeks before deleting them, you need to set gc_maxlifetime
-		// to '1814400'. At that value, only after a user doesn't log in after
-		// three weeks (1814400 seconds) will his/her session be removed.
+		/**
+		 * Be sure to adjust 'php_value session.gc_maxlifetime' to a large enough
+		 * value. For example, if you want user sessions to stay in your database
+		 * for three weeks before deleting them, you need to set gc_maxlifetime
+		 * to '1814400'. At that value, only after a user doesn't log in after
+		 * three weeks (1814400 seconds) will his/her session be removed.
+		 */
 		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE `datetime` <= %s ", gmdate( 'Y-m-d H:i:s', time() - $maxlifetime ) ) );
 		return true;
 	}
