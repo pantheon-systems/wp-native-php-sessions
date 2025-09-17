@@ -71,7 +71,7 @@ jobs:
       - name: Create wordpress_test database
         run: |
           mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
-          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'root'@'%' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
       - name: Install Subversion
         run: | 
           sudo apt-get update
