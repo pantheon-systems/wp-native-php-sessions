@@ -53,10 +53,12 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mariadb:
-        image: mariadb:10.5
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: ""
     strategy:
       matrix:
-        php_version: [7.4, 8.2, 8.3]
+        php_version: [7.4, 8.2, 8.3, 8.4]
     steps:
       - uses: actions/checkout@v3
       - name: Setup PHP
@@ -66,6 +68,15 @@ jobs:
           extensions: mysqli, zip, imagick
       - name: Start MySQL Service
         run: sudo systemctl start mysql
+      - name: Create wordpress_test database
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
+      - name: Install Subversion
+        run: | 
+          sudo apt-get update
+          sudo apt-get install subversion
+          svn --version
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -78,5 +89,11 @@ jobs:
             composer update
           fi
           composer install
+      - name: Setup WP Unit Tests
+        run: |
+          chmod +x ./bin/*.sh
+          composer test:install
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
       - name: Run PHPUnit
-        run: bash ./bin/phpunit-test.sh
+        run: composer test
