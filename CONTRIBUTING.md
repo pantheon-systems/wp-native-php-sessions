@@ -21,13 +21,13 @@ Behat requires a Pantheon site. Once you've created the site, you'll need [insta
 
 ## Workflow
 
-Development and releases are structured around two branches, `develop` and `main`. The `develop` branch is the source and destination for feature branches.
+Development and releases are structured around two branches, `main` and `release`. The `main` branch is the source and destination for feature branches.
 
-We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `develop` when merging, and to include the PR # in the commit message. PRs to `develop` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `develop`.
+We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `main` when merging, and to include the PR # in the commit message. PRs to `main` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `main`.
 
-`develop` should be stable and usable, though will be few commits ahead of the public release on wp.org.
+`main` should be stable and usable, though will be few commits ahead of the public release on wp.org.
 
-The `main` branch matches the latest stable release deployed to [wp.org](https://wordpress.org).
+The `release` branch matches the latest stable release deployed to [wp.org](wp.org).
 
 ## Release Process
 
