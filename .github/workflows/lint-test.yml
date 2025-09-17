@@ -70,7 +70,7 @@ jobs:
         run: sudo systemctl start mysql
       - name: Create wordpress_test database
         run: |
-          mariadb -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
+          mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
       - name: Install Subversion
         run: | 
           sudo apt-get update
