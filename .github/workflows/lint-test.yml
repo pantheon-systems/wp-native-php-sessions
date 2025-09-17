@@ -66,6 +66,11 @@ jobs:
           extensions: mysqli, zip, imagick
       - name: Start MySQL Service
         run: sudo systemctl start mysql
+      - name: Install Subversion
+        run: | 
+          sudo apt-get update
+          sudo apt-get install subversion
+          svn --version
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
