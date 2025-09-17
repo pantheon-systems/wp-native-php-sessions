@@ -96,6 +96,9 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 == Changelog ==
 
+= 1.4.4 (September 17, 2025) =
+* Update plugin name in README files and main plugin file to "Native PHP Sessions" [[#312](https://github.com/pantheon-systems/wp-native-php-sessions/pull/312)]
+
 = 1.4.3 (November 13, 2023) =
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
 
