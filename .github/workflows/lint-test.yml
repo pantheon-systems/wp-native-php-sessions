@@ -68,6 +68,9 @@ jobs:
           extensions: mysqli, zip, imagick
       - name: Start MySQL Service
         run: sudo systemctl start mysql
+      - name: Create wordpress_test database
+        run: |
+          mariadb -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
       - name: Install Subversion
         run: | 
           sudo apt-get update
@@ -88,7 +91,7 @@ jobs:
       - name: Setup WP Unit Tests
         run: |
           chmod +x ./bin/*.sh
-          composer test:install:withdb
+          composer test:install
       - name: Setup WP-CLI
         uses: godaddy-wordpress/setup-wp-cli@1
       - name: Run PHPUnit
