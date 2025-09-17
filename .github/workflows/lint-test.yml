@@ -78,5 +78,7 @@ jobs:
             composer update
           fi
           composer install
+      - name: Setup WP Unit Tests
+        run: composer test:install:withdb
       - name: Run PHPUnit
         run: bash ./bin/phpunit-test.sh
