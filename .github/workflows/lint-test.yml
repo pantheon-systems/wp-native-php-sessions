@@ -83,4 +83,4 @@ jobs:
           chmod +x ./bin/*.sh
           composer test:install:withdb
       - name: Run PHPUnit
-        run: bash ./bin/phpunit-test.sh
+        run: composer test
