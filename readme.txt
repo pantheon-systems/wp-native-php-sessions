@@ -1,8 +1,8 @@
-=== WordPress Native PHP Sessions ===
+=== Native PHP Sessions ===
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00
 Tags: comments, sessions
 Requires at least: 4.7
-Tested up to: 6.3
+Tested up to: 6.8.1
 Stable tag: 1.4.3
 Requires PHP: 5.4
 License: GPLv2 or later
@@ -33,7 +33,7 @@ That's it!
 
 By default the session lifetime is set to 0, which is until the browser is closed.
 
-To override this use the `pantheon_session_expiration` filter before the WordPress Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
+To override this use the `pantheon_session_expiration` filter before the Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
 
     <?php
     function my_session_expiration_override() {
@@ -95,6 +95,9 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 == Changelog ==
+
+= 1.4.4 (September 17, 2025) =
+* Update plugin name in README files and main plugin file to "Native PHP Sessions" [[#312](https://github.com/pantheon-systems/wp-native-php-sessions/pull/312)]
 
 = 1.4.3 (November 13, 2023) =
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
