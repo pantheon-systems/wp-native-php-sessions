@@ -26,3 +26,4 @@
 /phpcs.xml.dist export-ignore
 /phpunit.xml.dist export-ignore
 /README.md export-ignore
+/catalog-info.yml export-ignore
