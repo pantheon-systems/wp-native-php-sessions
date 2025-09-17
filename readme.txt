@@ -1,10 +1,10 @@
 === Native PHP Sessions ===
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00
 Tags: comments, sessions
-Requires at least: 4.7
+Requires at least: 5.3
 Tested up to: 6.8.1
-Stable tag: 1.4.3
-Requires PHP: 5.4
+Stable tag: 1.4.4
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,9 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 == Changelog ==
 
 = 1.4.4 (September 17, 2025) =
+* Compatibility: Supports PHP 8.4
+* Increases minimum supported PHP version to 7.4
+* Increases minimum supported WordPress version to 5.3
 * Update plugin name in README files and main plugin file to "Native PHP Sessions" [[#312](https://github.com/pantheon-systems/wp-native-php-sessions/pull/312)]
 * Update Troubleshooting section in README to be more defensive in mu-plugin [[#308](https://github.com/pantheon-systems/wp-native-php-sessions/pull/308)]
 
