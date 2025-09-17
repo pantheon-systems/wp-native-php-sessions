@@ -21,25 +21,25 @@ Behat requires a Pantheon site. Once you've created the site, you'll need [insta
 
 ## Workflow
 
-Development and releases are structured around two branches, `develop` and `main`. The `develop` branch is the source and destination for feature branches.
+Development and releases are structured around two branches, `main` and `release`. The `main` branch is the source and destination for feature branches.
 
-We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `develop` when merging, and to include the PR # in the commit message. PRs to `develop` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `develop`.
+We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `main` when merging, and to include the PR # in the commit message. PRs to `main` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `main`.
 
-`develop` should be stable and usable, though will be few commits ahead of the public release on wp.org.
+`main` should be stable and usable, though will be few commits ahead of the public release on wp.org.
 
-The `main` branch matches the latest stable release deployed to [wp.org](wp.org).
+The `release` branch matches the latest stable release deployed to [wp.org](wp.org).
 
 ## Release Process
 
-1. From `develop`, checkout a new branch `release_X.Y.Z`.
+1. From `main`, checkout a new branch `release_X.Y.Z`.
 1. Make a release commit:
     * Drop the `-dev` from the version number in `README.md`, `readme.txt`, and `pantheon-sessions.php`.
     * Add the date to the "X.Y.X" heading in the changelog
     * Commit these changes with the message `Release X.Y.Z`
     * Push the release branch up.
-1. Open a Pull Request to merge `release_X.Y.Z` into `main`. Your PR should consist of all commits to `develop` since the last release, and one commit to update the version number. The PR name should also be `Release X.Y.Z`. Copy the changelog for the current release to the PR body.
-1. After all tests pass and you have received approval from a [CODEOWNER](./CODEOWNERS), merge the PR into `main`. "Rebase and merge" is preferred in this case. _Never_ squash to `main`.
-1. Pull `main` locally, create a new tag (based on version number from previous steps), and push up. The tag should _only_ be the version number. It _should not_ be prefixed  `v` (i.e. `X.Y.Z`, not `vX.Y.X`).
+1. Open a Pull Request to merge `release_X.Y.Z` into `release`. Your PR should consist of all commits to `main` since the last release, and one commit to update the version number. The PR name should also be `Release X.Y.Z`. Copy the changelog for the current release to the PR body.
+1. After all tests pass and you have received approval from a [CODEOWNER](./CODEOWNERS), merge the PR into `release`. "Rebase and merge" is preferred in this case. _Never_ squash to `release`.
+1. Pull `release` locally, create a new tag (based on version number from previous steps), and push up. The tag should _only_ be the version number. It _should not_ be prefixed  `v` (i.e. `X.Y.Z`, not `vX.Y.X`).
     * `git tag X.Y.Z`
     * `git push --tags`
 1. Confirm that the necessary assets are present in the newly created tag, and test on a WP install if desired.
