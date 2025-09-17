@@ -58,7 +58,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: ""
     strategy:
       matrix:
-        php_version: [7.4, 8.2, 8.3]
+        php_version: [7.4, 8.2, 8.3, 8.4]
     steps:
       - uses: actions/checkout@v3
       - name: Setup PHP
@@ -70,7 +70,8 @@ jobs:
         run: sudo systemctl start mysql
       - name: Create wordpress_test database
         run: |
-          mysql -h 127.0.0.1 -u root -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS wordpress_test;"
+          mysql -h 127.0.0.1 -u root -proot -e "ALTER USER 'root'@'%' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
       - name: Install Subversion
         run: | 
           sudo apt-get update
