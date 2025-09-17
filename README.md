@@ -87,7 +87,9 @@ If you see an error like "Fatal error: session_start(): Failed to initialize sto
 To fix, create a new file at `wp-content/mu-plugins/000-loader.php` and include the following:
 
     <?php
-    require_once WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php';
+    if (file_exists(WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php')) {
+        require_once WP_PLUGIN_DIR . '/wp-native-php-sessions/pantheon-sessions.php';
+    }
 
 This mu-plugin will load WP Native PHP Sessions before all other plugins, while letting you still use the WordPress plugin updater to keep the plugin up-to-date.
 
@@ -100,6 +102,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ### 1.4.4 (September 17, 2025) ###
 * Update plugin name in README files and main plugin file to "Native PHP Sessions" [[#312](https://github.com/pantheon-systems/wp-native-php-sessions/pull/312)]
+* Update Troubleshooting section in README to be more defensive in mu-plugin [[#308](https://github.com/pantheon-systems/wp-native-php-sessions/pull/308)]
 
 ### 1.4.3 (November 13, 2023) ###
 * Fixed a PHP warning when running the `pantheon session add-index` command on a single site installation. [[#285](https://github.com/pantheon-systems/wp-native-php-sessions/pull/285)]
