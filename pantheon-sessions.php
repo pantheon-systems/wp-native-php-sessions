@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Native PHP Sessions
- * Version: 1.4.4-dev
+ * Version: 1.4.4
  * Description: Offload PHP's native sessions to your database for multi-server compatibility.
  * Author: Pantheon
  * Author URI: https://www.pantheon.io/
@@ -13,7 +13,7 @@
 
 use Pantheon_Sessions\Session;
 
-define( 'PANTHEON_SESSIONS_VERSION', '1.4.4-dev' );
+define( 'PANTHEON_SESSIONS_VERSION', '1.4.4' );
 
 /**
  * Main controller class for the plugin.
