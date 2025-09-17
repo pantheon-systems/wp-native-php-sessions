@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mariadb:
-        image: mariadb:10.5
+        image: mariadb:10.6
     strategy:
       matrix:
         php_version: [7.4, 8.2, 8.3]
