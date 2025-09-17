@@ -21,11 +21,11 @@ Behat requires a Pantheon site. Once you've created the site, you'll need [insta
 
 ## Workflow
 
-Development and releases are structured around two branches, `main` and `release`. The `main` branch is the source and destination for feature branches.
+Development and releases are structured around two branches, `develop` and `release`. The `develop` branch is the source and destination for feature branches.
 
-We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `main` when merging, and to include the PR # in the commit message. PRs to `main` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `main`.
+We prefer to squash commits (i.e. avoid merge PRs) from a feature branch into `develop` when merging, and to include the PR # in the commit message. PRs to `develop` should also include any relevent updates to the changelog in readme.txt. If a feature constitutes a minor or major version bump, that version update should be discussed and made as part of approving and merging the feature into `develop`.
 
-`main` should be stable and usable, though will be few commits ahead of the public release on wp.org.
+`develop` should be stable and usable, though will be few commits ahead of the public release on wp.org.
 
 The `release` branch matches the latest stable release deployed to [wp.org](wp.org).
 
@@ -39,10 +39,10 @@ The `release` branch matches the latest stable release deployed to [wp.org](wp.o
 1. Wait for the [_Release wp-native-php-sessions plugin to wp.org_ action](https://github.com/pantheon-systems/wp-native-php-sessions/actions/workflows/wordpress-plugin-deploy.yml) to finish deploying to the WordPress.org plugin repository. If all goes well, users with SVN commit access for that plugin will receive an emailed diff of changes.
 1. Check WordPress.org: Ensure that the changes are live on [the plugin repository](https://wordpress.org/plugins/native-php-sessions/). This may take a few minutes.
 1. Following the release, prepare the next dev version with the following steps:
-    * `git checkout main`
-    * `git pull origin main`
+    * `git checkout release`
+    * `git pull origin release`
     * `git checkout develop`
-    * `git rebase main`
+    * `git rebase release`
     * Update the version number in all locations, incrementing the version by one patch version, and add the `-dev` flag (e.g. after releasing `1.2.3`, the new verison will be `1.2.4-dev`)
     * Add a new `** X.Y.X-dev **` heading to the changelog
     * `git add -A .`
