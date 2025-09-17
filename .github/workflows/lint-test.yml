@@ -87,5 +87,7 @@ jobs:
         run: |
           chmod +x ./bin/*.sh
           composer test:install:withdb
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
       - name: Run PHPUnit
         run: composer test
