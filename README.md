@@ -1,4 +1,4 @@
-# WordPress Native PHP Sessions #
+# Native PHP Sessions #
 **Contributors:** [getpantheon](https://profiles.wordpress.org/getpantheon), [outlandish josh](https://profiles.wordpress.org/outlandish-josh), [mpvanwinkle77](https://profiles.wordpress.org/mpvanwinkle77), [danielbachhuber](https://profiles.wordpress.org/danielbachhuber), [andrew.taylor](https://profiles.wordpress.org/andrew.taylor), [jazzs3quence](https://profiles.wordpress.org/jazzs3quence), [stovak](https://profiles.wordpress.org/stovak), [jspellman](https://profiles.wordpress.org/jspellman/), [rwagner00](https://profiles.wordpress.org/rwagner00/)  
 **Tags:** comments, sessions  
 **Requires at least:** 4.7  
@@ -34,7 +34,7 @@ That's it!
 
 By default the session lifetime is set to 0, which is until the browser is closed.
 
-To override this use the `pantheon_session_expiration` filter before the WordPress Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
+To override this use the `pantheon_session_expiration` filter before the Native PHP Sessions plugin is loaded. For example a small Must-use plugin (a.k.a. mu-plugin) could contain:
 
     <?php
     function my_session_expiration_override() {
