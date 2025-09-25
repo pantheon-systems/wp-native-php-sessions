@@ -18,6 +18,7 @@ jobs:
     # Use the same CI image CircleCI used
     container:
       image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
+      options: --user root:root
 
     runs-on: ubuntu-latest
 
