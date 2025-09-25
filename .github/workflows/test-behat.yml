@@ -38,18 +38,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Composer deps
-        uses: actions/cache@v4
+      - name: Cache dependencies
+        uses: actions/cache@v3
         with:
-          path: |
-            vendor
-            ~/.composer/cache
-          key: composer-${{ runner.os }}-${{ hashFiles('composer.json') }}
-          restore-keys: |
-            composer-${{ runner.os }}-
+          path: ~/vendor
+          key: test-lint-dependencies-{{ checksum "composer.json" }}
+          restore-keys: test-lint-dependencies-{{ checksum "composer.json" }}
 
       - name: Install dependencies
         run: composer install -n --prefer-dist
+
+      - name: Run PHP Lint
+        run: composer phpcs
+
+      - uses: pantheon-systems/validate-readme-spacing@v1
+
+      - name: Install Extras
+        run: |
+          sudo apt-get update
+          sudo apt-get install subversion
 
       - name: Generate admin password
         run: echo $(openssl rand -hex 8) > /tmp/WORDPRESS_ADMIN_PASSWORD
@@ -69,6 +76,11 @@ jobs:
         run: |
           mkdir -p "$HOME/.ssh"
           printf "StrictHostKeyChecking no\n" >> "$HOME/.ssh/config"
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SITE_OWNER_SSH_PRIVATE_KEY }}
 
       - name: Configure Composer GitHub OAuth (optional)
         if: env.GITHUB_TOKEN != ''
