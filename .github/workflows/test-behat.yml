@@ -70,14 +70,9 @@ jobs:
             echo "WORDPRESS_ADMIN_PASSWORD=$(cat /tmp/WORDPRESS_ADMIN_PASSWORD)"
           } >> "$GITHUB_ENV"
 
-      - name: Disable SSH host key checking for all hosts
-        run: |
-          mkdir -p "$HOME/.ssh"
-          cat > "$HOME/.ssh/config" <<EOF
-          Host *
-              StrictHostKeyChecking no
-              UserKnownHostsFile /dev/null
-          EOF
+
+      - name: Force SSH to ignore host keys
+        run: echo "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" >> $GITHUB_ENV
 
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.7.0
