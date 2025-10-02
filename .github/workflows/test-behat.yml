@@ -21,10 +21,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ~/wp-native-php-sessions
-
     env:
       # Map CircleCI's CIRCLE_BUILD_NUM to GH's run number
       RUN_NUM: ${{ github.run_number }}
