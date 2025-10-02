@@ -46,7 +46,10 @@ jobs:
       - name: Run PHP Lint
         run: composer phpcs
 
-      - uses: pantheon-systems/validate-readme-spacing@v1
+      - name: Validate Readme Spacing
+        run: |
+          git clone --depth 1 --branch v1 https://github.com/pantheon-systems/validate-readme-spacing.git /tmp/validate-readme
+          bash /tmp/validate-readme/check-readme-newlines.sh README.md
 
       - name: Install Extras
         run: |
