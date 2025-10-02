@@ -4,7 +4,6 @@ on:
   push:
     branches: [ master, main ]
   pull_request:
-    branches: [ master, main ]
   workflow_dispatch:
   schedule:
     # Nightly at 00:00 UTC (CircleCI had cron "0 0 * * *" with branch filter=master)
