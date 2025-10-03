@@ -9,6 +9,10 @@ on:
     # Nightly at 00:00 UTC (CircleCI had cron "0 0 * * *" with branch filter=master)
     - cron: "0 0 * * *"
 
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   test-behat:
     # Run nightly only on master (schedule can't filter branches directly)
