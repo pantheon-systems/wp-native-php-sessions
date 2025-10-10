@@ -51,9 +51,7 @@ jobs:
         run: composer phpcs
 
       - name: Validate Readme Spacing
-        run: |
-          git clone --depth 1 --branch v1 https://github.com/pantheon-systems/validate-readme-spacing.git /tmp/validate-readme
-          bash /tmp/validate-readme/check-readme-newlines.sh README.md
+        uses: pantheon-systems/validate-readme-spacing@v1
 
       - name: Install Extras
         run: |
