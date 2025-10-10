@@ -92,7 +92,7 @@ jobs:
         run: terminus auth:login --machine-token="$TERMINUS_TOKEN"
 
       - name: Validate fixture version
-        run: ./bin/validate-fixture-version.sh
+        uses: jazzsequence/action-validate-plugin-version@v1
 
       - name: Behat prepare
         run: ./bin/behat-prepare.sh
