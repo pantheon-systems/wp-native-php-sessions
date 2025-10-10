@@ -50,6 +50,11 @@ jobs:
       - name: Run PHP Lint
         run: composer phpcs
 
+      - name: Install Terminus
+        uses: pantheon-systems/terminus-github-actions@v1
+        with:
+          pantheon-machine-token: ${{ secrets.TERMINUS_TOKEN }}
+
       - name: Validate Readme Spacing
         uses: pantheon-systems/validate-readme-spacing@v1
 
@@ -61,7 +66,7 @@ jobs:
       - name: Generate admin password
         run: echo $(openssl rand -hex 8) > /tmp/WORDPRESS_ADMIN_PASSWORD
 
-      - name: Export env (CircleCI → GH $GITHUB_ENV)
+      - name: Export env
         run: |
           {
             echo "TERMINUS_ENV=ci-${RUN_NUM}"
