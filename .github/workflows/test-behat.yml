@@ -18,10 +18,10 @@ jobs:
     # Run nightly only on master (schedule can't filter branches directly)
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/master'
 
-    # Use the same CI image CircleCI used
-    container:
-      image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
-      options: --user root:root
+#    # Use the same CI image CircleCI used
+#    container:
+#      image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
+#      options: --user root:root
 
     runs-on: ubuntu-latest
 
@@ -72,7 +72,6 @@ jobs:
             echo "WORDPRESS_ADMIN_PASSWORD=$(cat /tmp/WORDPRESS_ADMIN_PASSWORD)"
           } >> "$GITHUB_ENV"
 
-
       - name: Force SSH to ignore host keys
         run: echo "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" >> $GITHUB_ENV
 
@@ -86,10 +85,6 @@ jobs:
         run: |
           echo "Setting Composer GitHub OAuth token (output suppressed)"
           { composer config -g github-oauth.github.com "$GITHUB_TOKEN"; } &>/dev/null
-
-      - name: Terminus login (optional)
-        if: env.TERMINUS_TOKEN != ''
-        run: terminus auth:login --machine-token="$TERMINUS_TOKEN"
 
       - name: Validate fixture version
         uses: jazzsequence/action-validate-plugin-version@v1
