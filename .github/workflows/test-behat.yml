@@ -18,24 +18,18 @@ jobs:
     # Run nightly only on master (schedule can't filter branches directly)
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/master'
 
-#    # Use the same CI image CircleCI used
-#    container:
-#      image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
-#      options: --user root:root
-
     runs-on: ubuntu-latest
 
     env:
-      # Map CircleCI's CIRCLE_BUILD_NUM to GH's run number
       RUN_NUM: ${{ github.run_number }}
-      # Composer/GitHub token (Actions auto-injects this)
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Optional; add in repo Settings → Secrets if you want Terminus auth
       TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -93,8 +87,6 @@ jobs:
 
       - name: Validate fixture version
         uses: jazzsequence/action-validate-plugin-version@v1
-        with:
-          branch: ${{ github.head_ref }}
 
       - name: Behat prepare
         run: ./bin/behat-prepare.sh
