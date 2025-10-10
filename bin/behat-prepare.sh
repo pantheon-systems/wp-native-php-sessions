@@ -7,16 +7,22 @@
 ###
 
 if [ -z "$TERMINUS_SITE" ] || [ -z "$TERMINUS_ENV" ]; then
-	echo "TERMINUS_SITE and TERMINUS_ENV environment variables must be set"
-	exit 1
+  echo "TERMINUS_SITE and TERMINUS_ENV environment variables must be set"
+  exit 1
 fi
 
 if [ -z "$WORDPRESS_ADMIN_USERNAME" ] || [ -z "$WORDPRESS_ADMIN_PASSWORD" ]; then
-	echo "WORDPRESS_ADMIN_USERNAME and WORDPRESS_ADMIN_PASSWORD environment variables must be set"
-	exit 1
+  echo "WORDPRESS_ADMIN_USERNAME and WORDPRESS_ADMIN_PASSWORD environment variables must be set"
+  exit 1
 fi
 
 set -ex
+
+###
+# Install Composer dependencies, including Behat. This makes the
+# ./vendor/bin/behat executable available for the test runner.
+###
+composer install --no-progress --prefer-dist
 
 ###
 # Create a new environment for this particular test run.
