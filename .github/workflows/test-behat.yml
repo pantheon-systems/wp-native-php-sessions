@@ -92,7 +92,10 @@ jobs:
           dry-run: 'true'
 
       - name: Behat prepare
-        run: ./bin/behat-prepare.sh
+        run: |
+          terminus auth:login --machine-token=$TERMINUS_TOKEN
+          terminus self:plugin:install terminus-build-tools-plugin
+          ./bin/behat-prepare.sh
 
       - name: Behat tests (strict)
         run: ./bin/behat-test.sh --strict
