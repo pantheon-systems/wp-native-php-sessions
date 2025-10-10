@@ -53,7 +53,7 @@ jobs:
       - name: Validate Readme Spacing
         uses: pantheon-systems/validate-readme-spacing@v1
 
-      - name: Install Extras
+      - name: Install Subversion
         run: |
           sudo apt-get update
           sudo apt-get install subversion
