@@ -87,6 +87,9 @@ jobs:
 
       - name: Validate fixture version
         uses: jazzsequence/action-validate-plugin-version@v1
+        with:
+          branch: ${{ github.head_ref }}
+          dry-run: 'true'
 
       - name: Behat prepare
         run: ./bin/behat-prepare.sh
