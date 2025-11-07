@@ -58,6 +58,6 @@ Broadly the process for creating asset-only releases is as follows:
 1. Push your branch to GitHub and open a PR against `main`.
 1. Automation will trigger and create a new release branch in the repository. Because the version numbers have not changed, you will need to ensure that the version numbers in your branch are correct. If they are not, and a new branch was created automatically that drops the `-dev` suffix but contains the correct version number, you can merge that branch into your PR branch to update the version numbers, then close the release branch. A release PR will not be created because the diffs will not have changed.
 1. Once the PR is merged, the asset update action will run and update the assets on WordPress.org.
-1. Check out `main` and merge `main` into it to ensure that the asset-only changes are included in the next release. Then update the version numbers again to re-add the `-dev` suffix.
+1. Check out `main` and merge `release` into it to ensure that the asset-only changes are included in the next release. Then update the version numbers again to re-add the `-dev` suffix.
 
 **Note:** In the future we will work on making this process smoother and more automated.
