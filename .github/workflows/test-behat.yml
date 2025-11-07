@@ -20,10 +20,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.1', '8.3']
+      fail-fast: false
+
     env:
       RUN_NUM: ${{ github.run_number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
+      PHP_VERSION_OVERRIDE: ${{ matrix.php-version }}
 
     steps:
       - name: Checkout
@@ -62,10 +68,11 @@ jobs:
 
       - name: Export env
         run: |
+          PHP_VERSION_CLEAN=$(echo "${{ matrix.php-version }}" | tr -d '.')
           {
-            echo "TERMINUS_ENV=ci-${RUN_NUM}"
+            echo "TERMINUS_ENV=ci-${RUN_NUM}-php${PHP_VERSION_CLEAN}"
             echo "TERMINUS_SITE=wp-native-php-sessions"
-            echo "SITE_ENV=wp-native-php-sessions.ci-${RUN_NUM}"
+            echo "SITE_ENV=wp-native-php-sessions.ci-${RUN_NUM}-php${PHP_VERSION_CLEAN}"
             echo "WORDPRESS_ADMIN_USERNAME=pantheon"
             echo "WORDPRESS_ADMIN_EMAIL=no-reply@getpantheon.com"
             echo "WORDPRESS_ADMIN_PASSWORD=$(cat /tmp/WORDPRESS_ADMIN_PASSWORD)"
