@@ -2,12 +2,9 @@ name: Behat CI
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ develop, main, release ]
   pull_request:
   workflow_dispatch:
-  schedule:
-    # Nightly at 00:00 UTC (CircleCI had cron "0 0 * * *" with branch filter=master)
-    - cron: "0 0 * * *"
 
 permissions:
   contents: read
