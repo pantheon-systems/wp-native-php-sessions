@@ -101,6 +101,6 @@ jobs:
       - name: Behat tests (strict)
         run: ./bin/behat-test.sh --strict
 
-      # - name: Cleanup (always)
-      #   if: always()
-      #   run: ./bin/behat-cleanup.sh
+      - name: Cleanup (always)
+        if: always()
+        run: ./bin/behat-cleanup.sh
