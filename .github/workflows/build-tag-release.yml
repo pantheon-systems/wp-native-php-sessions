@@ -15,9 +15,9 @@ jobs:
     outputs:
       is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - id: get-changed-files
-        uses: jitterbit/get-changed-files@v1
+        uses: jitterbit/get-changed-files@b17fbb00bdc0c0f63fcf166580804b4d2cdc2a42 # v1
       - id: set-outputs
         shell: bash
         run: |
@@ -48,9 +48,9 @@ jobs:
     if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: WP.org Asset Only Update
-        uses: 10up/action-wordpress-plugin-asset-update@stable
+        uses: 10up/action-wordpress-plugin-asset-update@2480306f6f693672726d08b5917ea114cb2825f7 # stable 2025-01-21T21:32:26Z
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
@@ -60,9 +60,9 @@ jobs:
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Build, Tag & Release
-        uses: pantheon-systems/plugin-release-actions/build-tag-release@main
+        uses: pantheon-systems/plugin-release-actions/build-tag-release@a3839d25efa9d0d4270c088702c2072a2e49edde # main 2025-11-07T23:23:14Z
         with:
           gh_token: ${{ github.token }}
           readme_md: README.md
