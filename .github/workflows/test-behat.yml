@@ -2,7 +2,7 @@ name: Behat CI
 
 on:
   push:
-    branches: [ develop, main, release ]
+    branches: [ main, release ]
   pull_request:
   workflow_dispatch:
 
