@@ -2,7 +2,7 @@
 Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00
 Tags: comments, sessions
 Requires at least: 5.3
-Tested up to: 6.8.1
+Tested up to: 6.9
 Stable tag: 1.4.5-dev
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -98,7 +98,8 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 == Changelog ==
 
-= 1.4.5-dev =
+= 1.4.5-dev (December 2025) =
+* Compatibility: Supports Wordpress 6.9
 
 = 1.4.4 (September 17, 2025) =
 * Compatibility: Supports PHP 8.4
