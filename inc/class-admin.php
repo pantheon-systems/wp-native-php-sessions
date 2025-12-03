@@ -77,13 +77,17 @@ class Admin {
 			echo '<a class="button pantheon-clear-all-sessions" style="float:right; margin-top: 9px;" href="' . esc_url( add_query_arg( $query_args, admin_url( 'admin-ajax.php' ) ) ) . '">' . esc_html__( 'Clear All', 'wp-native-php-sessions' ) . '</a>';
 		}
 		echo '<h2>' . esc_html__( 'Pantheon Sessions', 'wp-native-php-sessions' ) . '</h2>';
-		if ( isset( $_GET['message'] ) && in_array( $_GET['message'], [ 'delete-all-session', 'delete-session' ], true ) ) {
-			if ( 'delete-all-session' === $_GET['message'] ) {
+		// Check for success message transient.
+		$transient_key = 'pantheon_sessions_message_' . get_current_user_id();
+		$session_message = get_transient( $transient_key );
+		if ( $session_message ) {
+			if ( 'delete-all-session' === $session_message ) {
 				$message = __( 'Cleared all sessions.', 'wp-native-php-sessions' );
-			} elseif ( 'delete-session' === $_GET['message'] ) {
+			} elseif ( 'delete-session' === $session_message ) {
 				$message = __( 'Session cleared.', 'wp-native-php-sessions' );
 			}
 			echo '<div id="message" class="updated"><p>' . esc_html( $message ) . '</p></div>';
+			delete_transient( $transient_key );
 		}
 		echo '</div>';
 
@@ -113,7 +117,12 @@ class Admin {
 			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->pantheon_sessions WHERE session_id=%s", sanitize_text_field( $_GET['session'] ) ) );
 			$message = 'delete-session';
 		}
-		wp_safe_redirect( add_query_arg( 'message', $message, wp_get_referer() ) );
+
+		// Set a transient to show success message (expires in 30 seconds).
+		$transient_key = 'pantheon_sessions_message_' . get_current_user_id();
+		set_transient( $transient_key, $message, 30 );
+
+		wp_safe_redirect( wp_get_referer() );
 		exit;
 	}
 

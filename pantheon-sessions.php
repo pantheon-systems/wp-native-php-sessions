@@ -332,7 +332,7 @@ class Pantheon_Sessions {
 		$wpdb->esc_like( $old_table ) );
 
 		// Check for table existence and delete if present.
-		if ( $wpdb->get_var( $query ) == $old_table ) {
+		if ( $wpdb->get_var( $query ) === $old_table ) {
 			$cli_key_finalize = $wp_cli_cmd . 'pantheon session primary-key-finalize';
 			$cli_key_revert = $wp_cli_cmd . 'pantheon session primary-key-revert';
 
@@ -539,7 +539,7 @@ class Pantheon_Sessions {
 		 */
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
 
-		if ( $wpdb->get_var( $query ) == $temp_clone_table ) {
+		if ( $wpdb->get_var( $query ) === $temp_clone_table ) {
 			$query = "DROP TABLE {$temp_clone_table};";
 			$wpdb->query( $query );
 		}
@@ -549,7 +549,7 @@ class Pantheon_Sessions {
 		}
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
-		if ( ! $wpdb->get_var( $query ) == $table ) {
+		if ( $wpdb->get_var( $query ) !== $table ) {
 			$this->safe_output( __( 'This site does not have a pantheon_sessions table, and is being skipped.', 'wp-native-php-sessions' ), 'log' );
 			$output['no_session_table'] = isset( $output['no_session_table'] ) ? $output['no_session_table'] + 1 : 1;
 
@@ -626,7 +626,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$old_table = esc_sql( $prefix . 'bak_' . $unprefixed_table );
 		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
-		if ( $wpdb->get_var( $query ) == $old_table ) {
+		if ( $wpdb->get_var( $query ) === $old_table ) {
 			$query = "DROP TABLE {$old_table};";
 			$wpdb->query( $query );
 		}
@@ -653,7 +653,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
 		// Check for table existence and delete if present.
-		if ( ! $wpdb->get_var( $query ) == $table ) {
+		if ( $wpdb->get_var( $query ) !== $table ) {
 			/**
 			 * If dealing with multisites, it's feasible that some may have a
 			 * table and some may not, so don't stop execution if it's not found.
@@ -706,7 +706,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$type = 'log';
 		}
 
-		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
+		if ( $wpdb->get_var( $query ) !== $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
 			$output['no_rollback_table'] = isset( $output['no_rollback_table'] ) ? $output['no_rollback_table'] + 1 : 1;
 
