@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 5.3  
 **Tested up to:** 6.9  
-**Stable tag:** 1.4.5  
+**Stable tag:** 1.4.6-dev  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -99,6 +99,8 @@ This mu-plugin will load WP Native PHP Sessions before all other plugins, while 
 Adds a WP-CLI command to add an index to the sessions table if one does not exist already. If you installed this plugin before version 1.2.2, you likely need to run this command. However, regardless of version at installation a notice will appear in your admin dashboard if your database table is missing the index. If no notice appears, no action is necessary.
 
 ## Changelog ##
+
+### 1.4.6-dev ###
 
 ### 1.4.5 (December 2, 2025) ###
 * Compatibility: Supports Wordpress 6.9
