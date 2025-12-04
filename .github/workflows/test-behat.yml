@@ -1,0 +1,105 @@
+name: Behat CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Nightly at 00:00 UTC (CircleCI had cron "0 0 * * *" with branch filter=master)
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  test-behat:
+    # Run nightly only on master (schedule can't filter branches directly)
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/master'
+
+    runs-on: ubuntu-latest
+
+    env:
+      RUN_NUM: ${{ github.run_number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/vendor
+          key: test-lint-dependencies-{{ checksum "composer.json" }}
+          restore-keys: test-lint-dependencies-{{ checksum "composer.json" }}
+
+      - name: Install dependencies
+        run: composer install -n --prefer-dist
+
+      - name: Run PHP Lint
+        run: composer phpcs
+
+      - name: Install Terminus
+        uses: pantheon-systems/terminus-github-actions@v1
+        with:
+          pantheon-machine-token: ${{ secrets.TERMINUS_TOKEN }}
+
+      - name: Validate Readme Spacing
+        uses: pantheon-systems/validate-readme-spacing@v1
+
+      - name: Install Subversion
+        run: |
+          sudo apt-get update
+          sudo apt-get install subversion
+
+      - name: Generate admin password
+        run: echo $(openssl rand -hex 8) > /tmp/WORDPRESS_ADMIN_PASSWORD
+
+      - name: Export env
+        run: |
+          {
+            echo "TERMINUS_ENV=ci-${RUN_NUM}"
+            echo "TERMINUS_SITE=wp-native-php-sessions"
+            echo "SITE_ENV=wp-native-php-sessions.ci-${RUN_NUM}"
+            echo "WORDPRESS_ADMIN_USERNAME=pantheon"
+            echo "WORDPRESS_ADMIN_EMAIL=no-reply@getpantheon.com"
+            echo "WORDPRESS_ADMIN_PASSWORD=$(cat /tmp/WORDPRESS_ADMIN_PASSWORD)"
+          } >> "$GITHUB_ENV"
+
+      - name: Force SSH to ignore host keys
+        run: echo "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" >> $GITHUB_ENV
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SITE_OWNER_SSH_PRIVATE_KEY }}
+
+      - name: Configure Composer GitHub OAuth (optional)
+        if: env.GITHUB_TOKEN != ''
+        run: |
+          echo "Setting Composer GitHub OAuth token (output suppressed)"
+          { composer config -g github-oauth.github.com "$GITHUB_TOKEN"; } &>/dev/null
+
+      - name: Validate fixture version
+        uses: jazzsequence/action-validate-plugin-version@v2
+        with:
+          branch: ${{ github.head_ref }}
+          dry-run: 'true'
+
+      - name: Behat prepare
+        run: |
+          terminus auth:login --machine-token=$TERMINUS_TOKEN
+          terminus self:plugin:install terminus-build-tools-plugin
+          ./bin/behat-prepare.sh
+
+      - name: Behat tests (strict)
+        run: ./bin/behat-test.sh --strict
+
+      - name: Cleanup (always)
+        if: always()
+        run: ./bin/behat-cleanup.sh
