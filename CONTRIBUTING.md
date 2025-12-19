@@ -49,7 +49,7 @@ The `release` branch matches the latest stable release deployed to [wp.org](wp.o
     * `git commit -m "Prepare X.Y.Z-dev"`
     * `git checkout -b release-XYZ-dev` (we need to test this commit but we will _not_ PR it into main)
     * _Wait for all required status checks to pass in CI._
-    * `git push origin develop`
+    * `git push origin main`
 
 ## Asset-only Releases
 > ⚠️ WARNING: This workflow has some pitfalls and may need further adjustment. Tread carefully if attempting an asset-only update and don't be surprised if it takes multiple attempts.
