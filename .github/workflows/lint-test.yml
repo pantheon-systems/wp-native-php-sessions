@@ -19,14 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: pantheon-systems/validate-readme-spacing@v1
   lint:
     name: PHPCS Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: pantheon-systems/phpcompatibility-action@dev
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - uses: pantheon-systems/action-wporg-validator@1.0.0
         with:
           type: 'plugin'
@@ -71,7 +71,7 @@ jobs:
       matrix:
         php_version: [7.4, 8.2, 8.3, 8.4]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
