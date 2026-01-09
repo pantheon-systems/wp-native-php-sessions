@@ -19,22 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: pantheon-systems/validate-readme-spacing@v1
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: pantheon-systems/validate-readme-spacing@229ea162621009cf8e09bf2beba405017150130e # v1.0.5
   lint:
     name: PHPCS Linting
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: ~/vendor
           key: test-lint-dependencies-{{ checksum "composer.json" }}
           restore-keys: test-lint-dependencies-{{ checksum "composer.json" }}
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: 8.3
       - name: Install dependencies
@@ -46,8 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: pantheon-systems/phpcompatibility-action@dev
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: pantheon-systems/phpcompatibility-action@bd72eb001d4fb9817c9d6e1a157a71e287f3ff80 # dev 2023-10-04T16:54:18Z
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
           test-versions: 8.3-
@@ -56,8 +56,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: pantheon-systems/action-wporg-validator@1.0.0
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: pantheon-systems/action-wporg-validator@4df6286ef133ca95bbc955728fc649322e433380 # 1.0.0 2023-06-09T19:59:09Z
         with:
           type: 'plugin'
   test:
@@ -71,9 +71,9 @@ jobs:
       matrix:
         php_version: [7.4, 8.2, 8.3, 8.4]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: ${{ matrix.php_version }}
           extensions: mysqli, zip, imagick
@@ -89,13 +89,13 @@ jobs:
           sudo apt-get install subversion
           svn --version
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
         with:
           path: ~/vendor
           key: test-dependencies-{{ checksum "composer.json" }}
           restore-keys: test-dependencies-{{ checksum "composer.json" }}
       - name: Setup WP-CLI
-        uses: godaddy-wordpress/setup-wp-cli@1
+        uses: godaddy-wordpress/setup-wp-cli@80c9a89bd347082429795c0f12acf567e2c390d4 # 1 2022-10-04T19:52:20Z
       - name: Install dependencies
         run: |
           if [ ${{ matrix.php_version }} = "7.4" ]; then
@@ -108,6 +108,6 @@ jobs:
           chmod +x ./bin/*.sh
           composer test:install
       - name: Setup WP-CLI
-        uses: godaddy-wordpress/setup-wp-cli@1
+        uses: godaddy-wordpress/setup-wp-cli@80c9a89bd347082429795c0f12acf567e2c390d4 # 1 2022-10-04T19:52:20Z
       - name: Run PHPUnit
         run: composer test
