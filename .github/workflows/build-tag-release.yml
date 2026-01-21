@@ -15,7 +15,7 @@ jobs:
     outputs:
       is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: get-changed-files
         uses: jitterbit/get-changed-files@v1
       - id: set-outputs
@@ -48,7 +48,7 @@ jobs:
     if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: WP.org Asset Only Update
         uses: 10up/action-wordpress-plugin-asset-update@stable
         env:
@@ -60,7 +60,7 @@ jobs:
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build, Tag & Release
         uses: pantheon-systems/plugin-release-actions/build-tag-release@main
         with:
