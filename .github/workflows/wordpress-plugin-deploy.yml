@@ -14,7 +14,7 @@ jobs:
         sudo apt-get install subversion
         svn --version    
     - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.1.1
+      uses: 10up/action-wordpress-plugin-deploy@2.3.0
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
