@@ -3,7 +3,7 @@
 **Tags:** comments, sessions  
 **Requires at least:** 5.3  
 **Tested up to:** 6.9  
-**Stable tag:** 1.4.6-dev  
+**Stable tag:** 1.4.6  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -100,7 +100,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ## Changelog ##
 
-### 1.4.6-dev ###
+### 1.4.6 (23 January 2026) ###
 
 ### 1.4.5 (December 2, 2025) ###
 * Compatibility: Supports Wordpress 6.9
