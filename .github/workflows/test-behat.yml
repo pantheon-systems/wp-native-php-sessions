@@ -30,12 +30,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/vendor
           key: test-lint-dependencies-{{ checksum "composer.json" }}
@@ -45,12 +45,12 @@ jobs:
         run: composer install -n --prefer-dist
 
       - name: Install Terminus
-        uses: pantheon-systems/terminus-github-actions@v1
+        uses: pantheon-systems/terminus-github-actions@8e024bd89ff46ed2aa4e0663c6b54c87a94344f8 # v1.2.7
         with:
           pantheon-machine-token: ${{ secrets.TERMINUS_TOKEN }}
 
       - name: Validate Readme Spacing
-        uses: pantheon-systems/validate-readme-spacing@v1
+        uses: pantheon-systems/validate-readme-spacing@229ea162621009cf8e09bf2beba405017150130e # v1.0.5
 
       - name: Install Subversion
         run: |
@@ -76,7 +76,7 @@ jobs:
         run: echo "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" >> $GITHUB_ENV
 
       - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@a6f90b1f127823b31d4d4a8d96047790581349bd # v0.9.1
         with:
           ssh-private-key: ${{ secrets.SITE_OWNER_SSH_PRIVATE_KEY }}
 
@@ -87,7 +87,7 @@ jobs:
           { composer config -g github-oauth.github.com "$GITHUB_TOKEN"; } &>/dev/null
 
       - name: Validate fixture version
-        uses: jazzsequence/action-validate-plugin-version@v2
+        uses: jazzsequence/action-validate-plugin-version@33b0e43e436229825afc8427b19829a0c9aea498 # v2.0.0
         with:
           branch: ${{ github.head_ref }}
           dry-run: 'true'
