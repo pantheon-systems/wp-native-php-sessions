@@ -2,12 +2,9 @@ name: Behat CI
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ main, release ]
   pull_request:
   workflow_dispatch:
-  schedule:
-    # Nightly at 00:00 UTC (CircleCI had cron "0 0 * * *" with branch filter=master)
-    - cron: "0 0 * * *"
 
 permissions:
   contents: read
@@ -20,10 +17,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.1', '8.3', '8.4']
+      fail-fast: false
+
     env:
       RUN_NUM: ${{ github.run_number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
+      PHP_VERSION_OVERRIDE: ${{ matrix.php-version }}
 
     steps:
       - name: Checkout
@@ -40,9 +43,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install -n --prefer-dist
-
-      - name: Run PHP Lint
-        run: composer phpcs
 
       - name: Install Terminus
         uses: pantheon-systems/terminus-github-actions@8e024bd89ff46ed2aa4e0663c6b54c87a94344f8 # v1.2.7
@@ -62,10 +62,11 @@ jobs:
 
       - name: Export env
         run: |
+          PHP_VERSION_CLEAN=$(echo "${{ matrix.php-version }}" | tr -d '.')
           {
-            echo "TERMINUS_ENV=ci-${RUN_NUM}"
+            echo "TERMINUS_ENV=ci-${RUN_NUM}-php${PHP_VERSION_CLEAN}"
             echo "TERMINUS_SITE=wp-native-php-sessions"
-            echo "SITE_ENV=wp-native-php-sessions.ci-${RUN_NUM}"
+            echo "SITE_ENV=wp-native-php-sessions.ci-${RUN_NUM}-php${PHP_VERSION_CLEAN}"
             echo "WORDPRESS_ADMIN_USERNAME=pantheon"
             echo "WORDPRESS_ADMIN_EMAIL=no-reply@getpantheon.com"
             echo "WORDPRESS_ADMIN_PASSWORD=$(cat /tmp/WORDPRESS_ADMIN_PASSWORD)"
