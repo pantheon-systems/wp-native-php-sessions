@@ -60,10 +60,6 @@ class Pantheon_Sessions {
 			return;
 		}
 
-		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
-			return;
-		}
-
 		$this->define_constants();
 		$this->require_files();
 
@@ -74,10 +70,28 @@ class Pantheon_Sessions {
 			$this->set_ini_values();
 			add_action( 'set_logged_in_cookie', [ __CLASS__, 'action_set_logged_in_cookie' ], 10, 4 );
 			add_action( 'clear_auth_cookie', [ __CLASS__, 'action_clear_auth_cookie' ] );
+
+			if ( ! wp_next_scheduled( 'pantheon_sessions_gc' ) ) {
+				wp_schedule_event( time(), 'hourly', 'pantheon_sessions_gc' );
+			}
+			add_action( 'pantheon_sessions_gc', [ $this, 'garbage_collection' ] );
 		}
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_action( 'wp_ajax_dismiss_notice', [ $this, 'dismiss_notice' ] );
+	}
+
+	/**
+	 * Runs the garbage collection process.
+	 *
+	 * @param int $maxlifetime Maximum lifetime in seconds.
+	 */
+	public function garbage_collection( $maxlifetime = null ) {
+		if ( null === $maxlifetime ) {
+			$maxlifetime = (int) ini_get( 'session.gc_maxlifetime' );
+		}
+		$handler = new \Pantheon_Sessions\Session_Handler();
+		$handler->gc( $maxlifetime );
 	}
 
 	/**

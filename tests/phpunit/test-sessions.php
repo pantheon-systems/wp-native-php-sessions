@@ -129,18 +129,16 @@ class Test_Sessions extends WP_UnitTestCase {
 	 * Ensures the garbage collection function wroks as expected.
 	 */
 	public function test_session_garbage_collection() {
-		$this->markTestSkipped( 'ini_set() never works once headers have been set' );
-
 		global $wpdb;
 		$_SESSION['foo'] = 'bar';
 		session_commit();
 		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
 		$current_val = ini_get( 'session.gc_maxlifetime' );
 		ini_set( 'session.gc_maxlifetime', 100000000 );
-		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
+		Pantheon_Sessions()->garbage_collection( (int) ini_get( 'session.gc_maxlifetime' ) );
 		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
 		ini_set( 'session.gc_maxlifetime', 0 );
-		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
+		Pantheon_Sessions()->garbage_collection( (int) ini_get( 'session.gc_maxlifetime' ) );
 		$this->assertEquals( 0, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
 		ini_set( 'session.gc_maxlifetime', $current_val );
 	}
