@@ -7,14 +7,14 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
     - name: Install Subversion
       run: | 
         sudo apt-get update
         sudo apt-get install subversion
         svn --version    
     - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@2.1.1
+      uses: 10up/action-wordpress-plugin-deploy@958b7fa0abf359af27e7e27c446cf5f4cc4660c7 # 2.1.1 2022-08-16T10:32:14Z
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
