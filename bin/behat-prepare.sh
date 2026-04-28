@@ -63,12 +63,33 @@ rm -rf "$PREPARE_DIR"/wp-content/mu-plugins/sessions-debug.php
 cp "$BASH_DIR"/fixtures/sessions-debug.php "$PREPARE_DIR"/wp-content/mu-plugins/sessions-debug.php
 
 ###
-# Push files to the environment
+# Configure PHP version if specified
 ###
 cd "$PREPARE_DIR"
-git add wp-content
 git config user.email "wp-native-php-sessions@getpantheon.com"
 git config user.name "Pantheon"
+
+if [ -n "${PHP_VERSION_OVERRIDE:-}" ]; then
+  echo "Setting PHP version to: $PHP_VERSION_OVERRIDE"
+  
+  # Check current PHP version in pantheon.yml
+  CURRENT_PHP_VERSION=$(grep "^php_version:" pantheon.yml | cut -d' ' -f2)
+  
+  if [ "$CURRENT_PHP_VERSION" != "$PHP_VERSION_OVERRIDE" ]; then
+    # Update the existing pantheon.yml file with the new PHP version
+    sed -i.bak "s/^php_version:.*/php_version: $PHP_VERSION_OVERRIDE/" pantheon.yml
+    git add pantheon.yml
+    git commit -m "Set PHP version to $PHP_VERSION_OVERRIDE"
+    echo "PHP version changed from $CURRENT_PHP_VERSION to $PHP_VERSION_OVERRIDE"
+  else
+    echo "PHP version already set to $PHP_VERSION_OVERRIDE, no change needed"
+  fi
+fi
+
+###
+# Push files to the environment
+###
+git add wp-content
 git commit -m "Include WP Native PHP Sessions and its configuration files"
 git push
 
