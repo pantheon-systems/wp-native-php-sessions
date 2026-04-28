@@ -46,6 +46,7 @@ class Test_Sessions extends WP_UnitTestCase {
 		if ( ! Session::get_by_sid( session_id() ) ) {
 			Session::create_for_sid( session_id() );
 		}
+
 		parent::setUp();
 	}
 
@@ -126,23 +127,21 @@ class Test_Sessions extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Ensures the garbage collection function wroks as expected.
+	 * Ensures the garbage collection function works as expected.
 	 */
 	public function test_session_garbage_collection() {
-		$this->markTestSkipped( 'ini_set() never works once headers have been set' );
-
 		global $wpdb;
 		$_SESSION['foo'] = 'bar';
 		session_commit();
 		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
-		$current_val = ini_get( 'session.gc_maxlifetime' );
-		ini_set( 'session.gc_maxlifetime', 100000000 );
-		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
+
+		// Should NOT delete the session with a very long lifetime.
+		Pantheon_Sessions()->garbage_collection( 100000000 );
 		$this->assertEquals( 1, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
-		ini_set( 'session.gc_maxlifetime', 0 );
-		_pantheon_session_garbage_collection( ini_get( 'session.gc_maxlifetime' ) );
+
+		// Should delete the session with a lifetime of 0.
+		Pantheon_Sessions()->garbage_collection( 0 );
 		$this->assertEquals( 0, $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->pantheon_sessions" ) );
-		ini_set( 'session.gc_maxlifetime', $current_val );
 	}
 
 	/**

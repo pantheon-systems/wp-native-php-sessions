@@ -80,6 +80,21 @@ class CLI_Command extends \WP_CLI_Command {
 	}
 
 	/**
+	 * Run session garbage collection.
+	 *
+	 * @subcommand gc
+	 */
+	public function gc( $args, $assoc_args ) {
+		if ( ! PANTHEON_SESSIONS_ENABLED ) {
+			WP_CLI::error( 'Pantheon Sessions is currently disabled.' );
+		}
+
+		$pantheon_session = \Pantheon_Sessions::get_instance();
+		$pantheon_session->garbage_collection();
+		WP_CLI::success( 'Session garbage collection complete.' );
+	}
+
+	/**
 	 * Set id as primary key in the Native PHP Sessions plugin table.
 	 *
 	 * @subcommand add-index
