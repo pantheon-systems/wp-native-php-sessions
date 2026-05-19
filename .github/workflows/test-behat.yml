@@ -45,7 +45,7 @@ jobs:
         run: composer phpcs
 
       - name: Install Terminus
-        uses: pantheon-systems/terminus-github-actions@8e024bd89ff46ed2aa4e0663c6b54c87a94344f8 # v1.2.7
+        uses: pantheon-systems/terminus-github-actions@409451ede17f75acac08f42edc823fee6c435057 # v1.2.8
         with:
           pantheon-machine-token: ${{ secrets.TERMINUS_TOKEN }}
 
