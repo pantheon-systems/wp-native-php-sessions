@@ -50,7 +50,7 @@ jobs:
       - uses: pantheon-systems/phpcompatibility-action@bd72eb001d4fb9817c9d6e1a157a71e287f3ff80 # dev 2023-10-04T16:54:18Z
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
-          test-versions: 7.4-
+          test-versions: 8.3-
   wporg-validation:
     name: WP.org Plugin Validation
     runs-on: ubuntu-latest
