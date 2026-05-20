@@ -99,6 +99,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 == Changelog ==
 
 = 1.4.6-dev =
+* Run session garbage collection hourly through WordPress scheduled task. Create WP-CLI command to run GC manually
 
 = 1.4.5 (December 2025) =
 * Compatibility: Supports Wordpress 6.9

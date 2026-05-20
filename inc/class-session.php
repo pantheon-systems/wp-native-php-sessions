@@ -87,6 +87,7 @@ class Session {
 		$insert_data = [
 			'session_id' => $sid,
 			'user_id'    => (int) get_current_user_id(),
+			'datetime'   => gmdate( 'Y-m-d H:i:s' ),
 		];
 		if ( function_exists( 'is_ssl' ) && is_ssl() ) {
 			$insert_data['secure_session_id'] = $sid;
