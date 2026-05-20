@@ -99,6 +99,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 == Changelog ==
 
 = 1.4.6-dev =
+* Compatibility: Supports PHP 8.5
 
 = 1.4.5 (December 2025) =
 * Compatibility: Supports Wordpress 6.9
