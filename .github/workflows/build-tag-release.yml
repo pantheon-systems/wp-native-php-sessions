@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Build, Tag & Release
-        uses: pantheon-systems/plugin-release-actions/build-tag-release@a3839d25efa9d0d4270c088702c2072a2e49edde # main 2025-11-07T23:23:14Z
+        uses: pantheon-systems/plugin-release-actions/build-tag-release@0a7c5c2805e2874ae5265bc05ea1a3bc0e5e912c # main 2025-11-07T23:23:14Z
         with:
           gh_token: ${{ github.token }}
           readme_md: README.md
