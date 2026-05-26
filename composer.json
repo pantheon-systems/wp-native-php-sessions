@@ -45,9 +45,6 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "pantheon-systems/wpunit-helpers": true
         },
-        "audit": {
-            "block-insecure": false
-        },
         "sort-packages": true
     }
 }
