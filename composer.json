@@ -45,6 +45,11 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "pantheon-systems/wpunit-helpers": true
         },
+        "audit": {
+            "ignore": {
+                "PKSA-5r1g-c7b7-y1zg": "Dev-only: symfony/dom-crawler via behat test deps (pantheon-wordpress-upstream-tests). No prod exposure. SITE-5205."
+            }
+        },
         "sort-packages": true
     }
 }
