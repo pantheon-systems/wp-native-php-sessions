@@ -45,6 +45,19 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "pantheon-systems/wpunit-helpers": true
         },
+        "audit": {
+            "ignore": {
+                "PKSA-5r1g-c7b7-y1zg": "Dev-only: symfony/dom-crawler via behat test deps (pantheon-wordpress-upstream-tests). No prod exposure. SITE-5205.",
+                "PKSA-dwsq-ppd2-mb1x": "Dev-only: symfony/polyfill-intl-idn via guzzle (behat test deps). No prod exposure. SITE-5205.",
+                "PKSA-v5yj-8nmz-sk2q": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-ft77-7h5f-p3r6": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-b14r-zh1d-vdrc": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-z3gr-8qht-p93v": "Dev-only: phpunit/phpunit test runner. No prod exposure. SITE-5205.",
+                "PKSA-jj5t-2zs1-dcfm": "Dev-only: guzzlehttp/psr7 (CVE-2026-48998) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
+                "PKSA-gm5x-j3mz-71n9": "Dev-only: guzzlehttp/psr7 (CVE-2026-49214) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
+                "PKSA-hn62-zkx4-1y5q": "Dev-only: guzzlehttp/psr7 via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205."
+            }
+        },
         "sort-packages": true
     }
 }

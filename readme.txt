@@ -1,5 +1,5 @@
 === Native PHP Sessions ===
-Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00
+Contributors: getpantheon, outlandish josh, mpvanwinkle77, danielbachhuber, andrew.taylor, jazzs3quence, stovak, jspellman, rwagner00, metasim
 Tags: comments, sessions
 Requires at least: 5.3
 Tested up to: 6.9
@@ -99,6 +99,7 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 == Changelog ==
 
 = 1.4.6-dev =
+* Compatibility: Supports PHP 8.5
 
 = 1.4.5 (December 2025) =
 * Compatibility: Supports Wordpress 6.9
