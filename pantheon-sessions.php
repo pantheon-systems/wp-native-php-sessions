@@ -7,9 +7,15 @@
  * Author URI: https://www.pantheon.io/
  * Plugin URI: https://wordpress.org/plugins/wp-native-php-sessions/
  * Text Domain: wp-native-php-sessions
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
  * @package WPNPS
  **/
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use Pantheon_Sessions\Session;
 
@@ -136,7 +142,7 @@ class Pantheon_Sessions {
 			$cookie_domain = constant( 'COOKIE_DOMAIN' );
 			$session_name  = $cookie_domain;
 		} else {
-			$session_name  = parse_url( home_url(), PHP_URL_HOST );
+			$session_name  = wp_parse_url( home_url(), PHP_URL_HOST );
 			$cookie_domain = ltrim( $session_name, '.' );
 			// Strip leading periods, www., and port numbers from cookie domain.
 			if ( strpos( $cookie_domain, 'www.' ) === 0 ) {

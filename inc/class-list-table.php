@@ -5,6 +5,10 @@
  * @package WPNPS
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 namespace Pantheon_Sessions;
 
 /**
