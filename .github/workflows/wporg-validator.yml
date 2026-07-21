@@ -38,8 +38,6 @@ jobs:
 
     - name: Create Dist Archive for wp.org validation
       env:
-        # Block wp-cli from injecting GITHUB_TOKEN into Composer (ghs_ tokens fail OAuth validation).
-        # rm clears what setup-php writes to auth.json, which has the same bad token.
         COMPOSER_AUTH: '{"github-oauth": {}}'
       run: |
         rm -f ~/.composer/auth.json
