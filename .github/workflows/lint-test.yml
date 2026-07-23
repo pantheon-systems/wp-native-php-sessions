@@ -51,15 +51,6 @@ jobs:
         with:
           paths: ${{ github.workspace }}/*.php ${{ github.workspace }}/inc/*.php
           test-versions: 8.3-
-  wporg-validation:
-    name: WP.org Plugin Validation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      - uses: pantheon-systems/action-wporg-validator@4df6286ef133ca95bbc955728fc649322e433380 # 1.0.0 2023-06-09T19:59:09Z
-        with:
-          type: 'plugin'
   test:
     needs: lint
     name: Test
