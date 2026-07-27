@@ -211,8 +211,8 @@ class Pantheon_Sessions {
 				// Output a friendly error message if headers are already sent.
 				trigger_error(
 					sprintf(
-						/* translators: %1s: File path, %2d: Line number */
-						esc_html__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
+						/* translators: %1$s: File path, %2$d: Line number */
+						esc_html__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1\$s on line %2\$d.", 'wp-native-php-sessions' ),
 						esc_html( $file ),
 						esc_html( $line )
 					),
@@ -334,11 +334,8 @@ class Pantheon_Sessions {
 			<?php
 		}
 
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s',
-		$wpdb->esc_like( $old_table ) );
-
 		// Check for table existence and delete if present.
-		if ( $wpdb->get_var( $query ) == $old_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) ) ) == $old_table ) {
 			$cli_key_finalize = $wp_cli_cmd . 'pantheon session primary-key-finalize';
 			$cli_key_revert = $wp_cli_cmd . 'pantheon session primary-key-revert';
 
@@ -543,9 +540,7 @@ class Pantheon_Sessions {
 		 * If the command has been run multiple times and there is already a
 		 * temp_clone table, drop it.
 		 */
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
-
-		if ( $wpdb->get_var( $query ) == $temp_clone_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) ) ) == $temp_clone_table ) {
 			$query = "DROP TABLE {$temp_clone_table};";
 			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
 		}
@@ -554,8 +549,7 @@ class Pantheon_Sessions {
 			$this->safe_output( __( 'Pantheon Sessions is currently disabled.', 'wp-native-php-sessions' ), 'error' );
 		}
 
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
-		if ( ! $wpdb->get_var( $query ) == $table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( ! $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) == $table ) {
 			$this->safe_output( __( 'This site does not have a pantheon_sessions table, and is being skipped.', 'wp-native-php-sessions' ), 'log' );
 			$output['no_session_table'] = isset( $output['no_session_table'] ) ? $output['no_session_table'] + 1 : 1;
 
@@ -630,9 +624,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		 * table if necessary.
 		 */
 		$old_table = esc_sql( $prefix . 'bak_' . $unprefixed_table );
-		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
-		if ( $wpdb->get_var( $query ) == $old_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) ) ) == $old_table ) {
 			$query = "DROP TABLE {$old_table};";
 			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $old_table is esc_sql()'d.
 		}
@@ -656,10 +649,8 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		global $wpdb;
 		$table = esc_sql( $prefix . self::BAK_PANTHEON_SESSIONS_TABLE );
 
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
-
 		// Check for table existence and delete if present.
-		if ( ! $wpdb->get_var( $query ) == $table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( ! $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ) == $table ) {
 			/**
 			 * If dealing with multisites, it's feasible that some may have a
 			 * table and some may not, so don't stop execution if it's not found.
@@ -700,8 +691,6 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$table            = esc_sql( $prefix . self::PANTHEON_SESSIONS_TABLE );
 
 		// If there is no old table to roll back to, error.
-		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) );
-
 		/**
 		 * If dealing with multisites, it's feasible that some may have a
 		 * table and some may not, so don't stop execution if it's not found.
@@ -712,7 +701,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$type = 'log';
 		}
 
-		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
+		if ( ! $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) ) ) == $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
 			$output['no_rollback_table'] = isset( $output['no_rollback_table'] ) ? $output['no_rollback_table'] + 1 : 1;
 
