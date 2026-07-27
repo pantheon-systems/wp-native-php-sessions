@@ -690,7 +690,6 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$temp_clone_table = esc_sql( $prefix . self::TEMP_PANTHEON_SESSIONS_TABLE );
 		$table            = esc_sql( $prefix . self::PANTHEON_SESSIONS_TABLE );
 
-		// If there is no old table to roll back to, error.
 		/**
 		 * If dealing with multisites, it's feasible that some may have a
 		 * table and some may not, so don't stop execution if it's not found.
@@ -701,6 +700,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$type = 'log';
 		}
 
+		// If there is no old table to roll back to, error.
 		if ( ! $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_clone_table ) ) ) == $old_clone_table ) {
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
 			$output['no_rollback_table'] = isset( $output['no_rollback_table'] ) ? $output['no_rollback_table'] + 1 : 1;
