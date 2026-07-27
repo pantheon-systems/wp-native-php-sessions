@@ -532,6 +532,7 @@ class Pantheon_Sessions {
 	 */
 	public function add_single_index( $prefix, $output = [], $multisite = false ) {
 		global $wpdb;
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- No user input; table names are esc_sql()'d / composed of $wpdb prefix + class constants.
 		$unprefixed_table = self::PANTHEON_SESSIONS_TABLE;
 		$table            = esc_sql( $prefix . $unprefixed_table );
 		$temp_clone_table = esc_sql( $prefix . 'sessions_temp_clone' );
@@ -542,7 +543,7 @@ class Pantheon_Sessions {
 		 */
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) ) ) == $temp_clone_table ) {
 			$query = "DROP TABLE {$temp_clone_table};";
-			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
+			$wpdb->query( $query );
 		}
 
 		if ( ! PANTHEON_SESSIONS_ENABLED ) {
@@ -558,7 +559,7 @@ class Pantheon_Sessions {
 
 		// Verify that the ID column/primary key does not already exist.
 		$query         = "SHOW KEYS FROM {$table} WHERE key_name = 'PRIMARY';";
-		$key_existence = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table is esc_sql()'d.
+		$key_existence = $wpdb->get_results( $query );
 
 		// Avoid errors by not attempting to add a column that already exists.
 		if ( ! empty( $key_existence ) ) {
@@ -583,7 +584,7 @@ class Pantheon_Sessions {
 		$this->safe_output( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ), 'log' );
 
 		$count_query = "SELECT COUNT(*) FROM {$table};";
-		$count_total = $wpdb->get_results( $count_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table is esc_sql()'d.
+		$count_total = $wpdb->get_results( $count_query );
 
 		// Avoid errors when object returns an empty object.
 		if ( ! empty( $count_total ) ) {
@@ -598,9 +599,9 @@ class Pantheon_Sessions {
 		}
 		// Create temporary table to copy data into in batches.
 		$query = "CREATE TABLE {$temp_clone_table} LIKE {$table};";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table and $table are esc_sql()'d.
+		$wpdb->query( $query );
 		$query = "ALTER TABLE {$temp_clone_table} ADD COLUMN id BIGINT AUTO_INCREMENT PRIMARY KEY FIRST";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
+		$wpdb->query( $query );
 
 		$batch_size = 20000;
 		$loops      = ceil( $count_total / $batch_size );
@@ -612,7 +613,7 @@ class Pantheon_Sessions {
 (user_id, session_id, secure_session_id, ip_address, datetime, data)
 SELECT user_id,session_id,secure_session_id,ip_address,datetime,data
 FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
-			$results         = $wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; table names are esc_sql()'d and batch parameters are integers.
+			$results         = $wpdb->query( $query );
 			$current_results = $results + ( $batch_size * $i );
 
 			// translators: %1 and %2 are how many rows have been processed out of how many total.
@@ -627,13 +628,14 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) ) ) == $old_table ) {
 			$query = "DROP TABLE {$old_table};";
-			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $old_table is esc_sql()'d.
+			$wpdb->query( $query );
 		}
 
 		$query = "ALTER TABLE {$table} RENAME {$old_table};";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table and $old_table are esc_sql()'d.
+		$wpdb->query( $query );
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table and $table are esc_sql()'d.
+		$wpdb->query( $query );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 
 		return $output;
 	}
@@ -709,15 +711,17 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		}
 
 		// Swap old table and new one.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- No user input; table names are esc_sql()'d.
 		$query = "ALTER TABLE {$table} RENAME {$temp_clone_table};";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table and $temp_clone_table are esc_sql()'d.
+		$wpdb->query( $query );
 		$query = "ALTER TABLE {$old_clone_table} RENAME {$table};";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $old_clone_table and $table are esc_sql()'d.
+		$wpdb->query( $query );
 		$this->safe_output( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ), 'log' );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
-		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
+		$wpdb->query( $query );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 		$this->safe_output( __( 'Site processing complete.', 'wp-native-php-sessions' ), 'log' );
 
 		return $output;
