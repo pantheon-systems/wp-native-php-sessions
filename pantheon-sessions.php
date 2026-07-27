@@ -212,7 +212,7 @@ class Pantheon_Sessions {
 				trigger_error(
 					sprintf(
 						/* translators: %1s: File path, %2d: Line number */
-						__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
+						esc_html__( "Oops! The wp-native-php-sessions plugin couldn't start the session because output has already been sent. This might be caused by PHP throwing errors. Please check the code in %1s on line %2d.", 'wp-native-php-sessions' ),
 						esc_html( $file ),
 						esc_html( $line )
 					),
@@ -308,7 +308,7 @@ class Pantheon_Sessions {
 		$is_pantheon = isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ? true : false;
 		$wp_cli_cmd = $is_pantheon ? 'terminus wp &lt;site&gt;.&lt;env&gt; -- ' : 'wp ';
 		$cli_add_index = $wp_cli_cmd . 'pantheon session add-index';
-		$key_existence = $wpdb->get_results( $query );
+		$key_existence = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; table name is composed of $wpdb->get_blog_prefix() and a class constant.
 		$user_id = get_current_user_id();
 		$dismissed = get_user_meta( $user_id, 'notice_dismissed', true );
 
@@ -338,7 +338,7 @@ class Pantheon_Sessions {
 		$wpdb->esc_like( $old_table ) );
 
 		// Check for table existence and delete if present.
-		if ( $wpdb->get_var( $query ) == $old_table ) {
+		if ( $wpdb->get_var( $query ) == $old_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			$cli_key_finalize = $wp_cli_cmd . 'pantheon session primary-key-finalize';
 			$cli_key_revert = $wp_cli_cmd . 'pantheon session primary-key-revert';
 
@@ -384,7 +384,7 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: %s is the current blog, and then the array index of the current site.
-			$this->safe_output( __( 'Processing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session add-index --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing site %1$d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session add-index --start_point=%2$d". To skip this site if it does not need processing, run "wp pantheon session add-index --start_point=%3$d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
 			$output = $this->add_single_index( $blog_prefix, $output, true );
@@ -466,7 +466,7 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Finalizing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
+			$this->safe_output( __( 'Finalizing site %1$d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%2$d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%3$d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
 			$output = $this->primary_key_finalize_single( $blog_prefix, $output, true );
@@ -509,7 +509,7 @@ class Pantheon_Sessions {
 
 		for ( $i = $start_position; $i < $site_count; $i++ ) {
 			// translators: $s is the array index of the current site.
-			$this->safe_output( __( 'Processing site %d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
+			$this->safe_output( __( 'Processing site %1$d. In the event of a timeout or error, resume execution starting from this point via "wp pantheon session primary-key-finalize --start_point=%2$d". To skip this site if it does not need processing, run "wp pantheon session primary-key-finalize --start_point=%3$d".', 'wp-native-php-sessions' ), 'log', [ $site_list[ $i ], $i, $i + 1 ] );
 
 			$blog_prefix = $wpdb->get_blog_prefix( $site_list[ $i ] );
 			$output = $this->primary_key_revert_single( $blog_prefix, $output, true );
@@ -545,9 +545,9 @@ class Pantheon_Sessions {
 		 */
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $temp_clone_table ) );
 
-		if ( $wpdb->get_var( $query ) == $temp_clone_table ) {
+		if ( $wpdb->get_var( $query ) == $temp_clone_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			$query = "DROP TABLE {$temp_clone_table};";
-			$wpdb->query( $query );
+			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
 		}
 
 		if ( ! PANTHEON_SESSIONS_ENABLED ) {
@@ -555,7 +555,7 @@ class Pantheon_Sessions {
 		}
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
-		if ( ! $wpdb->get_var( $query ) == $table ) {
+		if ( ! $wpdb->get_var( $query ) == $table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			$this->safe_output( __( 'This site does not have a pantheon_sessions table, and is being skipped.', 'wp-native-php-sessions' ), 'log' );
 			$output['no_session_table'] = isset( $output['no_session_table'] ) ? $output['no_session_table'] + 1 : 1;
 
@@ -564,7 +564,7 @@ class Pantheon_Sessions {
 
 		// Verify that the ID column/primary key does not already exist.
 		$query         = "SHOW KEYS FROM {$table} WHERE key_name = 'PRIMARY';";
-		$key_existence = $wpdb->get_results( $query );
+		$key_existence = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table is esc_sql()'d.
 
 		// Avoid errors by not attempting to add a column that already exists.
 		if ( ! empty( $key_existence ) ) {
@@ -589,7 +589,7 @@ class Pantheon_Sessions {
 		$this->safe_output( __( 'Primary Key does not exist, resolution starting.', 'wp-native-php-sessions' ), 'log' );
 
 		$count_query = "SELECT COUNT(*) FROM {$table};";
-		$count_total = $wpdb->get_results( $count_query );
+		$count_total = $wpdb->get_results( $count_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table is esc_sql()'d.
 
 		// Avoid errors when object returns an empty object.
 		if ( ! empty( $count_total ) ) {
@@ -604,9 +604,9 @@ class Pantheon_Sessions {
 		}
 		// Create temporary table to copy data into in batches.
 		$query = "CREATE TABLE {$temp_clone_table} LIKE {$table};";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table and $table are esc_sql()'d.
 		$query = "ALTER TABLE {$temp_clone_table} ADD COLUMN id BIGINT AUTO_INCREMENT PRIMARY KEY FIRST";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
 
 		$batch_size = 20000;
 		$loops      = ceil( $count_total / $batch_size );
@@ -618,7 +618,7 @@ class Pantheon_Sessions {
 (user_id, session_id, secure_session_id, ip_address, datetime, data)
 SELECT user_id,session_id,secure_session_id,ip_address,datetime,data
 FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
-			$results         = $wpdb->query( $query );
+			$results         = $wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; table names are esc_sql()'d and batch parameters are integers.
 			$current_results = $results + ( $batch_size * $i );
 
 			// translators: %1 and %2 are how many rows have been processed out of how many total.
@@ -632,15 +632,15 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$old_table = esc_sql( $prefix . 'bak_' . $unprefixed_table );
 		$query     = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $old_table ) );
 
-		if ( $wpdb->get_var( $query ) == $old_table ) {
+		if ( $wpdb->get_var( $query ) == $old_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			$query = "DROP TABLE {$old_table};";
-			$wpdb->query( $query );
+			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $old_table is esc_sql()'d.
 		}
 
 		$query = "ALTER TABLE {$table} RENAME {$old_table};";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table and $old_table are esc_sql()'d.
 		$query = "ALTER TABLE {$temp_clone_table} RENAME {$table};";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table and $table are esc_sql()'d.
 
 		return $output;
 	}
@@ -659,7 +659,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) );
 
 		// Check for table existence and delete if present.
-		if ( ! $wpdb->get_var( $query ) == $table ) {
+		if ( ! $wpdb->get_var( $query ) == $table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			/**
 			 * If dealing with multisites, it's feasible that some may have a
 			 * table and some may not, so don't stop execution if it's not found.
@@ -674,7 +674,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$this->safe_output( __( 'Old table does not exist to be removed.', 'wp-native-php-sessions' ), $type );
 		} else {
 			$query = "DROP TABLE {$table};";
-			$wpdb->query( $query );
+			$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table is esc_sql()'d.
 
 			if ( ! $multisite ) {
 				$this->safe_output( __( 'Old table has been successfully removed.', 'wp-native-php-sessions' ), 'log' );
@@ -712,7 +712,7 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 			$type = 'log';
 		}
 
-		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) {
+		if ( ! $wpdb->get_var( $query ) == $old_clone_table ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is the result of $wpdb->prepare() above.
 			$this->safe_output( __( 'There is no old table to roll back to.', 'wp-native-php-sessions' ), $type );
 			$output['no_rollback_table'] = isset( $output['no_rollback_table'] ) ? $output['no_rollback_table'] + 1 : 1;
 
@@ -721,14 +721,14 @@ FROM %s ORDER BY user_id LIMIT %d OFFSET %d", $table, $batch_size, $offset );
 
 		// Swap old table and new one.
 		$query = "ALTER TABLE {$table} RENAME {$temp_clone_table};";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $table and $temp_clone_table are esc_sql()'d.
 		$query = "ALTER TABLE {$old_clone_table} RENAME {$table};";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $old_clone_table and $table are esc_sql()'d.
 		$this->safe_output( __( 'Rolled back to previous state successfully, dropping corrupt table.', 'wp-native-php-sessions' ), 'log' );
 
 		// Remove table which did not function.
 		$query = "DROP TABLE {$temp_clone_table}";
-		$wpdb->query( $query );
+		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- No user input; $temp_clone_table is esc_sql()'d.
 		$this->safe_output( __( 'Site processing complete.', 'wp-native-php-sessions' ), 'log' );
 
 		return $output;
