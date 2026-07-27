@@ -5,11 +5,11 @@
  * @package WPNPS
  */
 
+namespace Pantheon_Sessions;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-namespace Pantheon_Sessions;
 
 /**
  * Individual session object.
