@@ -53,6 +53,7 @@
                 "PKSA-ft77-7h5f-p3r6": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
                 "PKSA-b14r-zh1d-vdrc": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
                 "PKSA-z3gr-8qht-p93v": "Dev-only: phpunit/phpunit test runner. No prod exposure. SITE-5205.",
+                "PKSA-vznr-tgp9-fd7d": "Dev-only: guzzlehttp/psr7 (CVE-2026-59882) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. VUL-24999.",
                 "PKSA-jj5t-2zs1-dcfm": "Dev-only: guzzlehttp/psr7 (CVE-2026-48998) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
                 "PKSA-gm5x-j3mz-71n9": "Dev-only: guzzlehttp/psr7 (CVE-2026-49214) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
                 "PKSA-hn62-zkx4-1y5q": "Dev-only: guzzlehttp/psr7 via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
@@ -65,7 +66,8 @@
                 "PKSA-2z36-j4q9-rsfy": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
                 "PKSA-fvw5-9t6n-nwvr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
                 "PKSA-6d8m-6kgw-18zr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-stmn-hvzq-wph6": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205."
+                "PKSA-stmn-hvzq-wph6": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
+                "PKSA-bcdd-5xc7-gwfb": "Dev-only: guzzlehttp/guzzle (CVE-2026-59883) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.12.3). No prod exposure. VUL-24492."
             }
         },
         "sort-packages": true
