@@ -67,7 +67,9 @@
                 "PKSA-fvw5-9t6n-nwvr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
                 "PKSA-6d8m-6kgw-18zr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
                 "PKSA-stmn-hvzq-wph6": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-bcdd-5xc7-gwfb": "Dev-only: guzzlehttp/guzzle (CVE-2026-59883) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.12.3). No prod exposure. VUL-24492."
+                "PKSA-bcdd-5xc7-gwfb": "Dev-only: guzzlehttp/guzzle (CVE-2026-59883) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.12.3). No prod exposure. VUL-24492.",
+                "PKSA-cnw1-2ytm-cgr8": "Dev-only: guzzlehttp/guzzle (CVE-2026-69245) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.15.2). No prod exposure. VUL-26449.",
+                "PKSA-gcrk-3vtt-1r14": "Dev-only: guzzlehttp/guzzle (CVE-2026-69246) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.15.2). No prod exposure. VUL-26449."
             }
         },
         "sort-packages": true
