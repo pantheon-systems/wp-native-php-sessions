@@ -16,7 +16,7 @@ Feature: Load WordPress
 
     When I go to "/wp-admin/options-general.php"
     And I fill in "blogname" with "Pantheon WordPress Site"
-    And I press "submit"
+    And I press "Save Changes"
     Then print current URL
     And I should see "Settings saved."
 
