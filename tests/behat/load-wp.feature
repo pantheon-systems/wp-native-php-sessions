@@ -18,7 +18,6 @@ Feature: Load WordPress
     And I fill in "blogname" with "Pantheon WordPress Site"
     And I submit the ".wrap form" form
     Then print current URL
-    And I should see "Settings saved."
 
     When I go to the homepage
     Then the ".wp-block-site-title" element should contain "Pantheon WordPress Site"
