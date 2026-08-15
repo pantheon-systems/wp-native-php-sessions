@@ -275,3 +275,4 @@ Adds a WP-CLI command to add an index to the sessions table if one does not exis
 
 ### 0.1 ###
 * Initial release
+test
