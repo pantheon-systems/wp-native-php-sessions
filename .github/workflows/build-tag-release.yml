@@ -20,11 +20,13 @@ jobs:
         uses: jitterbit/get-changed-files@b17fbb00bdc0c0f63fcf166580804b4d2cdc2a42 # v1
       - id: set-outputs
         shell: bash
+        env:
+          CHANGED_FILES: ${{ steps.get-changed-files.outputs.all }}
         run: |
-          echo "Changed files: ${{ steps.get-changed-files.outputs.all }}"
+          echo "Changed files: $CHANGED_FILES"
           shopt -s nocasematch
           run_plugin_update="false"
-          for file in ${{ steps.get-changed-files.outputs.all }}; do
+          for file in $CHANGED_FILES; do
             echo "Checking if file '$file' should trigger a plugin release"
             if [[ "$file" == .github/* ]] || \
                [[ "$file" == .wordpress.org/* ]]; then
