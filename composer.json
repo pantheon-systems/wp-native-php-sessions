@@ -47,29 +47,15 @@
         },
         "audit": {
             "ignore": {
-                "PKSA-5r1g-c7b7-y1zg": "Dev-only: symfony/dom-crawler via behat test deps (pantheon-wordpress-upstream-tests). No prod exposure. SITE-5205.",
-                "PKSA-dwsq-ppd2-mb1x": "Dev-only: symfony/polyfill-intl-idn via guzzle (behat test deps). No prod exposure. SITE-5205.",
                 "PKSA-v5yj-8nmz-sk2q": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
                 "PKSA-ft77-7h5f-p3r6": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
                 "PKSA-b14r-zh1d-vdrc": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
-                "PKSA-z3gr-8qht-p93v": "Dev-only: phpunit/phpunit test runner. No prod exposure. SITE-5205.",
-                "PKSA-vznr-tgp9-fd7d": "Dev-only: guzzlehttp/psr7 (CVE-2026-59882) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. VUL-24999.",
-                "PKSA-jj5t-2zs1-dcfm": "Dev-only: guzzlehttp/psr7 (CVE-2026-48998) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
-                "PKSA-gm5x-j3mz-71n9": "Dev-only: guzzlehttp/psr7 (CVE-2026-49214) via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
-                "PKSA-hn62-zkx4-1y5q": "Dev-only: guzzlehttp/psr7 via fabpot/goutte behat upstream tests. Cannot upgrade (guzzle 6 pins psr7 ^1.9). No prod exposure. SITE-5205.",
-                "PKSA-rkkf-636k-qjb3": "Dev-only: symfony/process via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-wws7-mr54-jsny": "Dev-only: symfony/process via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-93qv-9n9h-6k6p": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-k22t-f949-t9g6": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-yfw5-9gnj-n2c7": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-k1b4-kshy-xgbh": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-2z36-j4q9-rsfy": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-fvw5-9t6n-nwvr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-6d8m-6kgw-18zr": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-stmn-hvzq-wph6": "Dev-only: guzzlehttp/guzzle via fabpot/goutte behat upstream tests. No prod exposure. SITE-5205.",
-                "PKSA-bcdd-5xc7-gwfb": "Dev-only: guzzlehttp/guzzle (CVE-2026-59883) via fabpot/goutte behat upstream tests. Cannot upgrade (fabpot/goutte pins guzzle ^6; patched version is 7.12.3). No prod exposure. VUL-24492."
+                "PKSA-z3gr-8qht-p93v": "Dev-only: phpunit/phpunit test runner. No prod exposure. SITE-5205."
             }
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1.0"
+        }
     }
 }
