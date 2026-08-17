@@ -45,6 +45,6 @@ jobs:
         unzip ../wp-native-php-sessions-dist.zip
 
     - name: Run plugin check
-      uses: wordpress/plugin-check-action@6f5a57e173c065a394b78688f75df543e4011902 # 1.1.5
+      uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # 1.1.9
       with:
         build-dir: wp-native-php-sessions
