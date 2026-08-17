@@ -1,4 +1,3 @@
-# On push, run the action-wporg-validator workflow.
 name: WP.org Validator
 on: # rebuild any PRs and main branch changes
   pull_request:
