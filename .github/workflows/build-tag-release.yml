@@ -16,8 +16,20 @@ jobs:
       is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
       - id: get-changed-files
-        uses: jitterbit/get-changed-files@b17fbb00bdc0c0f63fcf166580804b4d2cdc2a42 # v1
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            files=$(git diff-tree --no-commit-id --name-only -r "$AFTER")
+          else
+            files=$(git diff --name-only "$BEFORE" "$AFTER")
+          fi
+          echo "all=$(echo "$files" | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
       - id: set-outputs
         shell: bash
         env:
