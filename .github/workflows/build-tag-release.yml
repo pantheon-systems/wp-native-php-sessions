@@ -24,10 +24,12 @@ jobs:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
         run: |
+          # A force-push leaves $BEFORE unreachable, so fall back to the tip commit.
           if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
             files=$(git diff-tree --no-commit-id --name-only -r "$AFTER")
           else
-            files=$(git diff --name-only "$BEFORE" "$AFTER")
+            files=$(git diff --name-only "$BEFORE" "$AFTER" 2>/dev/null) \
+              || files=$(git diff-tree --no-commit-id --name-only -r "$AFTER")
           fi
           echo "all=$(echo "$files" | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
       - id: set-outputs
@@ -45,7 +47,7 @@ jobs:
                 echo "'$file' is inside an ignored directory."
                 continue
             fi
-            if [[ "$file" != readme.* ]] && \ 
+            if [[ "$file" != readme.* ]] && \
                [[ "$file" != .gitattributes ]] && \
                [[ "$file" != .gitignore ]] && \
                [[ "$file" != catalog-info.yml ]] && \
