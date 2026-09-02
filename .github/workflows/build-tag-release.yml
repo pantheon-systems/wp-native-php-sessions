@@ -15,23 +15,39 @@ jobs:
     outputs:
       is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
       - id: get-changed-files
-        uses: jitterbit/get-changed-files@v1
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          # A force-push leaves $BEFORE unreachable, so fall back to the tip commit.
+          if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            files=$(git diff-tree --no-commit-id --name-only -r "$AFTER")
+          else
+            files=$(git diff --name-only "$BEFORE" "$AFTER" 2>/dev/null) \
+              || files=$(git diff-tree --no-commit-id --name-only -r "$AFTER")
+          fi
+          echo "all=$(echo "$files" | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
       - id: set-outputs
         shell: bash
+        env:
+          CHANGED_FILES: ${{ steps.get-changed-files.outputs.all }}
         run: |
-          echo "Changed files: ${{ steps.get-changed-files.outputs.all }}"
+          echo "Changed files: $CHANGED_FILES"
           shopt -s nocasematch
           run_plugin_update="false"
-          for file in ${{ steps.get-changed-files.outputs.all }}; do
+          for file in $CHANGED_FILES; do
             echo "Checking if file '$file' should trigger a plugin release"
             if [[ "$file" == .github/* ]] || \
                [[ "$file" == .wordpress.org/* ]]; then
                 echo "'$file' is inside an ignored directory."
                 continue
             fi
-            if [[ "$file" != readme.* ]] && \ 
+            if [[ "$file" != readme.* ]] && \
                [[ "$file" != .gitattributes ]] && \
                [[ "$file" != .gitignore ]] && \
                [[ "$file" != catalog-info.yml ]] && \
@@ -48,9 +64,9 @@ jobs:
     if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: WP.org Asset Only Update
-        uses: 10up/action-wordpress-plugin-asset-update@stable
+        uses: 10up/action-wordpress-plugin-asset-update@2480306f6f693672726d08b5917ea114cb2825f7 # stable 2025-01-21T21:32:26Z
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
@@ -60,9 +76,9 @@ jobs:
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Build, Tag & Release
-        uses: pantheon-systems/plugin-release-actions/build-tag-release@main
+        uses: pantheon-systems/plugin-release-actions/build-tag-release@8c76f0613b094d9812da9257030e534c4d8eeb6c # v0.5.6
         with:
           gh_token: ${{ github.token }}
           readme_md: README.md

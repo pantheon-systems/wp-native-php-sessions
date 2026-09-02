@@ -6,8 +6,13 @@ updates:
     interval: weekly
     timezone: America/Los_Angeles
     day: tuesday
-  target-branch: "develop"
+  target-branch: "main"
   open-pull-requests-limit: 99
+  groups:
+    composer-minor-patch:
+      update-types:
+      - minor
+      - patch
   ignore:
   - dependency-name: phpunit/phpunit
     versions:
@@ -23,13 +28,22 @@ updates:
     interval: weekly
     timezone: America/Los_Angeles
     day: tuesday
-  target-branch: "develop"
+  target-branch: "main"
   open-pull-requests-limit: 99
+  groups:
+    npm-minor-patch:
+      update-types:
+      - minor
+      - patch
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: weekly
     timezone: America/Los_Angeles
     day: tuesday
-  target-branch: "develop"
+  target-branch: "main"
   open-pull-requests-limit: 99
+  groups:
+    github-actions:
+      patterns:
+      - "*"
