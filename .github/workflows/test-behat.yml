@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
 
       - name: Cache dependencies
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/vendor
           key: test-lint-dependencies-{{ checksum "composer.json" }}
@@ -45,7 +45,7 @@ jobs:
         run: composer phpcs
 
       - name: Install Terminus
-        uses: pantheon-systems/terminus-github-actions@8e024bd89ff46ed2aa4e0663c6b54c87a94344f8 # v1.2.7
+        uses: pantheon-systems/terminus-github-actions@b0a005d0e886678b25cb6cd7833cf8d8cf779900 # v1.2.9
         with:
           pantheon-machine-token: ${{ secrets.TERMINUS_TOKEN }}
 
@@ -75,7 +75,7 @@ jobs:
         run: echo "GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" >> $GITHUB_ENV
 
       - name: Install SSH key
-        uses: webfactory/ssh-agent@a6f90b1f127823b31d4d4a8d96047790581349bd # v0.9.1
+        uses: webfactory/ssh-agent@e83874834305fe9a4a2997156cb26c5de65a8555 # v0.10.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
