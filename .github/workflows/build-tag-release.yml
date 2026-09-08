@@ -15,7 +15,7 @@ jobs:
     outputs:
       is-plugin-update: ${{ steps.set-outputs.outputs.is-plugin-update }}
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - id: get-changed-files
@@ -64,7 +64,7 @@ jobs:
     if: ${{ needs.check-status.outputs.is-plugin-update == 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: WP.org Asset Only Update
         uses: 10up/action-wordpress-plugin-asset-update@2480306f6f693672726d08b5917ea114cb2825f7 # stable 2025-01-21T21:32:26Z
         env:
@@ -76,7 +76,7 @@ jobs:
     name: Create Tag and Draft Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Build, Tag & Release
         uses: pantheon-systems/plugin-release-actions/build-tag-release@8c76f0613b094d9812da9257030e534c4d8eeb6c # v0.5.6
         with:
