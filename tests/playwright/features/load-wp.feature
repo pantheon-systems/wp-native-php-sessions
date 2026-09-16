@@ -6,18 +6,13 @@ Feature: Load WordPress
 
   Scenario: Verify that a user can update the site's title
     When I go to the homepage
-    Then print current URL
-    And the ".wp-block-site-title" element should not contain "Pantheon WordPress Site"
-
-    When I go to "wp-login.php"
-    Then print current URL
+    Then the ".wp-block-site-title" element should not contain "Pantheon WordPress Site"
 
     Given I log in as an admin
 
     When I go to "/wp-admin/options-general.php"
     And I fill in "blogname" with "Pantheon WordPress Site"
     And I submit the ".wrap form" form
-    Then print current URL
 
     When I go to the homepage
     Then the ".wp-block-site-title" element should contain "Pantheon WordPress Site"
