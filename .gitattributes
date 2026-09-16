@@ -15,7 +15,6 @@
 /Thumbs.db export-ignore
 /.editorconfig export-ignore
 /.gitattributes export-ignore
-/behat.yml export-ignore
 /CODEOWNERS export-ignore
 /composer.json export-ignore
 /composer.lock export-ignore
