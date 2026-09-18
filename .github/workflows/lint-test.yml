@@ -39,8 +39,10 @@ jobs:
           php-version: 8.3
       - name: Install dependencies
         run: composer install -n --prefer-dist
-      - name: Run PHPCS
+      - name: Lint
         run: composer lint
+      - name: Codesniffer
+        run: composer phpcs
   php8-compatibility:
     name: PHP 8.x Compatibility
     runs-on: ubuntu-latest
