@@ -7,6 +7,10 @@
 
 namespace Pantheon_Sessions;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Pantheon_Sessions\Session;
 
 /**
