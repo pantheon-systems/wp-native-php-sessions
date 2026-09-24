@@ -45,6 +45,17 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "pantheon-systems/wpunit-helpers": true
         },
-        "sort-packages": true
+        "audit": {
+            "ignore": {
+                "PKSA-v5yj-8nmz-sk2q": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-ft77-7h5f-p3r6": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-b14r-zh1d-vdrc": "Dev-only: symfony/yaml via behat test deps. No prod exposure. SITE-5205.",
+                "PKSA-z3gr-8qht-p93v": "Dev-only: phpunit/phpunit test runner. No prod exposure. SITE-5205."
+            }
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1.0"
+        }
     }
 }

@@ -1,0 +1,50 @@
+name: WP.org Validator
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+    - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Plugin
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Setup PHP 8.4
+      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+      with:
+        php-version: "8.4"
+        extensions: mysqli
+        tools: composer,wp-cli
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+            ~/.composer/cache
+            vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+            ${{ runner.os }}-composer-
+
+    - name: Install dependencies
+      run: composer install --no-dev --no-interaction --no-progress --prefer-dist --no-scripts --no-ansi
+
+    - name: Create Dist Archive for wp.org validation
+      env:
+        COMPOSER_AUTH: '{"github-oauth": {}}'
+      run: |
+        rm -f ~/.composer/auth.json
+        wp package install wp-cli/dist-archive-command:v3.1.0
+        wp dist-archive . --plugin-dirname=wp-native-php-sessions --filename-format=wp-native-php-sessions-dist
+        unzip ../wp-native-php-sessions-dist.zip
+
+    - name: Run plugin check
+      uses: wordpress/plugin-check-action@10857da14b6c2246d15402b3e69f777edcf8c12e # 1.1.9
+      with:
+        build-dir: wp-native-php-sessions
