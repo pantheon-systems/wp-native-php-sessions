@@ -8,6 +8,6 @@ metadata:
   annotations:
     "backstage.io/techdocs-ref": "dir:docs/"
 spec:
-  type: "unknown"
+  type: "plugin"
   lifecycle: "experimental"
   owner: "site-experience"
