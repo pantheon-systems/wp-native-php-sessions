@@ -7,6 +7,10 @@
 
 namespace Pantheon_Sessions;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WP_CLI;
 
 /**
